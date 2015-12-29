@@ -1,6 +1,7 @@
 // TrainManager.java
 package jmri.jmrit.operations.trains;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import jmri.jmrit.operations.routes.RouteLocation;
 import jmri.jmrit.operations.setup.Control;
 import jmri.jmrit.operations.setup.OperationsSetupXml;
 import jmri.jmrit.operations.setup.Setup;
+import jmri.script.JmriScriptEngineManager;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.slf4j.Logger;
@@ -244,7 +246,7 @@ public class TrainManager implements java.beans.PropertyChangeListener {
     public void runStartUpScripts() {
         for (String scriptPathName : getStartUpScripts()) {
             try {
-                jmri.util.PythonInterp.runScript(jmri.util.FileUtil.getExternalFilename(scriptPathName));
+                JmriScriptEngineManager.getDefault().runScript(new File(jmri.util.FileUtil.getExternalFilename(scriptPathName)));
             } catch (Exception e) {
                 log.error("Problem with script: {}", scriptPathName);
             }
@@ -278,7 +280,7 @@ public class TrainManager implements java.beans.PropertyChangeListener {
     public void runShutDownScripts() {
         for (String scriptPathName : getShutDownScripts()) {
             try {
-                jmri.util.PythonInterp.runScript(jmri.util.FileUtil.getExternalFilename(scriptPathName));
+                JmriScriptEngineManager.getDefault().runScript(new File(jmri.util.FileUtil.getExternalFilename(scriptPathName)));
             } catch (Exception e) {
                 log.error("Problem with script: {}", scriptPathName);
             }
@@ -468,7 +470,7 @@ public class TrainManager implements java.beans.PropertyChangeListener {
     /**
      * Sort by train name
      *
-     * @return list of train ids ordered by name
+     * @return list of trains ordered by name
      */
     public List<Train> getTrainsByNameList() {
         return getTrainsByList(getList(), GET_TRAIN_NAME);
@@ -477,52 +479,61 @@ public class TrainManager implements java.beans.PropertyChangeListener {
     /**
      * Sort by train departure time
      *
-     * @return list of train ids ordered by departure time
+     * @return list of trains ordered by departure time
      */
     public List<Train> getTrainsByTimeList() {
         return getTrainsByIntList(getTrainsByNameList(), GET_TRAIN_TIME);
     }
 
     /**
-     * Sort by train departure name
+     * Sort by train departure location name
      *
-     * @return list of train ids ordered by departure name
+     * @return list of trains ordered by departure name
      */
     public List<Train> getTrainsByDepartureList() {
-        return getTrainsByList(getTrainsByNameList(), GET_TRAIN_DEPARTES_NAME);
+        return getTrainsByList(getTrainsByTimeList(), GET_TRAIN_DEPARTES_NAME);
     }
 
     /**
-     * Sort by train termination name
+     * Sort by train termination location name
      *
-     * @return list of train ids ordered by termination name
+     * @return list of trains ordered by termination name
      */
     public List<Train> getTrainsByTerminatesList() {
-        return getTrainsByList(getTrainsByNameList(), GET_TRAIN_TERMINATES_NAME);
+        return getTrainsByList(getTrainsByTimeList(), GET_TRAIN_TERMINATES_NAME);
     }
 
     /**
      * Sort by train route name
      *
-     * @return list of train ids ordered by route name
+     * @return list of trains ordered by route name
      */
     public List<Train> getTrainsByRouteList() {
-        return getTrainsByList(getTrainsByNameList(), GET_TRAIN_ROUTE_NAME);
+        return getTrainsByList(getTrainsByTimeList(), GET_TRAIN_ROUTE_NAME);
     }
 
     /**
-     * Sort by train route name
+     * Sort by train status
      *
-     * @return list of train ids ordered by route name
+     * @return list of trains ordered by status
      */
     public List<Train> getTrainsByStatusList() {
-        return getTrainsByList(getTrainsByNameList(), GET_TRAIN_STATUS);
+        return getTrainsByList(getTrainsByTimeList(), GET_TRAIN_STATUS);
+    }
+    
+    /**
+     * Sort by train description
+     *
+     * @return list of trains ordered by train description
+     */
+    public List<Train> getTrainsByDescriptionList() {
+        return getTrainsByList(getTrainsByTimeList(), GET_TRAIN_DESCRIPTION);
     }
 
     /**
      * Sort by train id
      *
-     * @return list of train ids ordered by id
+     * @return list of trains ordered by id
      */
     public List<Train> getTrainsByIdList() {
         return getTrainsByIntList(getList(), GET_TRAIN_ID);
@@ -570,6 +581,7 @@ public class TrainManager implements java.beans.PropertyChangeListener {
     private static final int GET_TRAIN_TIME = 4;
     private static final int GET_TRAIN_STATUS = 5;
     private static final int GET_TRAIN_ID = 6;
+    private static final int GET_TRAIN_DESCRIPTION = 7;
 
     private Object getTrainAttribute(Train train, int attribute) {
         switch (attribute) {
@@ -587,6 +599,8 @@ public class TrainManager implements java.beans.PropertyChangeListener {
                 return train.getStatus();
             case GET_TRAIN_ID:
                 return Integer.parseInt(train.getId());
+            case GET_TRAIN_DESCRIPTION:
+                return train.getDescription();
             default:
                 return "unknown"; // NOI18N
         }

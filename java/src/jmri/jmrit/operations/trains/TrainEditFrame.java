@@ -122,7 +122,7 @@ public class TrainEditFrame extends OperationsFrame implements java.beans.Proper
 
     public static final String DISPOSE = "dispose"; // NOI18N
 
-    public TrainEditFrame() {
+    public TrainEditFrame(Train train) {
         super(Bundle.getMessage("TitleTrainEdit"));
         // Set up the jtable in a Scroll Pane..
         locationsPane = new JScrollPane(locationPanelCheckBoxes);
@@ -136,9 +136,7 @@ public class TrainEditFrame extends OperationsFrame implements java.beans.Proper
         typeEnginePane = new JScrollPane(typeEnginePanelCheckBoxes);
         typeEnginePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         typeEnginePane.setBorder(BorderFactory.createTitledBorder(Bundle.getMessage("TypesEngine")));
-    }
 
-    public void initComponents(Train train) {
         _train = train;
 
         // load managers
@@ -1011,9 +1009,8 @@ public class TrainEditFrame extends OperationsFrame implements java.beans.Proper
             Route route = _train.getRoute();
             if (route != null) {
                 route.removePropertyChangeListener(this);
-                List<RouteLocation> routeList = route.getLocationsBySequenceList();
-                for (int i = 0; i < routeList.size(); i++) {
-                    Location loc = LocationManager.instance().getLocationByName(routeList.get(i).getName());
+                for (RouteLocation rl : route.getLocationsBySequenceList()) {
+                    Location loc = rl.getLocation();
                     if (loc != null) {
                         loc.removePropertyChangeListener(this);
                     }

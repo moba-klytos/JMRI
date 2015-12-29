@@ -75,6 +75,7 @@ public class Track {
     protected int _reservedInRoute = 0; // length of cars in route to this track
     protected int _reservationFactor = 100; // percentage of track space for cars in route
     protected int _mode = MATCH; // default is match mode
+    protected boolean _holdCustomLoads = false; // when true hold cars with custom loads
 
     // drop options
     protected String _dropOption = ANY; // controls which route or train can set out cars
@@ -130,6 +131,7 @@ public class Track {
     public static final String ALL_DESTINATIONS = Bundle.getMessage("All"); // track services all loads
     public static final String INCLUDE_DESTINATIONS = Bundle.getMessage("Include");
     public static final String EXCLUDE_DESTINATIONS = Bundle.getMessage("Exclude");
+    protected boolean _onlyCarsWithFD = false; // when true only cars with a final destinations are serviced
 
     // schedule modes
     public static final int SEQUENTIAL = 0;
@@ -152,6 +154,7 @@ public class Track {
     public static final String SCHEDULE = Bundle.getMessage("schedule");
     public static final String CUSTOM = Bundle.getMessage("custom");
     public static final String DESTINATION = Bundle.getMessage("carDestination");
+    public static final String NO_FINAL_DESTINATION = Bundle.getMessage("noFinalDestination");
 
     // For property change
     public static final String TYPES_CHANGED_PROPERTY = "trackRollingStockTypes"; // NOI18N
@@ -450,6 +453,24 @@ public class Track {
 
     public Track getAlternateTrack() {
         return _location.getTrackById(_alternateTrackId);
+    }
+    
+    public void setHoldCarsWithCustomLoadsEnabled(boolean enable) {
+        boolean old = _holdCustomLoads;
+        _holdCustomLoads = enable;
+        setDirtyAndFirePropertyChange("holdCarsWithCustomLoads", old, enable);
+    }
+
+    /**
+     * If enabled (true), hold cars with custom loads rather than allowing them
+     * to go to staging if the spur and the alternate track were full. If
+     * disabled, cars with custom loads can be forwarded to staging when this
+     * spur and all others with this option are also false.
+     * 
+     * @return True if enabled
+     */
+    public boolean isHoldCarsWithCustomLoadsEnabled() {
+        return _holdCustomLoads;
     }
 
     /**
@@ -1294,10 +1315,12 @@ public class Track {
      * Used to determine if track can service the rolling stock.
      *
      * @param rs the car or loco to be tested
-     * @return TYPE, ROAD, LENGTH, OKAY
+     * @return Error string starting with TYPE, ROAD, LENGTH, DESTINATION, or
+     *         LOAD if there's an issue. OKAY if track can service Rolling Stock.
      */
     public String accepts(RollingStock rs) {
         // first determine if rolling stock can be move to the new location
+        // note that there's code that checks for certain issues by checking the first word of the status string returned
         if (!acceptsTypeName(rs.getTypeName())) {
             log.debug("Rolling stock ({}) type ({}) not accepted at location ({}, {}) wrong type", rs.toString(), rs
                     .getTypeName(), getLocation().getName(), getName()); // NOI18N
@@ -1323,6 +1346,10 @@ public class Track {
                 // && getLocation() != car.getFinalDestination()) { // 4/14/2014 I can't remember why this was needed
                 return DESTINATION + " (" + car.getFinalDestinationName() + ") "
                         + MessageFormat.format(Bundle.getMessage("carIsNotAllowed"), new Object[]{getName()}); // no
+            }
+            // does this track (interchange) accept cars without a final destination?
+            if (getTrackType().equals(INTERCHANGE) && isOnlyCarsWithFinalDestinationEnabled() && car.getFinalDestination() == null) {
+                return NO_FINAL_DESTINATION;
             }
             // check for car in kernel
             if (car.getKernel() != null && car.getKernel().isLead(car)) {
@@ -1674,6 +1701,12 @@ public class Track {
             }
             // check destination track
             if (si.getDestination() != null && si.getDestinationTrack() != null) {
+                if (!si.getDestination().isTrackAtLocation(si.getDestinationTrack())) {
+                    status = MessageFormat.format(Bundle.getMessage("NotValid"), new Object[]{si
+                        .getDestinationTrack()
+                        + " (" + Bundle.getMessage("Track") + ")"});
+                    break;
+                }
                 if (!si.getDestinationTrack().acceptsTypeName(si.getTypeName())) {
                     status = MessageFormat.format(Bundle.getMessage("NotValid"), new Object[]{si
                         .getDestinationTrack()
@@ -2172,6 +2205,22 @@ public class Track {
         }
         return ALL_DESTINATIONS;
     }
+    
+    
+    public void setOnlyCarsWithFinalDestinationEnabled(boolean enable) {
+        boolean old = _onlyCarsWithFD;
+        _onlyCarsWithFD = enable;
+        setDirtyAndFirePropertyChange("onlyCarsWithFinalDestinations", old, enable);
+    }
+    
+    /**
+     * When true the C/I track will only accept cars that have a final destination
+     * that can be serviced by the track. See acceptsDestination(Location).
+     * @return false if any car spotted, true if only cars with a FD.
+     */
+    public boolean isOnlyCarsWithFinalDestinationEnabled() {
+        return _onlyCarsWithFD;
+    }
 
     /**
      * Used to determine if track has been assigned as an alternate
@@ -2188,6 +2237,8 @@ public class Track {
     }
 
     public void dispose() {
+        // change the name in case object is still in use, for example ScheduleItem.java
+        setName(MessageFormat.format(Bundle.getMessage("NotValid"), new Object[]{ getName() }));
         setDirtyAndFirePropertyChange(DISPOSE_CHANGED_PROPERTY, null, DISPOSE_CHANGED_PROPERTY);
     }
 
@@ -2422,6 +2473,13 @@ public class Track {
                 log.error("Schedule mode isn't a vaild number for track {}", getName());
             }
         }
+        if ((a = e.getAttribute(Xml.HOLD_CARS_CUSTOM)) != null) {
+            setHoldCarsWithCustomLoadsEnabled(a.getValue().equals(Xml.TRUE));
+        }
+        if ((a = e.getAttribute(Xml.ONLY_CARS_WITH_FD)) != null) {
+            setOnlyCarsWithFinalDestinationEnabled(a.getValue().equals(Xml.TRUE));
+        }
+        
         if ((a = e.getAttribute(Xml.ALTERNATIVE)) != null) {
             _alternateTrackId = a.getValue();
         }
@@ -2645,6 +2703,10 @@ public class Track {
             e.setAttribute(Xml.ITEM_COUNT, Integer.toString(getScheduleCount()));
             e.setAttribute(Xml.FACTOR, Integer.toString(getReservationFactor()));
             e.setAttribute(Xml.SCHEDULE_MODE, Integer.toString(getScheduleMode()));
+            e.setAttribute(Xml.HOLD_CARS_CUSTOM, isHoldCarsWithCustomLoadsEnabled() ? Xml.TRUE : Xml.FALSE);
+        }
+        if (getTrackType().equals(INTERCHANGE)) {
+            e.setAttribute(Xml.ONLY_CARS_WITH_FD, isOnlyCarsWithFinalDestinationEnabled() ? Xml.TRUE : Xml.FALSE);
         }
         if (getAlternateTrack() != null) {
             e.setAttribute(Xml.ALTERNATIVE, getAlternateTrack().getId());

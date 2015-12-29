@@ -2,7 +2,6 @@
 package jmri.jmrix.roco.z21.simulator;
 
 import jmri.jmrix.roco.z21.z21Adapter;
-import jmri.jmrix.roco.z21.z21Constants;
 import jmri.jmrix.roco.z21.z21Message;
 import jmri.jmrix.roco.z21.z21Reply;
 import jmri.jmrix.roco.z21.z21TrafficController;
@@ -84,7 +83,8 @@ public class z21SimulatorAdapter extends z21Adapter implements Runnable {
      try {
          s = new DatagramSocket(COMMUNICATION_UDP_PORT);
      } catch (Exception ex0 ) {
-       log.error("Exception opening socket");
+       log.error("Exception opening socket", ex0);
+       return; // can't continue from this
      }
 
      log.debug("socket created, starting loop");

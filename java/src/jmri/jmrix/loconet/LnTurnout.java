@@ -1,6 +1,7 @@
 // LnTurnout.java
 package jmri.jmrix.loconet;
 
+import jmri.NmraPacket;
 import jmri.implementation.AbstractTurnout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +43,15 @@ public class LnTurnout extends AbstractTurnout implements LocoNetListener {
      */
     private static final long serialVersionUID = -8838048326340434647L;
 
-    public LnTurnout(String prefix, int number, LocoNetInterface controller) {
+    public LnTurnout(String prefix, int number, LocoNetInterface controller) throws IllegalArgumentException {
         // a human-readable turnout number must be specified!
         super(prefix + "T" + number);  // can't use prefix here, as still in construction
         log.debug("new turnout " + number);
+        if (number < NmraPacket.accIdLowLimit || number > NmraPacket.accIdAltHighLimit) {
+            throw new IllegalArgumentException("Turnout value: " + number 
+                    + " not in the range " + NmraPacket.accIdLowLimit + " to " 
+                    + NmraPacket.accIdAltHighLimit);
+        }
 
         this.controller = controller;
 
@@ -167,9 +173,11 @@ public class LnTurnout extends AbstractTurnout implements LocoNetListener {
         
         if (_useOffSwReqAsConfirmation) {
              // Start a timer to resend the command in a couple of seconds in case consistency is not obtained before then
+             noConsistencyTimersRunning++;
              consistencyTimer.schedule(new java.util.TimerTask(){
                 public void run() {
-                    if (!isConsistentState()) {
+                    noConsistencyTimersRunning--;
+                    if (!isConsistentState() && noConsistencyTimersRunning==0) {
                         log.debug("LnTurnout resending command for turnout "+_number);
                         forwardCommandChangeToLayout(getCommandedState());
     }
@@ -364,6 +372,7 @@ public class LnTurnout extends AbstractTurnout implements LocoNetListener {
 
     static final int CONSISTENCYTIMER = 3000; // msec wait for command to take effect
     static java.util.Timer consistencyTimer = new java.util.Timer();
+    int noConsistencyTimersRunning = 0;
     
     static Logger log = LoggerFactory.getLogger(LnTurnout.class.getName());
 

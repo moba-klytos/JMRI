@@ -107,5 +107,7 @@ public class Xml {
     static final String POOL = "pool"; // NOI18N
     static final String MIN_LENGTH = "minLength"; // NOI18N
     static final String IGNORE_USED_PERCENTAGE = "ignoreUsedPercentage"; // NOI18N
+    static final String HOLD_CARS_CUSTOM = "holdCustomLoads"; // NOI18N
+    static final String ONLY_CARS_WITH_FD = "onlyCarWithFD"; // NOI18N
 
 }

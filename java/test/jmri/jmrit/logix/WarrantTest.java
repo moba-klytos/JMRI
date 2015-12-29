@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import jmri.BeanSetting;
-import jmri.DccLocoAddress;
 import jmri.InstanceManager;
 import jmri.JmriException;
 import jmri.Sensor;
@@ -40,7 +39,7 @@ public class WarrantTest extends TestCase {
      * So this will be one large test.
      */
 
-    public void testWarrant() {
+    public void testWarrant() throws Exception {
         _OBlockMgr = InstanceManager.getDefault(OBlockManager.class);
         OBlock bWest = _OBlockMgr.createNewOBlock("OB1", "West");
         OBlock bEast = _OBlockMgr.createNewOBlock("OB2", "East");
@@ -175,9 +174,9 @@ public class WarrantTest extends TestCase {
         List<ThrottleSetting> list = warrant.getThrottleCommands();
         Assert.assertEquals("ThrottleCommands", 7, list.size());
         
-        DccLocoAddress dccAddress = new DccLocoAddress(999, true);
-        Assert.assertNotNull("dccAddress", dccAddress);
-        warrant.setDccAddress(dccAddress);
+//        DccLocoAddress dccAddress = new DccLocoAddress(999, true);
+//        Assert.assertNotNull("dccAddress", dccAddress);
+        warrant.setDccAddress("999(L)");
         msg = warrant.setRoute(0, orders);
         Assert.assertNull("setRoute - "+msg, msg);
         msg =  warrant.checkStartBlock(Warrant.MODE_RUN);
@@ -200,14 +199,18 @@ public class WarrantTest extends TestCase {
         msg = warrant.setRunMode(Warrant.MODE_RUN, null, null, null, false);
         Assert.assertNull("setRunMode - "+msg, msg);
         try {
-            Thread.sleep(300);            
+            jmri.util.JUnitUtil.releaseThread(this);            
             sWest.setState(Sensor.ACTIVE);
-            Thread.sleep(300);            
+            jmri.util.JUnitUtil.releaseThread(this);             
             sSouth.setState(Sensor.ACTIVE);
-            Thread.sleep(300);            
+            jmri.util.JUnitUtil.releaseThread(this);             
         } catch (Exception e) {
             System.out.println(e);            
         }
+
+        // wait for done
+        jmri.util.JUnitUtil.waitFor(()->{return warrant.getThrottle()==null;}, "engineer blocked");
+
         msg = warrant.getRunningMessage();
         Assert.assertEquals("getRunningMessage", "Idle", msg);
     }

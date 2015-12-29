@@ -64,6 +64,7 @@ import jmri.jmrit.display.PositionableJComponent;
 import jmri.jmrit.display.PositionableJPanel;
 import jmri.jmrit.display.PositionableLabel;
 import jmri.jmrit.display.PositionablePopupUtil;
+import jmri.jmrit.display.SensorIcon;
 import jmri.jmrit.display.ToolTip;
 import jmri.jmrit.display.controlPanelEditor.shape.ShapeDrawer;
 import jmri.jmrit.display.palette.ItemPalette;
@@ -99,10 +100,6 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class ControlPanelEditor extends Editor implements DropTargetListener, ClipboardOwner {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = 2767111074938103944L;
     public boolean _debug;
     protected JMenuBar _menuBar;
@@ -167,7 +164,6 @@ public class ControlPanelEditor extends Editor implements DropTargetListener, Cl
 
         setJMenuBar(_menuBar);
         addHelpMenu("package.jmri.jmrit.display.ControlPanelEditor", true);
-        _itemPalette = new ItemPalette(Bundle.getMessage("MenuItemItemPallette"), this);
 
         super.setTargetPanel(null, null);
         super.setTargetPanelSize(300, 300);
@@ -200,11 +196,19 @@ public class ControlPanelEditor extends Editor implements DropTargetListener, Cl
         _menuBar.add(_iconMenu, 0);
         JMenuItem mi = new JMenuItem(Bundle.getMessage("MenuItemItemPallette"));
         mi.addActionListener(new ActionListener() {
+            Editor editor;
+            ActionListener init(Editor ed) {
+                editor = ed;
+                return this;
+            }
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (_itemPalette==null) {                   
+                    _itemPalette = new ItemPalette(Bundle.getMessage("MenuItemItemPallette"), editor);
+                }
                 _itemPalette.setVisible(true);
             }
-        });
+        }.init(this));
         mi.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
         _iconMenu.add(mi);
         _iconMenu.add(new jmri.jmrit.beantable.OBlockTableAction(Bundle.getMessage("MenuItemOBlockTable")));
@@ -473,7 +477,9 @@ public class ControlPanelEditor extends Editor implements DropTargetListener, Cl
             @Override
             public void actionPerformed(ActionEvent event) {
                 changeView("jmri.jmrit.display.panelEditor.PanelEditor");
-                _itemPalette.dispose();
+                if (_itemPalette!=null) {
+                    _itemPalette.dispose();                    
+                }
             }
         });
 
@@ -1695,11 +1701,23 @@ public class ControlPanelEditor extends Editor implements DropTargetListener, Cl
                 popup.addSeparator();
                 popupSet = false;
             }
-            popupSet = p.setTextEditMenu(popup);
             if (p instanceof PositionableLabel) {
                 PositionableLabel pl = (PositionableLabel) p;
+/*                if (pl.isIcon() && "javax.swing.JLabel".equals(pl.getClass().getSuperclass().getName()) ) {
+                    popupSet |= setTextAttributes(pl, popup);       // only for plain icons
+                }   Add backgrounds & text over icons later */
                 if (!pl.isIcon()) {
                     popupSet |= setTextAttributes(pl, popup);
+                    if (p instanceof MemoryIcon){                        
+                        popupSet |= p.setTextEditMenu(popup);                
+                    }
+                } else if (p instanceof SensorIcon) {
+                    popup.add(CoordinateEdit.getTextEditAction(p, "OverlayText"));
+                    if (pl.isText()) {
+                        popupSet |= setTextAttributes(p, popup);                                        
+                    }
+                } else {
+                    popupSet = p.setTextEditMenu(popup);                
                 }
             } else if (p instanceof PositionableJPanel) {
                 popupSet |= setTextAttributes(p, popup);
@@ -1913,7 +1931,6 @@ public class ControlPanelEditor extends Editor implements DropTargetListener, Cl
                 String url = newIcon.getURL();
                 NamedIcon icon = NamedIcon.getIconByName(url);
                 PositionableLabel ni = new PositionableLabel(icon, this);
-                ni.setPopupUtility(null);        // no text
                 // infer a background icon from the size
                 if (icon.getIconHeight() > 500 || icon.getIconWidth() > 600) {
                     ni.setDisplayLevel(BKG);
