@@ -5,8 +5,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * SerialTrafficControllerTest.java
@@ -15,7 +13,6 @@ import org.slf4j.LoggerFactory;
  * jmri.jmrix.ieee802154.serialdriver.SerialTrafficController class
  *
  * @author	Paul Bender
- * @version $Revision$
  */
 public class SerialTrafficControllerTest extends TestCase {
 
@@ -146,7 +143,7 @@ public class SerialTrafficControllerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", SerialTrafficControllerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -167,7 +164,5 @@ public class SerialTrafficControllerTest extends TestCase {
         super.tearDown();
         apps.tests.Log4JFixture.tearDown();
     }
-
-    static Logger log = LoggerFactory.getLogger(SerialTrafficControllerTest.class.getName());
 
 }

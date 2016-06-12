@@ -216,7 +216,7 @@ public class PanelEditor extends Editor implements ItemListener {
         {
             JPanel namep = new JPanel();
             namep.setLayout(new FlowLayout());
-            JButton b = new JButton("Set panel name");
+            JButton b = new JButton(Bundle.getMessage("ButtonSetName"));
             b.addActionListener(new ActionListener() {
                 PanelEditor editor;
 
@@ -1385,5 +1385,5 @@ public class PanelEditor extends Editor implements ItemListener {
      * ***************************************************
      */
     // initialize logging
-    static Logger log = LoggerFactory.getLogger(PanelEditor.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(PanelEditor.class.getName());
 }

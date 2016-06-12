@@ -1,12 +1,11 @@
 // LnTcpDriverAdapter.java
 package jmri.jmrix.dccpp.dccppovertcp;
 
-import jmri.jmrix.dccpp.DCCppPortController;
 import jmri.jmrix.dccpp.DCCppCommandStation;
-import jmri.jmrix.dccpp.DCCppNetworkPortController;
-import jmri.jmrix.dccpp.DCCppSystemConnectionMemo;
 import jmri.jmrix.dccpp.DCCppInitializationManager;
-import jmri.jmrix.dccpp.DCCppPacketizer;
+import jmri.jmrix.dccpp.DCCppNetworkPortController;
+import jmri.jmrix.dccpp.DCCppPortController;
+import jmri.jmrix.dccpp.DCCppSystemConnectionMemo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,6 +76,6 @@ public class DCCppTcpDriverAdapter extends DCCppNetworkPortController implements
 
     public boolean okToSend() { return true; }
 
-    static Logger log = LoggerFactory.getLogger(DCCppTcpDriverAdapter.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DCCppTcpDriverAdapter.class.getName());
 
 }

@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author	Bob Jacobsen
  * @author	Mark Underwood
- * @version $Revision$
  */
 public class DCCppMessageTest extends TestCase {
 
@@ -253,7 +252,7 @@ public class DCCppMessageTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", DCCppMessageTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -273,6 +272,6 @@ public class DCCppMessageTest extends TestCase {
         apps.tests.Log4JFixture.tearDown();
     }
 
-    static Logger log = LoggerFactory.getLogger(DCCppMessageTest.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DCCppMessageTest.class.getName());
 
 }

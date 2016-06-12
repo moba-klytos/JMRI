@@ -1,4 +1,3 @@
-// MonitorPane.java
 package jmri.jmrix.openlcb.swing.monitor;
 
 import jmri.jmrix.can.CanListener;
@@ -175,6 +174,6 @@ public class MonitorPane extends jmri.jmrix.AbstractMonPane implements CanListen
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(MonitorPane.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(MonitorPane.class.getName());
 
 }

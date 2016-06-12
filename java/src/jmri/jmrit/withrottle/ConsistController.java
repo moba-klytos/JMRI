@@ -54,8 +54,8 @@ public class ConsistController extends AbstractController implements ProgListene
 
     /**
      * Allows device to decide how to handle consisting. Just selection or
-     * selection and Make & Break. .size() indicates how many consists are being
-     * sent so the device can wait before displaying them
+     * selection and Make {@literal &} Break. .size() indicates how many
+     * consists are being sent so the device can wait before displaying them
      */
     public void sendConsistListType() {
         if (listeners == null) {
@@ -471,6 +471,6 @@ public class ConsistController extends AbstractController implements ProgListene
         throw new UnsupportedOperationException("Not used.");
     }
 
-    static Logger log = LoggerFactory.getLogger(ConsistController.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(ConsistController.class.getName());
 
 }

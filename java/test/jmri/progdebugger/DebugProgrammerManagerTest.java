@@ -1,4 +1,3 @@
-// DebugProgrammerManagerTest.java
 package jmri.progdebugger;
 
 import jmri.InstanceManager;
@@ -7,14 +6,11 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Test the DebugProgrammerManager class.
  *
  * @author	Bob Jacobsen Copyright 2002
- * @version $Revision$
  */
 public class DebugProgrammerManagerTest extends TestCase {
 
@@ -92,7 +88,7 @@ public class DebugProgrammerManagerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {DebugProgrammerManagerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -101,7 +97,5 @@ public class DebugProgrammerManagerTest extends TestCase {
         TestSuite suite = new TestSuite(DebugProgrammerManagerTest.class);
         return suite;
     }
-
-    static Logger log = LoggerFactory.getLogger(DebugProgrammerManagerTest.class.getName());
 
 }

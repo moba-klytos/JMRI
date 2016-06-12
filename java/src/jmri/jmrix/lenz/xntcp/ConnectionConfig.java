@@ -7,8 +7,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import jmri.jmrix.JmrixConfigPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Handle configuring an XPressNet layout connection via a XnTcp adapter.
@@ -27,8 +25,6 @@ import org.slf4j.LoggerFactory;
 public class ConnectionConfig extends jmri.jmrix.AbstractNetworkConnectionConfig {
 
     private boolean manualInput = false;
-    @SuppressWarnings("unused")
-    private String oldName;
 
     /**
      * Ctor for an object being created during load process; Swing init is
@@ -45,7 +41,6 @@ public class ConnectionConfig extends jmri.jmrix.AbstractNetworkConnectionConfig
         if (!t.equals("0")) {
             portField = new JTextField(t);
         }
-        oldName = adapter.getHostName();
     }
 
     /**
@@ -129,7 +124,7 @@ public class ConnectionConfig extends jmri.jmrix.AbstractNetworkConnectionConfig
         adapter.setPort(portField.getText());
     }
 
-    String manufacturerName = jmri.jmrix.DCCManufacturerList.LENZ;
+    String manufacturerName = jmri.jmrix.lenz.LenzConnectionTypeList.LENZ;
 
     @Override
     public String getManufacturer() {
@@ -144,7 +139,5 @@ public class ConnectionConfig extends jmri.jmrix.AbstractNetworkConnectionConfig
     public boolean isHostNameAdvanced() {
         return true;
     }
-
-    static Logger log = LoggerFactory.getLogger(ConnectionConfig.class.getName());
 
 }

@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
  * Handle XML persistance of CreateButtonModel objects.
  *
  * @author Bob Jacobsen Copyright: Copyright (c) 2003
- * @version $Revision$
- * @see apps.CreateButtonPanel
+ * @see apps.startup.CreateButtonModelFactory
  */
 public class CreateButtonModelXml extends jmri.configurexml.AbstractXmlAdapter {
 
@@ -55,7 +54,7 @@ public class CreateButtonModelXml extends jmri.configurexml.AbstractXmlAdapter {
     public boolean load(Element shared, Element perNode) {
         boolean result = true;
         String className = shared.getAttribute("name").getValue();
-        log.debug("Invoke Action from" + className);
+        log.debug("Invoke Action from {}", className);
         try {
             Action action = (Action) Class.forName(className).newInstance();
             if (Apps.buttonSpace() != null) {
@@ -65,25 +64,22 @@ public class CreateButtonModelXml extends jmri.configurexml.AbstractXmlAdapter {
                 JButton b = new JButton(action);
                 Apps3.buttonSpace().add(b);
             }
-            //} else if (DecoderPro3.get)
         } catch (ClassNotFoundException ex1) {
-            log.error("Could not find specified class: " + className);
+            log.error("Could not find specified class: {}", className);
             result = false;
         } catch (IllegalAccessException ex2) {
-            log.error("Unexpected access exception for class: " + className, ex2);
+            log.error("Unexpected access exception for class: {}", className, ex2);
             result = false;
         } catch (InstantiationException ex3) {
-            log.error("Could not instantiate specified class: " + className, ex3);
+            log.error("Could not instantiate specified class: {}", className, ex3);
             result = false;
         } catch (Exception ex4) {
-            log.error("Exception while performing startup action for class: " + className, ex4);
+            log.error("Exception while performing startup action for class: {}", className, ex4);
             result = false;
         }
         CreateButtonModel m = new CreateButtonModel();
         m.setClassName(className);
-        CreateButtonModel.rememberObject(m);
-        InstanceManager.getDefault(StartupActionsManager.class).addModel(m);
-        InstanceManager.configureManagerInstance().registerPref(new apps.CreateButtonPanel());
+        InstanceManager.getDefault(StartupActionsManager.class).addAction(m);
         return result;
     }
 
@@ -97,6 +93,6 @@ public class CreateButtonModelXml extends jmri.configurexml.AbstractXmlAdapter {
         log.error("Unexpected call of load(Element, Object)");
     }
     // initialize logging
-    static Logger log = LoggerFactory.getLogger(CreateButtonModelXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(CreateButtonModelXml.class.getName());
 
 }

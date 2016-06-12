@@ -1,4 +1,3 @@
-/* DebugProgrammerManager.java */
 package jmri.progdebugger;
 
 import java.util.Hashtable;
@@ -69,8 +68,5 @@ public class DebugProgrammerManager extends DefaultProgrammerManager {
         return true;
     }
 
-    static Logger log = LoggerFactory.getLogger(DebugProgrammerManager.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DebugProgrammerManager.class.getName());
 }
-
-
-/* @(#)DefaultProgrammerManager.java */

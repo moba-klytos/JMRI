@@ -87,6 +87,7 @@ class IgnoreUsedTrackFrame extends OperationsFrame {
         setVisible(true);
     }
 
+    @Override
     public void buttonActionPerformed(java.awt.event.ActionEvent ae) {
         if (ae.getSource() == saveButton) {
             // save percentage selected
@@ -111,5 +112,5 @@ class IgnoreUsedTrackFrame extends OperationsFrame {
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(IgnoreUsedTrackFrame.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(IgnoreUsedTrackFrame.class.getName());
 }

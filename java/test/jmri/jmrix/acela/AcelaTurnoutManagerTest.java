@@ -55,7 +55,7 @@ public class AcelaTurnoutManagerTest extends jmri.managers.AbstractTurnoutMgrTes
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", AcelaTurnoutManagerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -111,6 +111,6 @@ public class AcelaTurnoutManagerTest extends jmri.managers.AbstractTurnoutMgrTes
         apps.tests.Log4JFixture.tearDown();
     }
 
-    static Logger log = LoggerFactory.getLogger(AcelaTurnoutManagerTest.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(AcelaTurnoutManagerTest.class.getName());
 
 }

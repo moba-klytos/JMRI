@@ -113,6 +113,7 @@ public class ImportRollingStock extends Thread {
 
     public static class ImportFilter extends javax.swing.filechooser.FileFilter {
 
+        @Override
         public boolean accept(File f) {
             if (f.isDirectory()) {
                 return true;
@@ -130,10 +131,11 @@ public class ImportRollingStock extends Thread {
             }
         }
 
+        @Override
         public String getDescription() {
             return Bundle.getMessage("Text&CSV");
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(ImportRollingStock.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(ImportRollingStock.class.getName());
 }

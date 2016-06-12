@@ -1,4 +1,3 @@
-// JTableUtil.java
 package jmri.util;
 
 import javax.swing.JTable;
@@ -19,10 +18,11 @@ import org.slf4j.LoggerFactory;
  * 1.1.8 system, or at least try to fake it.
  *
  * @author Bob Jacobsen Copyright 2003
- * @version $Revision$
  */
+@Deprecated
 public class JTableUtil {
 
+    @Deprecated
     static public JTable sortableDataModel(TableModel dataModel) {
 
         TableSorter sorter;
@@ -34,11 +34,6 @@ public class JTableUtil {
         }
 
         JTable dataTable = new JTable(sorter) {
-            /**
-             *
-             */
-            private static final long serialVersionUID = 8292955405169068708L;
-
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
                 boolean res = super.editCellAt(row, column, e);
                 java.awt.Component c = this.getEditorComponent();
@@ -58,5 +53,5 @@ public class JTableUtil {
         return dataTable;
     }
 
-    static final Logger log = LoggerFactory.getLogger(JTableUtil.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(JTableUtil.class.getName());
 }

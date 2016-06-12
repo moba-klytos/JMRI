@@ -1,7 +1,7 @@
-// TabbedPreferences.java
 package apps.gui3;
 
 import apps.AppConfigBase;
+import apps.ConfigBundle;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.BorderLayout;
@@ -29,6 +29,7 @@ import javax.swing.event.ListSelectionEvent;
 import jmri.swing.PreferencesPanel;
 import jmri.swing.PreferencesSubPanel;
 import jmri.util.FileUtil;
+import jmri.util.ThreadingUtil;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,10 +46,16 @@ import org.slf4j.LoggerFactory;
  *<p>
  * Other Preferences Panels will need to be manually added to this file in a
  * manner similar to the WiThrottlePrefsPanel.
+ *<p>
+ * State is maintained as a bound property with name INITIALIZATION (see value below)
+ *<p>
+ * JMRI apps (generally) create one object of this type on the main thread
+ * as part of initialization, then create a separate "initialize preferences"
+ * thread to handle the init() call and adding all the tabs. 
+ * Finally, the result is displayed on the Swing thread.
  *
  * @author Bob Jacobsen Copyright 2010
  * @author Randall Wood 2012
- * @version $Revision$
  */
 public class TabbedPreferences extends AppConfigBase {
 
@@ -59,8 +66,9 @@ public class TabbedPreferences extends AppConfigBase {
 
     @Override
     public String getTitle() {
-        return rb.getString("TitlePreferences");
+        return Bundle.getMessage("TitlePreferences");
     }
+    // Preferences Window Title
 
     @Override
     public boolean isMultipleInstances() {
@@ -76,8 +84,7 @@ public class TabbedPreferences extends AppConfigBase {
     JList<String> list;
     JButton save;
     JScrollPane listScroller;
-    int initialisationState = 0x00;
-    private static final long serialVersionUID = -6266891995866315885L;
+    private int initialisationState = 0x00;
 
     public static final int UNINITIALISED = 0x00;
     public static final int INITIALISING = 0x01;
@@ -118,6 +125,13 @@ public class TabbedPreferences extends AppConfigBase {
                 .getString("MenuWiThrottle")));
     }
 
+    /**
+     * Initialize, including loading classes referenced in the PreferencesPanel property of the apps.AppsStructureBundle bundle.
+     *<p>
+     * Keeps a current state to prevent doing its work twice.
+     *
+     * @return The current state, which should be INITIALISED if all is well.
+     */
     @SuppressWarnings("rawtypes")
     public synchronized int init() {
         if (initialisationState == INITIALISED) {
@@ -141,7 +155,7 @@ public class TabbedPreferences extends AppConfigBase {
         detailpanel.setBorder(BorderFactory.createEmptyBorder(6, 3, 6, 6));
 
         save = new JButton(
-                rb.getString("ButtonSave"),
+                ConfigBundle.getMessage("ButtonSave"),
                 new ImageIcon(FileUtil.findURL("program:resources/icons/misc/gui3/SaveIcon.png", FileUtil.Location.INSTALLED)));
         save.addActionListener((ActionEvent e) -> {
             savePressed(invokeSaveOptions());
@@ -187,13 +201,13 @@ public class TabbedPreferences extends AppConfigBase {
         return initialisationState;
     }
 
-    private void setInitalisationState(int state) {
+    public synchronized void setInitalisationState(int state) { // currently only used in init(), but synchronized in case added elsewhere later
         int old = this.initialisationState;
         this.initialisationState = state;
         this.firePropertyChange(INITIALIZATION, old, state);
     }
 
-    public int getInitialisationState() {
+    public synchronized int getInitialisationState() { // not an atomic read, because of time between assignment and propertyChange notification in set
         return this.initialisationState;
     }
 
@@ -271,7 +285,7 @@ public class TabbedPreferences extends AppConfigBase {
             preferencesArray.add(itemBeingAdded);
             // As this is a new item in the selection list, we need to update
             // the JList.
-            if (initialisationState == INITIALISED) {
+            if (getInitialisationState() == INITIALISED) {
                 updateJList();
             }
         }
@@ -283,6 +297,7 @@ public class TabbedPreferences extends AppConfigBase {
 
     /* Method allows for the preference to goto a specific list item */
     public void gotoPreferenceItem(String selection, String subCategory) {
+
         selection(selection);
         list.setSelectedIndex(getCategoryIndexFromString(selection));
         if (subCategory == null || subCategory.isEmpty()) {
@@ -359,10 +374,6 @@ public class TabbedPreferences extends AppConfigBase {
 
     static class PreferencesCatItems implements java.io.Serializable {
 
-        /**
-         *
-         */
-        private static final long serialVersionUID = 5928584215129175250L;
         /*
          * This contains details of all list managedPreferences to be displayed in the
          * preferences
@@ -460,10 +471,6 @@ public class TabbedPreferences extends AppConfigBase {
 
         static class TabDetails implements java.io.Serializable {
 
-            /**
-             *
-             */
-            private static final long serialVersionUID = -7077354592762639878L;
             /* This contains all the JPanels that make up a preferences menus */
             JComponent tabItem;
             String tabTooltip;
@@ -517,6 +524,6 @@ public class TabbedPreferences extends AppConfigBase {
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(TabbedPreferences.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(TabbedPreferences.class.getName());
 
 }

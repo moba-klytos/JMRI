@@ -35,21 +35,24 @@ public class CarColors extends RollingStockAttribute {
             // create and load
             _instance = new CarColors();
         }
-        if (Control.showInstance) {
+        if (Control.SHOW_INSTANCE) {
             log.debug("CarColors returns instance {}", _instance);
         }
         return _instance;
     }
 
+    @Override
     protected String getDefaultNames() {
         return COLORS;
     }
 
+    @Override
     public void addName(String color) {
         super.addName(color);
         setDirtyAndFirePropertyChange(CARCOLORS_CHANGED_PROPERTY, null, color);
     }
 
+    @Override
     public void deleteName(String color) {
         super.deleteName(color);
         setDirtyAndFirePropertyChange(CARCOLORS_CHANGED_PROPERTY, color, null);
@@ -81,6 +84,6 @@ public class CarColors extends RollingStockAttribute {
         super.firePropertyChange(p, old, n);
     }
 
-    static Logger log = LoggerFactory.getLogger(CarColors.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(CarColors.class.getName());
 
 }

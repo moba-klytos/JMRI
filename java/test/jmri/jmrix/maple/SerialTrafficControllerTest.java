@@ -1,4 +1,3 @@
-// SerialTrafficControllerTest.java
 package jmri.jmrix.maple;
 
 import java.io.DataInputStream;
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory;
  * Description:	JUnit tests for the SerialTrafficController class
  *
  * @author	Bob Jacobsen Copyright 2006
- * @version $Revision$
  */
 public class SerialTrafficControllerTest extends TestCase {
 
@@ -146,7 +144,7 @@ public class SerialTrafficControllerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", SerialTrafficControllerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -164,6 +162,6 @@ public class SerialTrafficControllerTest extends TestCase {
         apps.tests.Log4JFixture.tearDown();
     }
 
-    static Logger log = LoggerFactory.getLogger(SerialTrafficControllerTest.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SerialTrafficControllerTest.class.getName());
 
 }

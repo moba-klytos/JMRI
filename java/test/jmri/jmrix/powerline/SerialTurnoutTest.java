@@ -1,12 +1,9 @@
-// SerialTurnoutTest.java
 package jmri.jmrix.powerline;
 
 import jmri.implementation.AbstractTurnoutTest;
 import jmri.jmrix.powerline.simulator.SpecificSystemConnectionMemo;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the jmri.jmrix.powerline.SerialTurnout class
@@ -53,7 +50,7 @@ public class SerialTurnoutTest extends AbstractTurnoutTest {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {SerialTurnoutTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -61,7 +58,5 @@ public class SerialTurnoutTest extends AbstractTurnoutTest {
         TestSuite suite = new TestSuite(SerialTurnoutTest.class);
         return suite;
     }
-
-    static Logger log = LoggerFactory.getLogger(SerialTurnoutTest.class.getName());
 
 }

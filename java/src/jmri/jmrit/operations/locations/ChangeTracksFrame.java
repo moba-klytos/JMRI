@@ -90,6 +90,7 @@ class ChangeTracksFrame extends OperationsFrame {
         initMinimumSize(new Dimension(Control.panelWidth400, Control.panelHeight200));
     }
 
+    @Override
     public void buttonActionPerformed(java.awt.event.ActionEvent ae) {
         if (ae.getSource() == saveButton) {
             // check to see if button has changed
@@ -121,5 +122,5 @@ class ChangeTracksFrame extends OperationsFrame {
         dispose();
     }
 
-    static Logger log = LoggerFactory.getLogger(ChangeTracksFrame.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(ChangeTracksFrame.class.getName());
 }

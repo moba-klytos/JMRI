@@ -126,15 +126,17 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     private boolean _TrainsFromUser = false;
     private boolean _AutoAllocate = false;
     private boolean _AutoTurnouts = false;
+    private boolean _TrustKnownTurnouts = false;
     private boolean _ShortActiveTrainNames = false;
     private boolean _ShortNameInBlock = true;
     private boolean _RosterEntryInBlock = false;
     private boolean _ExtraColorForAllocated = true;
     private boolean _NameInAllocatedBlock = false;
-    private boolean _AlwaysSet = true;
     private boolean _UseScaleMeters = false;  // "true" if scale meters, "false" for scale feet
     private int _LayoutScale = Scale.HO;
     private boolean _SupportVSDecoder = false;
+    private int _MinThrottleInterval = 100; //default time (in ms) between consecutive throttle commands
+    private int _FullRampTime = 10000; //default time (in ms) for RAMP_FAST to go from 0% to 100%
 
     // operational instance variables
     private ArrayList<ActiveTrain> activeTrainsList = new ArrayList<ActiveTrain>();  // list of ActiveTrain objects
@@ -614,8 +616,8 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     public String getSectionName(Section sec) {
         String s = sec.getSystemName();
         String u = sec.getUserName();
-        if ((u != null) && (!u.equals(""))) {
-            return (s + "( " + u + " )");
+        if ((u != null) && (!u.equals("") && (!u.equals(s)))) {
+            return (s + "(" + u + ")");
         }
         return s;
     }
@@ -1134,8 +1136,13 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
         }
         // remove any allocated sections
         for (int k = allocatedSections.size(); k > 0; k--) {
-            if (at == allocatedSections.get(k - 1).getActiveTrain()) {
-                releaseAllocatedSection(allocatedSections.get(k - 1), true);
+            try {
+                if (at == allocatedSections.get(k - 1).getActiveTrain()) {
+                    releaseAllocatedSection(allocatedSections.get(k - 1), true);
+                }
+            } catch (Exception e) {
+                log.warn("releaseAllocatedSection failed - maybe the AllocatedSection was removed due to a terminating train??",e.toString());
+                continue;
             }
         }
         // remove from restarting trains list, if present
@@ -1611,7 +1618,7 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
         if (_AutoTurnouts || at.getAutoRun()) {
             // automatically set the turnouts for this section before allocation
             turnoutsOK = autoTurnouts.setTurnoutsInSection(s, sSeqNum, nextSection,
-                    at, _LE, _AlwaysSet, prevSection);
+                    at, _LE, _TrustKnownTurnouts, prevSection);
         } else {
             // check that turnouts are correctly set before allowing allocation to proceed
             turnoutsOK = autoTurnouts.checkTurnoutsInSection(s, sSeqNum, nextSection,
@@ -1747,8 +1754,8 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
             Section s = sList.get(i);
             String txt = s.getSystemName();
             String user = s.getUserName();
-            if ((user != null) && (!user.equals(""))) {
-                txt = txt + "( " + user + " )";
+            if ((user != null) && (!user.equals("")) && (!user.equals(txt))) {
+                txt = txt + "(" + user + ")";
             }
             choices[i] = txt;
         }
@@ -1793,70 +1800,75 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
             // Extra allocated sections are not automatically released (allocation number = -1).
             boolean foundOne = true;
             while ((allocatedSections.size() > 0) && foundOne) {
-                foundOne = false;
-                AllocatedSection as = null;
-                for (int i = 0; (i < allocatedSections.size()) && !foundOne; i++) {
-                    as = allocatedSections.get(i);
-                    if (as.getExited() && (as.getSection().getOccupancy() != Section.OCCUPIED)
-                            && (as.getAllocationNumber() != -1)) {
-                        // possible candidate for deallocation - check order
-                        foundOne = true;
-                        for (int j = 0; (j < allocatedSections.size()) && foundOne; j++) {
-                            if (j != i) {
-                                AllocatedSection asx = allocatedSections.get(j);
-                                if ((asx.getActiveTrain() == as.getActiveTrain())
-                                        && (asx.getAllocationNumber() != -1)
-                                        && (asx.getAllocationNumber() < as.getAllocationNumber())) {
-                                    foundOne = false;
-                                }
-                            }
-                        }
-                        if (foundOne) {
-                            // check if the next section is allocated to the same train and has been entered
-                            ActiveTrain at = as.getActiveTrain();
-                            Section ns = as.getNextSection();
-                            AllocatedSection nas = null;
-                            for (int k = 0; (k < allocatedSections.size()) && (nas == null); k++) {
-                                if (allocatedSections.get(k).getSection() == ns) {
-                                    nas = allocatedSections.get(k);
-                                }
-                            }
-                            if ((nas == null) || (at.getStatus() == ActiveTrain.WORKING)
-                                    || (at.getStatus() == ActiveTrain.STOPPED)
-                                    || (at.getStatus() == ActiveTrain.READY)
-                                    || (at.getMode() == ActiveTrain.MANUAL)) {
-                                // do not autorelease allocated sections from an Active Train that is 
-                                //    STOPPED, READY, or WORKING, or is in MANUAL mode.
-                                foundOne = false;
-                                //But do so if the active train has reached its restart point
-                                if (at.reachedRestartPoint()) {
-                                    foundOne = true;
-                                }
-                            } else {
-                                if ((nas.getActiveTrain() != as.getActiveTrain()) || (!nas.getEntered())) {
-                                    foundOne = false;
+                try {
+                    foundOne = false;
+                    AllocatedSection as = null;
+                    for (int i = 0; (i < allocatedSections.size()) && !foundOne; i++) {
+                        as = allocatedSections.get(i);
+                        if (as.getExited() && (as.getSection().getOccupancy() != Section.OCCUPIED)
+                                && (as.getAllocationNumber() != -1)) {
+                            // possible candidate for deallocation - check order
+                            foundOne = true;
+                            for (int j = 0; (j < allocatedSections.size()) && foundOne; j++) {
+                                if (j != i) {
+                                    AllocatedSection asx = allocatedSections.get(j);
+                                    if ((asx.getActiveTrain() == as.getActiveTrain())
+                                            && (asx.getAllocationNumber() != -1)
+                                            && (asx.getAllocationNumber() < as.getAllocationNumber())) {
+                                        foundOne = false;
+                                    }
                                 }
                             }
                             if (foundOne) {
-                                // have section to release - delay before release
-                                try {
-                                    Thread.sleep(500);
-                                } catch (InterruptedException e) {
-                                    // ignore this exception
+                                // check if the next section is allocated to the same train and has been entered
+                                ActiveTrain at = as.getActiveTrain();
+                                Section ns = as.getNextSection();
+                                AllocatedSection nas = null;
+                                for (int k = 0; (k < allocatedSections.size()) && (nas == null); k++) {
+                                    if (allocatedSections.get(k).getSection() == ns) {
+                                        nas = allocatedSections.get(k);
+                                    }
                                 }
-                                // if section is still allocated, release it
-                                foundOne = false;
-                                for (int m = 0; m < allocatedSections.size(); m++) {
-                                    if ((allocatedSections.get(m) == as) && (as.getActiveTrain() == at)) {
+                                if ((nas == null) || (at.getStatus() == ActiveTrain.WORKING)
+                                        || (at.getStatus() == ActiveTrain.STOPPED)
+                                        || (at.getStatus() == ActiveTrain.READY)
+                                        || (at.getMode() == ActiveTrain.MANUAL)) {
+                                    // do not autorelease allocated sections from an Active Train that is 
+                                    //    STOPPED, READY, or WORKING, or is in MANUAL mode.
+                                    foundOne = false;
+                                    //But do so if the active train has reached its restart point
+                                    if (at.reachedRestartPoint()) {
                                         foundOne = true;
+                                    }
+                                } else {
+                                    if ((nas.getActiveTrain() != as.getActiveTrain()) || (!nas.getEntered())) {
+                                        foundOne = false;
                                     }
                                 }
                                 if (foundOne) {
-                                    releaseAllocatedSection(as, false);
+                                    // have section to release - delay before release
+                                    try {
+                                        Thread.sleep(500);
+                                    } catch (InterruptedException e) {
+                                        // ignore this exception
+                                    }
+                                    // if section is still allocated, release it
+                                    foundOne = false;
+                                    for (int m = 0; m < allocatedSections.size(); m++) {
+                                        if ((allocatedSections.get(m) == as) && (as.getActiveTrain() == at)) {
+                                            foundOne = true;
+                                        }
+                                    }
+                                    if (foundOne) {
+                                        releaseAllocatedSection(as, false);
+                                    }
                                 }
                             }
                         }
                     }
+                } catch (Exception e) {
+                    log.warn("checkAutoRelease failed  - maybe the AllocatedSection was removed due to a terminating train?? "+e.toString());
+                    continue;
                 }
             }
         }
@@ -2039,15 +2051,34 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     protected boolean getAutoTurnouts() {
         return _AutoTurnouts;
     }
-
     protected void setAutoTurnouts(boolean set) {
         _AutoTurnouts = set;
+    }
+
+    protected boolean getTrustKnownTurnouts() {
+        return _TrustKnownTurnouts;
+    }
+    protected void setTrustKnownTurnouts(boolean set) {
+        _TrustKnownTurnouts = set;
+    }
+
+    protected int getMinThrottleInterval() {
+        return _MinThrottleInterval;
+    }
+    protected void setMinThrottleInterval(int set) {
+        _MinThrottleInterval = set;
+    }
+
+    protected int getFullRampTime() {
+        return _FullRampTime;
+    }
+    protected void setFullRampTime(int set) {
+        _FullRampTime = set;
     }
 
     protected boolean getHasOccupancyDetection() {
         return _HasOccupancyDetection;
     }
-
     protected void setHasOccupancyDetection(boolean set) {
         _HasOccupancyDetection = set;
     }
@@ -2055,7 +2086,6 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     protected boolean getUseScaleMeters() {
         return _UseScaleMeters;
     }
-
     protected void setUseScaleMeters(boolean set) {
         _UseScaleMeters = set;
     }
@@ -2063,19 +2093,19 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     protected boolean getShortActiveTrainNames() {
         return _ShortActiveTrainNames;
     }
-
     protected void setShortActiveTrainNames(boolean set) {
         _ShortActiveTrainNames = set;
         if (allocatedSectionTableModel != null) {
             allocatedSectionTableModel.fireTableDataChanged();
         }
-        allocationRequestTableModel.fireTableDataChanged();
+        if (allocationRequestTableModel != null) {
+            allocationRequestTableModel.fireTableDataChanged();
+        }
     }
 
     protected boolean getShortNameInBlock() {
         return _ShortNameInBlock;
     }
-
     protected void setShortNameInBlock(boolean set) {
         _ShortNameInBlock = set;
     }
@@ -2083,7 +2113,6 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     protected boolean getRosterEntryInBlock() {
         return _RosterEntryInBlock;
     }
-
     protected void setRosterEntryInBlock(boolean set) {
         _RosterEntryInBlock = set;
     }
@@ -2091,7 +2120,6 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     protected boolean getExtraColorForAllocated() {
         return _ExtraColorForAllocated;
     }
-
     protected void setExtraColorForAllocated(boolean set) {
         _ExtraColorForAllocated = set;
     }
@@ -2099,7 +2127,6 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     protected boolean getNameInAllocatedBlock() {
         return _NameInAllocatedBlock;
     }
-
     protected void setNameInAllocatedBlock(boolean set) {
         _NameInAllocatedBlock = set;
     }
@@ -2107,7 +2134,6 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     protected int getScale() {
         return _LayoutScale;
     }
-
     protected void setScale(int sc) {
         _LayoutScale = sc;
     }
@@ -2115,7 +2141,6 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     public ArrayList<ActiveTrain> getActiveTrainsList() {
         return activeTrainsList;
     }
-
     protected ArrayList<AllocatedSection> getAllocatedSectionsList() {
         return allocatedSections;
     }
@@ -2136,7 +2161,6 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
     protected boolean getSupportVSDecoder() {
         return _SupportVSDecoder;
     }
-
     protected void setSupportVSDecoder(boolean set) {
         _SupportVSDecoder = set;
     }
@@ -2622,6 +2646,6 @@ public class DispatcherFrame extends jmri.util.JmriJFrame {
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(DispatcherFrame.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DispatcherFrame.class.getName());
 
 }

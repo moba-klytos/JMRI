@@ -1,19 +1,21 @@
-// XNetPortControllerScaffold.java
 package jmri.jmrix.lenz;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of XNetPortController that eases
  * checking whether data was forwarded or not
  * 
  * @author	Bob Jacobsen Copyright (C) 2006, 2015
- * @version $Revision$
  */
 class XNetPortControllerScaffold extends XNetSimulatorPortController {
+
+    private final static Logger log = LoggerFactory.getLogger(XNetPortControllerScaffold.class);
 
     public java.util.Vector<String> getPortNames() {
         return null;

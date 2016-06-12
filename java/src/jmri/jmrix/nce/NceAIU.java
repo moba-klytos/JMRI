@@ -86,8 +86,6 @@ public class NceAIU {
     /**
      * The numbers here are 0 to 15, not 1 to 16
      *
-     * @param s
-     * @param i
      */
     public void registerSensor(Sensor s, int i) {
         sensorArray[i] = s;
@@ -103,7 +101,7 @@ public class NceAIU {
         return sensorArray[index];
     }
 
-    static Logger log = LoggerFactory.getLogger(NceAIU.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(NceAIU.class.getName());
 }
 
 /* @(#)NceAIU.java */

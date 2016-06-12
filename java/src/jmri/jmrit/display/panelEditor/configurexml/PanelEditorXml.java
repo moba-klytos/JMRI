@@ -92,7 +92,6 @@ public class PanelEditorXml extends AbstractXmlAdapter {
      * JFrame
      *
      * @param shared Top level Element to unpack.
-     * @param perNode
      * @return true if successful
      */
     @Override
@@ -238,6 +237,6 @@ public class PanelEditorXml extends AbstractXmlAdapter {
         return jmri.Manager.PANELFILES;
     }
 
-    static Logger log = LoggerFactory.getLogger(PanelEditorXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(PanelEditorXml.class.getName());
 
 }

@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Bob Jacobsen Copyright: Copyright (c) 2003
  * @author Ken Cameron Copyright: Copyright (c) 2014
- * @version $Revision$
- * @see apps.PerformScriptPanel
+ * @see apps.startup.PerformScriptModelFactory
  */
 public class PerformScriptModelXml extends jmri.configurexml.AbstractXmlAdapter {
 
@@ -64,9 +63,7 @@ public class PerformScriptModelXml extends jmri.configurexml.AbstractXmlAdapter 
         // leave an updated object around
         PerformScriptModel m = new PerformScriptModel();
         m.setFileName(fileName);
-        PerformScriptModel.rememberObject(m);
-        InstanceManager.getDefault(StartupActionsManager.class).addModel(m);
-        InstanceManager.configureManagerInstance().registerPref(new apps.PerformScriptPanel());
+        InstanceManager.getDefault(StartupActionsManager.class).addAction(m);
         return result;
     }
 
@@ -80,6 +77,6 @@ public class PerformScriptModelXml extends jmri.configurexml.AbstractXmlAdapter 
         log.error("Unexpected call of load(Element, Object)");
     }
     // initialize logging
-    static Logger log = LoggerFactory.getLogger(PerformScriptModelXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(PerformScriptModelXml.class.getName());
 
 }

@@ -1,4 +1,3 @@
-// QuantumCvMgrImporter.java
 package jmri.jmrit.symbolicprog;
 
 import java.io.BufferedReader;
@@ -28,22 +27,21 @@ import org.slf4j.LoggerFactory;
  * <P>
  * @author	Alex Shepherd Copyright (C) 2003
  * @author	Dave Heap Copyright (C) 2015
- * @version	$Revision: 24747 $
  */
 public class QuantumCvMgrImporter {
 
-    static Logger log = LoggerFactory.getLogger(QuantumCvMgrImporter.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(QuantumCvMgrImporter.class.getName());
     private static final String SEARCH_STRING = "^CV([0-9.]+)=([0-9.]+)\\s*(//)?\\s*(.*)$";
 
     public QuantumCvMgrImporter(File file, CvTableModel cvModel) throws IOException {
-        try {
+        try (
+                FileReader fileReader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+            ){
             CvValue cvObject;
             String line = null;
             String name = null;
             int value = 0;
-
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             while ((line = bufferedReader.readLine()) != null) {
                 log.debug("Line='"+line+"'");

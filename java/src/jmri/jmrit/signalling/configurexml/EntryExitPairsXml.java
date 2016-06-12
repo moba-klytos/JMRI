@@ -141,8 +141,6 @@ public class EntryExitPairsXml extends AbstractXmlAdapter {
      * pairs
      *
      * @param shared Top level Element to unpack.
-     * @param perNode
-     * @return 
      */
     @Override
     public boolean load(Element shared, Element perNode) {
@@ -321,5 +319,5 @@ public class EntryExitPairsXml extends AbstractXmlAdapter {
         return jmri.InstanceManager.getDefault(jmri.jmrit.signalling.EntryExitPairs.class).getXMLOrder();
     }
 
-    static Logger log = LoggerFactory.getLogger(EntryExitPairsXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(EntryExitPairsXml.class.getName());
 }

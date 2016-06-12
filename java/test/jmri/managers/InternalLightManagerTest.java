@@ -67,7 +67,7 @@ public class InternalLightManagerTest extends jmri.managers.AbstractLightMgrTest
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", InternalLightManagerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -89,6 +89,6 @@ public class InternalLightManagerTest extends jmri.managers.AbstractLightMgrTest
         apps.tests.Log4JFixture.tearDown();
     }
 
-    static Logger log = LoggerFactory.getLogger(InternalLightManagerTest.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(InternalLightManagerTest.class.getName());
 
 }

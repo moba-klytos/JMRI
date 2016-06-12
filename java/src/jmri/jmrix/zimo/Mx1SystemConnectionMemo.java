@@ -4,8 +4,6 @@ package jmri.jmrix.zimo;
 import java.util.ResourceBundle;
 import jmri.InstanceManager;
 import jmri.ProgrammerManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Lightweight class to denote that a system is active, and provide general
@@ -150,7 +148,7 @@ public class Mx1SystemConnectionMemo extends jmri.jmrix.SystemConnectionMemo {
                 getProgrammerManager());
 
         powerManager = new jmri.jmrix.zimo.Mx1PowerManager(this);
-        jmri.InstanceManager.setPowerManager(powerManager);
+        jmri.InstanceManager.store(powerManager, jmri.PowerManager.class);
 
         throttleManager = new jmri.jmrix.zimo.Mx1ThrottleManager(this);
         InstanceManager.setThrottleManager(throttleManager);
@@ -220,8 +218,6 @@ public class Mx1SystemConnectionMemo extends jmri.jmrix.SystemConnectionMemo {
         }
         super.dispose();
     }
-
-    static Logger log = LoggerFactory.getLogger(Mx1SystemConnectionMemo.class.getName());
 }
 
 

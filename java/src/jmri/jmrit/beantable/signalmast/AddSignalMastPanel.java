@@ -1,4 +1,3 @@
-// AddSignalMastPanel.java
 package jmri.jmrit.beantable.signalmast;
 
 import java.awt.Color;
@@ -15,7 +14,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -53,11 +51,9 @@ import org.slf4j.LoggerFactory;
  * JPanel to create a new SignalMast
  *
  * @author	Bob Jacobsen Copyright (C) 2009, 2010
- * @version $Revision$
  */
 public class AddSignalMastPanel extends JPanel {
 
-    private static final long serialVersionUID = 2027577182244302143L;
     jmri.UserPreferencesManager prefs = jmri.InstanceManager.getDefault(jmri.UserPreferencesManager.class);
     String systemSelectionCombo = this.getClass().getName() + ".SignallingSystemSelected";
     String mastSelectionCombo = this.getClass().getName() + ".SignallingMastSelected";
@@ -71,29 +67,29 @@ public class AddSignalMastPanel extends JPanel {
     JScrollPane turnoutMastScroll;
     JScrollPane dccMastScroll;
     JPanel dccMastPanel = new JPanel();
-    JLabel systemPrefixBoxLabel = new JLabel(rb.getString("DCCSystem") + ":");
+    JLabel systemPrefixBoxLabel = new JLabel(Bundle.getMessage("DCCSystem") + ":");
     JComboBox<String> systemPrefixBox = new JComboBox<String>();
-    JLabel dccAspectAddressLabel = new JLabel(rb.getString("DCCMastAddress"));
+    JLabel dccAspectAddressLabel = new JLabel(Bundle.getMessage("DCCMastAddress"));
     JTextField dccAspectAddressField = new JTextField(5);
     JCheckBox allowUnLit = new JCheckBox();
     JPanel unLitSettingsPanel = new JPanel();
 
-    JButton cancel = new JButton(rb.getString("ButtonCancel"));
+    JButton cancel = new JButton(Bundle.getMessage("ButtonCancel"));
 
     SignalMast mast = null;
 
     public AddSignalMastPanel() {
 
         signalMastDriver = new JComboBox<String>(new String[]{
-            rb.getString("HeadCtlMast"), rb.getString("TurnCtlMast"), rb.getString("VirtualMast")
+            Bundle.getMessage("HeadCtlMast"), Bundle.getMessage("TurnCtlMast"), Bundle.getMessage("VirtualMast")
         });
         //Only allow the creation of DCC SignalMast if a command station instance is present, otherwise it will not work, so no point in adding it.
         if (jmri.InstanceManager.getList(jmri.CommandStation.class) != null) {
-            signalMastDriver.addItem(rb.getString("DCCMast"));
+            signalMastDriver.addItem(Bundle.getMessage("DCCMast"));
             java.util.List<jmri.CommandStation> connList = jmri.InstanceManager.getList(jmri.CommandStation.class);
             for (int x = 0; x < connList.size(); x++) {
                 if (connList.get(x) instanceof jmri.jmrix.loconet.SlotManager) {
-                    signalMastDriver.addItem(rb.getString("LNCPMast"));
+                    signalMastDriver.addItem(Bundle.getMessage("LNCPMast"));
                     break;
                 }
             }
@@ -106,25 +102,25 @@ public class AddSignalMastPanel extends JPanel {
         p = new JPanel();
         p.setLayout(new jmri.util.javaworld.GridLayout2(5, 2));
 
-        JLabel l = new JLabel(rb.getString("LabelUserName"));
+        JLabel l = new JLabel(Bundle.getMessage("LabelUserName"));
         p.add(l);
         p.add(userName);
 
-        l = new JLabel(rb.getString("SigSys") + ": ");
+        l = new JLabel(Bundle.getMessage("SigSys") + ": ");
         p.add(l);
         p.add(sigSysBox);
 
-        l = new JLabel(rb.getString("MastType") + ": ");
+        l = new JLabel(Bundle.getMessage("MastType") + ": ");
         p.add(l);
         p.add(mastBox);
 
         //add(p);
-        l = new JLabel(rb.getString("DriverType") + ": ");
+        l = new JLabel(Bundle.getMessage("DriverType") + ": ");
         p.add(l);
         p.add(signalMastDriver);
         //add(p);
 
-        l = new JLabel(rb.getString("AllowUnLitLabel"));
+        l = new JLabel(Bundle.getMessage("AllowUnLitLabel"));
         p.add(l);
         p.add(allowUnLit);
         add(p);
@@ -160,7 +156,7 @@ public class AddSignalMastPanel extends JPanel {
 
         JButton ok;
         JPanel buttonHolder = new JPanel();
-        buttonHolder.add(ok = new JButton(rb.getString("ButtonOK")));
+        buttonHolder.add(ok = new JButton(Bundle.getMessage("ButtonOK")));
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 okPressed(e);
@@ -246,7 +242,7 @@ public class AddSignalMastPanel extends JPanel {
         dccAspectAddressField.setEnabled(true);
 
         if (mast instanceof jmri.implementation.SignalHeadSignalMast) {
-            signalMastDriver.setSelectedItem(rb.getString("HeadCtlMast"));
+            signalMastDriver.setSelectedItem(Bundle.getMessage("HeadCtlMast"));
             updateSelectedDriver();
 
             signalHeadPanel.setVisible(false);
@@ -262,7 +258,7 @@ public class AddSignalMastPanel extends JPanel {
 
         } else if (mast instanceof jmri.implementation.TurnoutSignalMast) {
 
-            signalMastDriver.setSelectedItem(rb.getString("TurnCtlMast"));
+            signalMastDriver.setSelectedItem(Bundle.getMessage("TurnCtlMast"));
 
             updateSelectedDriver();
             SignalAppearanceMap appMap = mast.getAppearanceMap();
@@ -291,7 +287,7 @@ public class AddSignalMastPanel extends JPanel {
 
             }
         } else if (mast instanceof jmri.implementation.VirtualSignalMast) {
-            signalMastDriver.setSelectedItem(rb.getString("VirtualMast"));
+            signalMastDriver.setSelectedItem(Bundle.getMessage("VirtualMast"));
             updateSelectedDriver();
             List<String> disabled = ((VirtualSignalMast) mast).getDisabledAspects();
             if (disabled != null) {
@@ -303,9 +299,9 @@ public class AddSignalMastPanel extends JPanel {
             }
         } else if (mast instanceof jmri.implementation.DccSignalMast) {
             if (mast instanceof jmri.jmrix.loconet.LNCPSignalMast) {
-                signalMastDriver.setSelectedItem(rb.getString("LNCPMast"));
+                signalMastDriver.setSelectedItem(Bundle.getMessage("LNCPMast"));
             } else {
-                signalMastDriver.setSelectedItem(rb.getString("DCCMast"));
+                signalMastDriver.setSelectedItem(Bundle.getMessage("DCCMast"));
             }
 
             updateSelectedDriver();
@@ -367,18 +363,18 @@ public class AddSignalMastPanel extends JPanel {
         turnoutMastScroll.setVisible(false);
         disabledAspectsScroll.setVisible(false);
         dccMastScroll.setVisible(false);
-        if (rb.getString("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
+        if (Bundle.getMessage("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
             updateTurnoutAspectPanel();
             turnoutMastScroll.setVisible(true);
-        } else if (rb.getString("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
+        } else if (Bundle.getMessage("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
             updateHeads();
             updateDisabledOption();
             signalHeadPanel.setVisible(true);
             disabledAspectsScroll.setVisible(true);
-        } else if (rb.getString("VirtualMast").equals(signalMastDriver.getSelectedItem())) {
+        } else if (Bundle.getMessage("VirtualMast").equals(signalMastDriver.getSelectedItem())) {
             updateDisabledOption();
             disabledAspectsScroll.setVisible(true);
-        } else if ((rb.getString("DCCMast").equals(signalMastDriver.getSelectedItem())) || (rb.getString("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
+        } else if ((Bundle.getMessage("DCCMast").equals(signalMastDriver.getSelectedItem())) || (Bundle.getMessage("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
             updateDCCMastPanel();
             dccMastScroll.setVisible(true);
         }
@@ -395,9 +391,9 @@ public class AddSignalMastPanel extends JPanel {
         dccUnLitPanel.setVisible(false);
         turnoutUnLitPanel.setVisible(false);
         if (allowUnLit.isSelected()) {
-            if (rb.getString("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
+            if (Bundle.getMessage("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
                 turnoutUnLitPanel.setVisible(true);
-            } else if ((rb.getString("DCCMast").equals(signalMastDriver.getSelectedItem())) || (rb.getString("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
+            } else if ((Bundle.getMessage("DCCMast").equals(signalMastDriver.getSelectedItem())) || (Bundle.getMessage("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
                 dccUnLitPanel.setVisible(true);
             }
         }
@@ -410,9 +406,9 @@ public class AddSignalMastPanel extends JPanel {
     }
     JTextField userName = new JTextField(20);
     JComboBox<String> sigSysBox = new JComboBox<String>();
-    JComboBox<String> mastBox = new JComboBox<String>(new String[]{rb.getString("MastEmpty")});
-    JCheckBox includeUsed = new JCheckBox(rb.getString("IncludeUsedHeads"));
-    JCheckBox resetPreviousState = new JCheckBox(rb.getString("ResetPrevious"));
+    JComboBox<String> mastBox = new JComboBox<String>(new String[]{Bundle.getMessage("MastEmpty")});
+    JCheckBox includeUsed = new JCheckBox(Bundle.getMessage("IncludeUsedHeads"));
+    JCheckBox resetPreviousState = new JCheckBox(Bundle.getMessage("ResetPrevious"));
 
     String sigsysname;
     ArrayList<File> mastNames = new ArrayList<File>();
@@ -532,7 +528,7 @@ public class AddSignalMastPanel extends JPanel {
     HashMap<String, Integer> map = new HashMap<String, Integer>();
 
     void updateHeads() {
-        if (!rb.getString("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
+        if (!Bundle.getMessage("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
             return;
         }
         if (mastBox.getSelectedItem() == null) {
@@ -567,7 +563,7 @@ public class AddSignalMastPanel extends JPanel {
             if (!checkUserName(userName.getText())) {
                 return;
             }
-            if (rb.getString("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
+            if (Bundle.getMessage("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
                 if (!checkSignalHeadUse()) {
                     return;
                 }
@@ -576,14 +572,14 @@ public class AddSignalMastPanel extends JPanel {
                         + sigsysname
                         + ":" + mastname.substring(11, mastname.length() - 4));
                 for (JmriBeanComboBox head : headList) {
-                    build.append("(" + StringUtil.parenQuote(head.getSelectedDisplayName()) + ")");
+                    if (head !=null && head.getSelectedDisplayName() != null) build.append("(" + StringUtil.parenQuote(head.getSelectedDisplayName()) + ")");
                 }
                 String name = build.toString();
                 log.debug("add signal: " + name);
                 SignalMast m = InstanceManager.signalMastManagerInstance().getSignalMast(name);
                 if (m != null) {
-                    JOptionPane.showMessageDialog(null, java.text.MessageFormat.format(rb.getString("DuplicateMast"),
-                            new Object[]{m.getDisplayName()}), rb.getString("DuplicateMastTitle"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, java.text.MessageFormat.format(Bundle.getMessage("DuplicateMast"),
+                            new Object[]{m.getDisplayName()}), Bundle.getMessage("DuplicateMastTitle"), JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 try {
@@ -606,7 +602,7 @@ public class AddSignalMastPanel extends JPanel {
                 }
                 m.setAllowUnLit(allowUnLit.isSelected());
 
-            } else if (rb.getString("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
+            } else if (Bundle.getMessage("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
                 String name = "IF$tsm:"
                         + sigsysname
                         + ":" + mastname.substring(11, mastname.length() - 4);
@@ -632,7 +628,7 @@ public class AddSignalMastPanel extends JPanel {
                 if (allowUnLit.isSelected()) {
                     turnMast.setUnLitTurnout(turnoutUnLitBox.getDisplayName(), turnoutStateValues[turnoutUnLitState.getSelectedIndex()]);
                 }
-            } else if (rb.getString("VirtualMast").equals(signalMastDriver.getSelectedItem())) {
+            } else if (Bundle.getMessage("VirtualMast").equals(signalMastDriver.getSelectedItem())) {
                 String name = "IF$vsm:"
                         + sigsysname
                         + ":" + mastname.substring(11, mastname.length() - 4);
@@ -652,7 +648,7 @@ public class AddSignalMastPanel extends JPanel {
 
                 }
                 virtMast.setAllowUnLit(allowUnLit.isSelected());
-            } else if ((rb.getString("DCCMast").equals(signalMastDriver.getSelectedItem())) || (rb.getString("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
+            } else if ((Bundle.getMessage("DCCMast").equals(signalMastDriver.getSelectedItem())) || (Bundle.getMessage("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
                 if (!validateDCCAddress()) {
                     return;
                 }
@@ -661,7 +657,7 @@ public class AddSignalMastPanel extends JPanel {
                 if (systemNameText.equals("\0")) {
                     systemNameText = "I";
                 }
-                if (rb.getString("LNCPMast").equals(signalMastDriver.getSelectedItem())) {
+                if (Bundle.getMessage("LNCPMast").equals(signalMastDriver.getSelectedItem())) {
                     systemNameText = systemNameText + "F$lncpsm:";
                 } else {
                     systemNameText = systemNameText + "F$dsm:";
@@ -671,7 +667,7 @@ public class AddSignalMastPanel extends JPanel {
                         + ":" + mastname.substring(11, mastname.length() - 4);
                 name += "(" + dccAspectAddressField.getText() + ")";
                 DccSignalMast dccMast;
-                if (rb.getString("LNCPMast").equals(signalMastDriver.getSelectedItem())) {
+                if (Bundle.getMessage("LNCPMast").equals(signalMastDriver.getSelectedItem())) {
                     dccMast = new jmri.jmrix.loconet.LNCPSignalMast(name);
                 } else {
                     dccMast = new DccSignalMast(name);
@@ -701,7 +697,7 @@ public class AddSignalMastPanel extends JPanel {
             prefs.addComboBoxLastSelection(mastSelectionCombo + ":" + ((String) sigSysBox.getSelectedItem()), (String) mastBox.getSelectedItem());
             refreshHeadComboBox();
         } else {
-            if (rb.getString("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
+            if (Bundle.getMessage("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
                 SignalHeadSignalMast headMast = (SignalHeadSignalMast) mast;
                 for (String aspect : disabledAspects.keySet()) {
                     if (disabledAspects.get(aspect).isSelected()) {
@@ -712,7 +708,7 @@ public class AddSignalMastPanel extends JPanel {
                 }
                 headMast.setAllowUnLit(allowUnLit.isSelected());
 
-            } else if (rb.getString("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
+            } else if (Bundle.getMessage("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
                 String name = "IF$tsm:"
                         + sigsysname
                         + ":" + mastname.substring(11, mastname.length() - 4);
@@ -732,7 +728,7 @@ public class AddSignalMastPanel extends JPanel {
                 if (allowUnLit.isSelected()) {
                     turnMast.setUnLitTurnout(turnoutUnLitBox.getDisplayName(), turnoutStateValues[turnoutUnLitState.getSelectedIndex()]);
                 }
-            } else if (rb.getString("VirtualMast").equals(signalMastDriver.getSelectedItem())) {
+            } else if (Bundle.getMessage("VirtualMast").equals(signalMastDriver.getSelectedItem())) {
                 VirtualSignalMast virtMast = (VirtualSignalMast) mast;
                 for (String aspect : disabledAspects.keySet()) {
                     if (disabledAspects.get(aspect).isSelected()) {
@@ -742,7 +738,7 @@ public class AddSignalMastPanel extends JPanel {
                     }
                 }
                 virtMast.setAllowUnLit(allowUnLit.isSelected());
-            } else if ((rb.getString("DCCMast").equals(signalMastDriver.getSelectedItem())) || (rb.getString("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
+            } else if ((Bundle.getMessage("DCCMast").equals(signalMastDriver.getSelectedItem())) || (Bundle.getMessage("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
                 DccSignalMast dccMast = (DccSignalMast) mast;
                 for (String aspect : dccAspect.keySet()) {
                     dccMastPanel.add(dccAspect.get(aspect).getPanel());
@@ -769,10 +765,9 @@ public class AddSignalMastPanel extends JPanel {
             NamedBean nB = InstanceManager.signalMastManagerInstance().getByUserName(nam);
             if (nB != null) {
                 log.error("User name is not unique " + nam);
-                String msg = java.text.MessageFormat.format(rb
-                        .getString("WarningUserName"), new Object[]{("" + nam)});
+                String msg = Bundle.getMessage("WarningUserName", new Object[]{("" + nam)});
                 JOptionPane.showMessageDialog(null, msg,
-                        rb.getString("WarningTitle"),
+                        Bundle.getMessage("WarningTitle"),
                         JOptionPane.ERROR_MESSAGE);
                 return false;
             }
@@ -780,10 +775,9 @@ public class AddSignalMastPanel extends JPanel {
             nB = InstanceManager.signalMastManagerInstance().getBySystemName(nam);
             if (nB != null) {
                 log.error("User name is not unique " + nam + " It already exists as a System name");
-                String msg = java.text.MessageFormat.format(rb
-                        .getString("WarningUserNameAsSystem"), new Object[]{("" + nam)});
+                String msg = Bundle.getMessage("WarningUserNameAsSystem", new Object[]{("" + nam)});
                 JOptionPane.showMessageDialog(null, msg,
-                        rb.getString("WarningTitle"),
+                        Bundle.getMessage("WarningTitle"),
                         JOptionPane.ERROR_MESSAGE);
                 return false;
             }
@@ -819,9 +813,9 @@ public class AddSignalMastPanel extends JPanel {
     }
 
     boolean duplicateHeadAssigned(String head) {
-        int i = JOptionPane.showConfirmDialog(null, java.text.MessageFormat.format(rb.getString("DuplicateHeadAssign"),
+        int i = JOptionPane.showConfirmDialog(null, java.text.MessageFormat.format(Bundle.getMessage("DuplicateHeadAssign"),
                 new Object[]{head}),
-                rb.getString("DuplicateHeadAssignTitle"),
+                Bundle.getMessage("DuplicateHeadAssignTitle"),
                 JOptionPane.YES_NO_OPTION);
 
         if (i == 0) {
@@ -831,9 +825,9 @@ public class AddSignalMastPanel extends JPanel {
     }
 
     boolean headAssignedElseWhere(String head, String mast) {
-        int i = JOptionPane.showConfirmDialog(null, java.text.MessageFormat.format(rb.getString("AlreadyAssinged"),
+        int i = JOptionPane.showConfirmDialog(null, java.text.MessageFormat.format(Bundle.getMessage("AlreadyAssigned"),
                 new Object[]{head, mast}),
-                rb.getString("DuplicateHeadAssignTitle"),
+                Bundle.getMessage("DuplicateHeadAssignTitle"),
                 JOptionPane.YES_NO_OPTION);
         if (i == 0) {
             return true;
@@ -842,7 +836,7 @@ public class AddSignalMastPanel extends JPanel {
     }
 
     protected void refreshHeadComboBox() {
-        if (!rb.getString("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
+        if (!Bundle.getMessage("HeadCtlMast").equals(signalMastDriver.getSelectedItem())) {
             return;
         }
         if (includeUsed.isSelected()) {
@@ -863,14 +857,14 @@ public class AddSignalMastPanel extends JPanel {
     void handleCreateException(String sysName) {
         javax.swing.JOptionPane.showMessageDialog(AddSignalMastPanel.this,
                 java.text.MessageFormat.format(
-                        rb.getString("ErrorSignalMastAddFailed"),
+                        Bundle.getMessage("ErrorSignalMastAddFailed"),
                         new Object[]{sysName}),
-                rb.getString("ErrorTitle"),
+                Bundle.getMessage("ErrorTitle"),
                 javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 
     void updateTurnoutAspectPanel() {
-        if (!rb.getString("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
+        if (!Bundle.getMessage("TurnCtlMast").equals(signalMastDriver.getSelectedItem())) {
             return;
         }
         turnoutAspect = new HashMap<String, TurnoutAspectPanel>(10);
@@ -909,11 +903,11 @@ public class AddSignalMastPanel extends JPanel {
         turnoutUnLitPanel.setLayout(new BoxLayout(turnoutUnLitPanel, BoxLayout.Y_AXIS));
         JPanel turnDetails = new JPanel();
         turnDetails.add(turnoutUnLitBox);
-        turnDetails.add(new JLabel(rb.getString("SetState")));
+        turnDetails.add(new JLabel(Bundle.getMessage("SetState")));
         turnDetails.add(turnoutUnLitState);
         turnoutUnLitPanel.add(turnDetails);
         TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black));
-        border.setTitle(rb.getString("TurnUnLitDetails"));
+        border.setTitle(Bundle.getMessage("TurnUnLitDetails"));
         turnoutUnLitPanel.setBorder(border);
     }
 
@@ -922,8 +916,8 @@ public class AddSignalMastPanel extends JPanel {
     class TurnoutAspectPanel {
 
         BeanSelectCreatePanel beanBox = new BeanSelectCreatePanel(InstanceManager.turnoutManagerInstance(), null);
-        JCheckBox disabledCheck = new JCheckBox(rb.getString("DisableAspect"));
-        JLabel turnoutStateLabel = new JLabel(rb.getString("SetState"));
+        JCheckBox disabledCheck = new JCheckBox(Bundle.getMessage("DisableAspect"));
+        JLabel turnoutStateLabel = new JLabel(Bundle.getMessage("SetState"));
         JComboBox<String> turnoutState = new JComboBox<String>(turnoutStates);
 
         String aspect = "";
@@ -1028,12 +1022,12 @@ public class AddSignalMastPanel extends JPanel {
     void dccUnLitPanel() {
         dccUnLitPanel.setLayout(new BoxLayout(dccUnLitPanel, BoxLayout.Y_AXIS));
         JPanel dccDetails = new JPanel();
-        dccDetails.add(new JLabel(rb.getString("DCCMastSetAspectId")));
+        dccDetails.add(new JLabel(Bundle.getMessage("DCCMastSetAspectId")));
         dccDetails.add(unLitAspectField);
         unLitAspectField.setText("31");
         dccUnLitPanel.add(dccDetails);
         TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black));
-        border.setTitle(rb.getString("DCCUnlitAspectNumber"));
+        border.setTitle(Bundle.getMessage("DCCUnlitAspectNumber"));
         dccUnLitPanel.setBorder(border);
         unLitAspectField.addFocusListener(new FocusListener() {
             public void focusLost(FocusEvent e) {
@@ -1052,7 +1046,7 @@ public class AddSignalMastPanel extends JPanel {
     }
 
     void updateDCCMastPanel() {
-        if ((!rb.getString("DCCMast").equals(signalMastDriver.getSelectedItem())) && (!rb.getString("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
+        if ((!Bundle.getMessage("DCCMast").equals(signalMastDriver.getSelectedItem())) && (!Bundle.getMessage("LNCPMast").equals(signalMastDriver.getSelectedItem()))) {
             return;
         }
         dccAspect = new HashMap<String, DCCAspectPanel>(10);
@@ -1061,7 +1055,7 @@ public class AddSignalMastPanel extends JPanel {
         if (connList != null) {
             for (int x = 0; x < connList.size(); x++) {
                 jmri.CommandStation station = connList.get(x);
-                if (rb.getString("LNCPMast").equals(signalMastDriver.getSelectedItem())) {
+                if (Bundle.getMessage("LNCPMast").equals(signalMastDriver.getSelectedItem())) {
                     if (station instanceof jmri.jmrix.loconet.SlotManager) {
                         systemPrefixBox.addItem(station.getUserName());
                     }
@@ -1119,7 +1113,7 @@ public class AddSignalMastPanel extends JPanel {
         if ((dccAspect.size() & 1) == 1) {
             dccMastPanel.add(new JLabel());
         }
-        dccMastPanel.add(new JLabel(rb.getString("DCCMastCopyAspectId")));
+        dccMastPanel.add(new JLabel(Bundle.getMessage("DCCMastCopyAspectId")));
         dccMastPanel.add(copyFromMastSelection());
 
     }
@@ -1131,12 +1125,12 @@ public class AddSignalMastPanel extends JPanel {
         try {
             aspect = Integer.parseInt(strAspect.trim());
         } catch (java.lang.NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, rb.getString("DCCMastAspectNumber"));
+            JOptionPane.showMessageDialog(null, Bundle.getMessage("DCCMastAspectNumber"));
             return false;
         }
 
         if (aspect < 0 || aspect > 31) {
-            JOptionPane.showMessageDialog(null, rb.getString("DCCMastAspectOutOfRange"));
+            JOptionPane.showMessageDialog(null, Bundle.getMessage("DCCMastAspectOutOfRange"));
             log.error("invalid aspect " + aspect);
             return false;
         }
@@ -1145,25 +1139,24 @@ public class AddSignalMastPanel extends JPanel {
 
     boolean validateDCCAddress() {
         if (dccAspectAddressField.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, rb.getString("DCCMastAddressBlank"));
+            JOptionPane.showMessageDialog(null, Bundle.getMessage("DCCMastAddressBlank"));
             return false;
         }
         int address = -1;
         try {
             address = Integer.parseInt(dccAspectAddressField.getText().trim());
         } catch (java.lang.NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, rb.getString("DCCMastAddressNumber"));
+            JOptionPane.showMessageDialog(null, Bundle.getMessage("DCCMastAddressNumber"));
             return false;
         }
 
         if (address < NmraPacket.accIdLowLimit || address > NmraPacket.accIdAltHighLimit) {
-            JOptionPane.showMessageDialog(null, rb.getString("DCCMastAddressOutOfRange"));
+            JOptionPane.showMessageDialog(null, Bundle.getMessage("DCCMastAddressOutOfRange"));
             log.error("invalid address " + address);
             return false;
         }
         if (DccSignalMast.isDCCAddressUsed(address) != null) {
-            String msg = java.text.MessageFormat.format(rb
-                    .getString("DCCMastAddressAssigned"), new Object[]{dccAspectAddressField.getText(), DccSignalMast.isDCCAddressUsed(address)});
+            String msg = Bundle.getMessage("DCCMastAddressAssigned", new Object[]{dccAspectAddressField.getText(), DccSignalMast.isDCCAddressUsed(address)});
             JOptionPane.showMessageDialog(null, msg);
             return false;
         }
@@ -1212,8 +1205,8 @@ public class AddSignalMastPanel extends JPanel {
     static class DCCAspectPanel {
 
         String aspect = "";
-        JCheckBox disabledCheck = new JCheckBox(rb.getString("DisableAspect"));
-        JLabel aspectLabel = new JLabel(rb.getString("DCCMastSetAspectId"));
+        JCheckBox disabledCheck = new JCheckBox(Bundle.getMessage("DisableAspect"));
+        JLabel aspectLabel = new JLabel(Bundle.getMessage("DCCMastSetAspectId"));
         JTextField aspectId = new JTextField(5);
 
         DCCAspectPanel(String aspect) {
@@ -1294,9 +1287,6 @@ public class AddSignalMastPanel extends JPanel {
 
     }
 
-    static final ResourceBundle rb = ResourceBundle.getBundle("jmri.jmrit.beantable.BeanTableBundle");
-    static final Logger log = LoggerFactory.getLogger(AddSignalMastPanel.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(AddSignalMastPanel.class.getName());
 }
 
-
-/* @(#)SensorTableAction.java */

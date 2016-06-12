@@ -226,7 +226,6 @@ public class CbusEventTableDataModel extends javax.swing.table.AbstractTableMode
      * optional, in that other table formats can use this table model. But we
      * put it here to help keep it consistent.
      *
-     * @param eventTable
      */
     public void configureTable(JTable eventTable) {
         // allow reordering of the columns
@@ -543,5 +542,5 @@ public class CbusEventTableDataModel extends javax.swing.table.AbstractTableMode
     @SuppressWarnings("unused")
     private boolean _saved = false;
 
-    static Logger log = LoggerFactory.getLogger(CbusEventTableDataModel.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(CbusEventTableDataModel.class.getName());
 }

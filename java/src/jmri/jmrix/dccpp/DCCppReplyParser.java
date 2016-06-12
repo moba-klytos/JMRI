@@ -5,8 +5,6 @@
  */
 package jmri.jmrix.dccpp;
 
-import jmri.jmrix.dccpp.DCCppReply;
-import java.util.regex.Matcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +12,16 @@ import org.slf4j.LoggerFactory;
  *
  * @author munderwd
  */
+
+/* Note: 
+ *
+ * This class was intended to facilitate generating various subclasses of
+ * DCCppReply.  I think, by folding DCCppCommTypeReply back into DCCppReply
+ * that this class could be eliminated.
+ *
+ * TODO: Obsolete this and get rid of DCCppCommTypeReply
+ *
+*/
 public class DCCppReplyParser {
     
     public static void parseReply(DCCppReply r, String s) {
@@ -24,9 +32,8 @@ public class DCCppReplyParser {
     }
     
     public static DCCppReply parseReply(String s) {
-        Matcher m;
         log.debug("Parse charAt(0): {} ({})", s.charAt(0), Character.toString(s.charAt(0)));
-        DCCppReply r = new DCCppReply(s.charAt(0), null);
+        new DCCppReply(s.charAt(0), null);
         switch(s.charAt(0)) {
             case DCCppConstants.COMM_TYPE_REPLY:
                 return(DCCppCommTypeReply.parseDCCppReply(s));
@@ -47,6 +54,6 @@ public class DCCppReplyParser {
         }
     }
     // initialize logging
-    static Logger log = LoggerFactory.getLogger(DCCppReplyParser.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DCCppReplyParser.class.getName());
     
 }

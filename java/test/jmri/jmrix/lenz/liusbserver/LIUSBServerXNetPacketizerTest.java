@@ -2,8 +2,6 @@ package jmri.jmrix.lenz.liusbserver;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -31,7 +29,7 @@ public class LIUSBServerXNetPacketizerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", LIUSBServerXNetPacketizerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // The minimal setup for log4J
@@ -42,7 +40,5 @@ public class LIUSBServerXNetPacketizerTest extends TestCase {
     protected void tearDown() {
         apps.tests.Log4JFixture.tearDown();
     }
-
-    static Logger log = LoggerFactory.getLogger(LIUSBServerXNetPacketizerTest.class.getName());
 
 }

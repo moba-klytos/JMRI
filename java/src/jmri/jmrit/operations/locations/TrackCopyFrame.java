@@ -32,11 +32,6 @@ import org.slf4j.LoggerFactory;
  */
 public class TrackCopyFrame extends OperationsFrame implements java.beans.PropertyChangeListener {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 6643856888682557276L;
-
     // text field
     JTextField trackNameTextField = new javax.swing.JTextField(Control.max_len_string_track_name);
 
@@ -134,6 +129,7 @@ public class TrackCopyFrame extends OperationsFrame implements java.beans.Proper
     }
 
     // location combo box
+    @Override
     protected void comboBoxActionPerformed(java.awt.event.ActionEvent ae) {
         if (ae.getSource() == locationBox) {
             updateTrackComboBox();
@@ -160,7 +156,8 @@ public class TrackCopyFrame extends OperationsFrame implements java.beans.Proper
         }
     }
 
-    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
+    @Override
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "GUI ease of use")
     protected void buttonActionPerformed(java.awt.event.ActionEvent ae) {
         if (ae.getSource() == copyButton) {
             log.debug("copy track button activated");
@@ -200,6 +197,7 @@ public class TrackCopyFrame extends OperationsFrame implements java.beans.Proper
                 // move rolling stock
                 moveRollingStock(fromTrack, toTrack);
                 if (deleteTrackCheckBox.isSelected()) {
+                    ScheduleManager.instance().replaceTrack(fromTrack, toTrack);
                     fromTrack.getLocation().deleteTrack(fromTrack);
                 }
             }
@@ -215,6 +213,7 @@ public class TrackCopyFrame extends OperationsFrame implements java.beans.Proper
         }
     }
 
+    @Override
     protected void checkBoxActionPerformed(java.awt.event.ActionEvent ae) {
         if (ae.getSource() == sameNameCheckBox) {
             updateTrackName();
@@ -267,11 +266,12 @@ public class TrackCopyFrame extends OperationsFrame implements java.beans.Proper
     private void moveRollingStock(Track fromTrack, Track toTrack, RollingStockManager manager) {
         for (RollingStock rs : manager.getByIdList()) {
             if (rs.getTrack() == fromTrack) {
-                rs.setLocation(toTrack.getLocation(), toTrack, true);
+                rs.setLocation(toTrack.getLocation(), toTrack, RollingStock.FORCE);
             }
         }
     }
 
+    @Override
     public void dispose() {
         LocationManager.instance().removePropertyChangeListener(this);
         if (_location != null) {
@@ -280,6 +280,7 @@ public class TrackCopyFrame extends OperationsFrame implements java.beans.Proper
         super.dispose();
     }
 
+    @Override
     public void propertyChange(java.beans.PropertyChangeEvent e) {
         log.debug("PropertyChange ({}) new ({})", e.getPropertyName(), e.getNewValue());
         if (e.getPropertyName().equals(LocationManager.LISTLENGTH_CHANGED_PROPERTY)) {
@@ -290,5 +291,5 @@ public class TrackCopyFrame extends OperationsFrame implements java.beans.Proper
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(TrackCopyFrame.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(TrackCopyFrame.class.getName());
 }

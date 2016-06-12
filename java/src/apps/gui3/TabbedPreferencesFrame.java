@@ -1,4 +1,3 @@
-// TabbedPreferencesFrame.java
 package apps.gui3;
 
 import java.awt.event.WindowEvent;
@@ -6,18 +5,13 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import jmri.InstanceManager;
 import jmri.util.JmriJFrame;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provide access to the various tables via a listed pane.
  * <P>
  * @author	Kevin Dickerson Copyright 2010
- * @version $Revision$
  */
 public class TabbedPreferencesFrame extends JmriJFrame {
-
-    private static final long serialVersionUID = 4861869203791661041L;
 
     @Override
     public String getTitle() {
@@ -65,6 +59,4 @@ public class TabbedPreferencesFrame extends JmriJFrame {
         }
         this.setVisible(false);
     }
-
-    static Logger log = LoggerFactory.getLogger(TabbedPreferencesFrame.class);
 }

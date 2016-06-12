@@ -1,11 +1,8 @@
-// PackageTest.java
 package jmri.jmrix.xpa;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the jmri.jmrix.xpa package
@@ -23,13 +20,15 @@ public class PackageTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {PackageTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
     public static Test suite() {
         TestSuite suite = new TestSuite("jmri.jmrix.xpa.XpaTest");  // no tests in this class itself
         suite.addTest(new TestSuite(XpaMessageTest.class));
+        suite.addTest(new TestSuite(XpaTrafficControllerTest.class));
+        suite.addTest(new TestSuite(XpaSystemConnectionMemoTest.class));
         suite.addTest(new TestSuite(XpaTurnoutTest.class));
         suite.addTest(new TestSuite(XpaThrottleTest.class));
         //suite.addTest(new TestSuite(XpaPacketizerTest.class));
@@ -41,7 +40,5 @@ public class PackageTest extends TestCase {
         //suite.addTest(new TestSuite(XpaTrafficRouterTest.class));
         return suite;
     }
-
-    static Logger log = LoggerFactory.getLogger(PackageTest.class.getName());
 
 }

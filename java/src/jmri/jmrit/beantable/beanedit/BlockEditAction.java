@@ -1,4 +1,3 @@
-// StatusPanel.java
 package jmri.jmrit.beantable.beanedit;
 
 import java.awt.event.ActionEvent;
@@ -21,13 +20,15 @@ import jmri.Block;
 import jmri.InstanceManager;
 import jmri.NamedBean;
 import jmri.Reporter;
+import jmri.implementation.SignalSpeedMap;
 import jmri.util.swing.JmriBeanComboBox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides an edit panel for a block object
  *
  * @author	Kevin Dickerson Copyright (C) 2011
- * @version	$Revision: 19923 $
  */
 public class BlockEditAction extends BeanEditAction {
 
@@ -41,6 +42,7 @@ public class BlockEditAction extends BeanEditAction {
     private String severeText = Bundle.getMessage("BlockSevere");
     public String[] curveOptions = {noneText, gradualText, tightText, severeText};
     static final java.util.Vector<String> speedList = new java.util.Vector<String>();
+    private final static Logger log = LoggerFactory.getLogger(BlockEditAction.class);
 
     private DecimalFormat twoDigit = new DecimalFormat("0.00");
 
@@ -140,7 +142,7 @@ public class BlockEditAction extends BeanEditAction {
 
         defaultBlockSpeedText = (Bundle.getMessage("UseGlobal") + " " + jmri.InstanceManager.getDefault(jmri.BlockManager.class).getDefaultSpeed());
         speedList.add(defaultBlockSpeedText);
-        java.util.Vector<String> _speedMap = jmri.implementation.SignalSpeedMap.getMap().getValidSpeedNames();
+        java.util.Vector<String> _speedMap = jmri.InstanceManager.getDefault(SignalSpeedMap.class).getValidSpeedNames();
         for (int i = 0; i < _speedMap.size(); i++) {
             if (!speedList.contains(_speedMap.get(i))) {
                 speedList.add(_speedMap.get(i));

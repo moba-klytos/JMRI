@@ -1,4 +1,3 @@
-// VirtualSignalMast.javaa
 package jmri.implementation;
 
 import org.slf4j.Logger;
@@ -20,14 +19,8 @@ import org.slf4j.LoggerFactory;
  * </ul>
  *
  * @author	Bob Jacobsen Copyright (C) 2009
- * @version $Revision: 19027 $
  */
 public class VirtualSignalMast extends AbstractSignalMast {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = -4407228715885422094L;
 
     public VirtualSignalMast(String systemName, String userName) {
         super(systemName, userName);
@@ -47,7 +40,7 @@ public class VirtualSignalMast extends AbstractSignalMast {
             throw new IllegalArgumentException("System name needs at least three parts: " + systemName);
         }
         if (!parts[0].equals("IF$vsm")) {
-            log.warn("SignalMast system name should start with IF: " + systemName);
+            log.warn("SignalMast system name should start with IF$vsm but is " + systemName);
         }
 
         String system = parts[1];
@@ -87,7 +80,5 @@ public class VirtualSignalMast extends AbstractSignalMast {
 
     static int lastRef = 0;
 
-    static final protected Logger log = LoggerFactory.getLogger(VirtualSignalMast.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(VirtualSignalMast.class.getName());
 }
-
-/* @(#)VirtualSignalMast.java */

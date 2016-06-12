@@ -36,12 +36,13 @@ public class OperationsSetupXml extends OperationsXml {
             _instance = new OperationsSetupXml();
             _instance.load();
         }
-        if (Control.showInstance) {
+        if (Control.SHOW_INSTANCE) {
             log.debug("OperationsSetupXml returns instance {}", _instance);
         }
         return _instance;
     }
 
+    @Override
     public void writeFile(String name) throws java.io.FileNotFoundException, java.io.IOException {
         if (log.isDebugEnabled()) {
             log.debug("writeFile {}", name);
@@ -103,18 +104,21 @@ public class OperationsSetupXml extends OperationsXml {
         Control.load(root);
     }
 
+    @Override
     public void setOperationsFileName(String name) {
         operationsFileName = name;
     }
 
+    @Override
     public String getOperationsFileName() {
         return operationsFileName;
     }
 
     private String operationsFileName = "Operations.xml"; // NOI18N
 
-    static Logger log = LoggerFactory.getLogger(OperationsSetupXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(OperationsSetupXml.class.getName());
 
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "for testing")
     public void dispose(){
         _instance = null;
     }

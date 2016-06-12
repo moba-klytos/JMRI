@@ -1,10 +1,9 @@
-// Apps3.java
 package apps.gui3;
 
 import apps.AppsBase;
-import apps.CreateButtonModel;
 import apps.SplashWindow;
 import apps.SystemConsole;
+import apps.startup.StartupActionModelUtil;
 import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -48,14 +47,12 @@ import org.slf4j.LoggerFactory;
  * This is a complete re-implementation of the apps.Apps support for JMRI
  * applications.
  * <p>
- * Each using application provides it's own main() method. See e.g.
- * apps.gui3.demo3.Demo3 for an example.
+ * Each using application provides it's own main() method.
  * <p>
  * There are a large number of missing features marked with TODO in comments
  * including code from the earlier implementation.
  * <P>
  * @author	Bob Jacobsen Copyright 2009, 2010
- * @version $Revision$
  */
 public abstract class Apps3 extends AppsBase {
 
@@ -108,7 +105,7 @@ public abstract class Apps3 extends AppsBase {
      * For compatability with adding in buttons to the toolbar using the
      * existing createbuttonmodel
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
             justification = "only one application at a time")
     protected static void setButtonSpace() {
         _buttonSpace = new JPanel();
@@ -119,7 +116,7 @@ public abstract class Apps3 extends AppsBase {
      * Provide access to a place where applications can expect the configuration
      * code to build run-time buttons.
      *
-     * @see apps.CreateButtonPanel
+     * @see apps.startup.CreateButtonModelFactory
      * @return null if no such space exists
      */
     static public JComponent buttonSpace() {
@@ -157,18 +154,18 @@ public abstract class Apps3 extends AppsBase {
     abstract protected ResourceBundle getActionModelResourceBundle();
 
     protected void addToActionModel() {
-        CreateButtonModel bm = InstanceManager.getDefault(apps.CreateButtonModel.class);
+        StartupActionModelUtil util = InstanceManager.getDefault(StartupActionModelUtil.class);
         ResourceBundle rb = getActionModelResourceBundle();
-        if (rb == null || bm == null) {
+        if (rb == null || util == null) {
             return;
         }
         Enumeration<String> e = rb.getKeys();
         while (e.hasMoreElements()) {
             String key = e.nextElement();
             try {
-                bm.addAction(key, rb.getString(key));
+                util.addAction(key, rb.getString(key));
             } catch (ClassNotFoundException ex) {
-                log.error("Did not find class " + key);
+                log.error("Did not find class \"{}\"", key);
             }
         }
     }
@@ -212,16 +209,15 @@ public abstract class Apps3 extends AppsBase {
             debugListener = new AWTEventListener() {
 
                 @Override
+                @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "debugmsg write is semi-global")
                 public void eventDispatched(AWTEvent e) {
                     if (!debugFired) {
                         /*We set the debugmsg flag on the first instance of the user pressing any button
                          and the if the debugFired hasn't been set, this allows us to ensure that we don't
                          miss the user pressing F8, while we are checking*/
                         debugmsg = true;
-                        if (e.getID() == KeyEvent.KEY_PRESSED) {
-                            if (((KeyEvent) e).getKeyCode() == 119) {
-                                startupDebug();
-                            }
+                        if (e.getID() == KeyEvent.KEY_PRESSED && e instanceof KeyEvent && ((KeyEvent)e).getKeyCode() == 119) {
+                            startupDebug();
                         } else {
                             debugmsg = false;
                         }
@@ -246,7 +242,7 @@ public abstract class Apps3 extends AppsBase {
     }
 
     static protected JPanel splashDebugMsg() {
-        JLabel panelLabel = new JLabel("Press F8 to disable logixs");
+        JLabel panelLabel = new JLabel(Bundle.getMessage("PressF8ToDebug"));
         panelLabel.setFont(panelLabel.getFont().deriveFont(9f));
         JPanel panel = new JPanel();
         panel.add(panelLabel);
@@ -377,6 +373,6 @@ public abstract class Apps3 extends AppsBase {
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(Apps3.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(Apps3.class.getName());
 
 }

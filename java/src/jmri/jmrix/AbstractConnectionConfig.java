@@ -1,4 +1,3 @@
-// AbstractSerialConnectionConfig.java
 package jmri.jmrix;
 
 import java.awt.GridBagConstraints;
@@ -13,14 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import jmri.InstanceManager;
 import jmri.UserPreferencesManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Abstract base class for common implementation of the ConnectionConfig
  *
  * @author Bob Jacobsen Copyright (C) 2001, 2003
- * @version	$Revision$
  */
 abstract public class AbstractConnectionConfig implements ConnectionConfig {
 
@@ -39,10 +35,10 @@ abstract public class AbstractConnectionConfig implements ConnectionConfig {
 
     protected int NUMOPTIONS = 2;
 
-    protected JCheckBox showAdvanced = new JCheckBox("Additional Connection Settings");
-
-    protected JLabel systemPrefixLabel = new JLabel("Connection Prefix");
-    protected JLabel connectionNameLabel = new JLabel("Connection Name");
+    // Load localized field names
+    protected JCheckBox showAdvanced = new JCheckBox(Bundle.getMessage("AdditionalConnectionSettings"));
+    protected JLabel systemPrefixLabel = new JLabel(Bundle.getMessage("ConnectionPrefix"));
+    protected JLabel connectionNameLabel = new JLabel(Bundle.getMessage("ConnectionName"));
     protected JTextField systemPrefixField = new JTextField(10);
     protected JTextField connectionNameField = new JTextField(15);
     protected String systemPrefix;
@@ -228,7 +224,5 @@ abstract public class AbstractConnectionConfig implements ConnectionConfig {
             ccm.remove(this);
         }
     }
-
-    static protected Logger log = LoggerFactory.getLogger(AbstractConnectionConfig.class.getName());
 
 }

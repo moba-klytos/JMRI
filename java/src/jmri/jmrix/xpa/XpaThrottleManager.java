@@ -3,8 +3,6 @@ package jmri.jmrix.xpa;
 import jmri.LocoAddress;
 import jmri.ThrottleManager;
 import jmri.jmrix.AbstractThrottleManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * XPA implementation of a ThrottleManager
@@ -14,12 +12,15 @@ import org.slf4j.LoggerFactory;
  */
 public class XpaThrottleManager extends AbstractThrottleManager implements ThrottleManager {
 
+    private XpaTrafficController tc = null;
+
     /**
      * Constructor.
      */
-    public XpaThrottleManager() {
-        super(null);
-        userName = "XPA";
+    public XpaThrottleManager(XpaSystemConnectionMemo m) {
+        super(m);
+        userName = m.getUserName();
+        tc = m.getXpaTrafficController();
     }
 
     /**
@@ -28,7 +29,7 @@ public class XpaThrottleManager extends AbstractThrottleManager implements Throt
      *
      */
     public void requestThrottleSetup(LocoAddress address, boolean control) {
-        XpaThrottle throttle = new XpaThrottle(address);
+        XpaThrottle throttle = new XpaThrottle(address,tc);
         notifyThrottleKnown(throttle, address);
     }
 
@@ -68,6 +69,5 @@ public class XpaThrottleManager extends AbstractThrottleManager implements Throt
     static boolean isLongAddress(int num) {
         return (num >= 100);
     }
-    static Logger log = LoggerFactory.getLogger(XpaThrottleManager.class.getName());
 
 }

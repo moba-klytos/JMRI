@@ -5,7 +5,6 @@
  *
  * @author	Bob Jacobsen
  * @author	Mark Underwood (C) 2015
- * @version $Revision$
  */
 package jmri.jmrix.dccpp;
 
@@ -15,8 +14,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DCCppProgrammerTest extends TestCase {
 
@@ -389,7 +386,7 @@ public class DCCppProgrammerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", DCCppProgrammerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -409,6 +406,5 @@ public class DCCppProgrammerTest extends TestCase {
         super.tearDown();
         apps.tests.Log4JFixture.tearDown();
     }
-    static Logger log = LoggerFactory.getLogger(DCCppProgrammerTest.class.getName());
 
 }

@@ -169,7 +169,6 @@ public class SignalMastItemPanel extends TableItemPanel implements ListSelection
         while (e.hasMoreElements()) {
             String aspect = e.nextElement();
             String s = appMap.getProperty(aspect, "imagelink");
-            s = s.substring(s.indexOf("resources"));
             NamedIcon n = new NamedIcon(s, s);
             _currentIconMap.put(aspect, n);
         }
@@ -258,5 +257,5 @@ public class SignalMastItemPanel extends TableItemPanel implements ListSelection
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(SignalMastItemPanel.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SignalMastItemPanel.class.getName());
 }

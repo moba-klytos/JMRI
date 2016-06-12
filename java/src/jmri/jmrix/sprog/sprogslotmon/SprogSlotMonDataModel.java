@@ -133,7 +133,7 @@ public class SprogSlotMonDataModel extends javax.swing.table.AbstractTableModel 
             case ADDRCOLUMN:  //
                     switch (s.slotStatus()) {
                         case SprogConstants.SLOT_IN_USE:
-                            return Integer.toString(s.locoAddr()) + "("+ (s.getIsLong() ? "L" : "S") + ")";
+                            return Integer.toString(s.getAddr()) + "("+ (s.getIsLong() ? "L" : "S") + ")";
                         case SprogConstants.SLOT_FREE:
                             return "-";
                         default:
@@ -244,7 +244,6 @@ public class SprogSlotMonDataModel extends javax.swing.table.AbstractTableModel 
      * optional, in that other table formats can use this table model. But we
      * put it here to help keep it consistent.
      *
-     * @param slotTable
      */
     public void configureTable(JTable slotTable) {
         // allow reordering of the columns
@@ -369,6 +368,6 @@ public class SprogSlotMonDataModel extends javax.swing.table.AbstractTableModel 
         // table = null;
     }
 
-    static Logger log = LoggerFactory.getLogger(SprogSlotMonDataModel.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SprogSlotMonDataModel.class.getName());
 
 }

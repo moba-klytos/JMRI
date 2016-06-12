@@ -1,4 +1,3 @@
-//JsonLightServer.java
 package jmri.jmris.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -8,12 +7,11 @@ import java.util.Locale;
 import jmri.JmriException;
 import jmri.jmris.AbstractLightServer;
 import jmri.jmris.JmriConnection;
+import jmri.server.json.JsonException;
 import static jmri.jmris.json.JSON.LIGHT;
 import static jmri.jmris.json.JSON.METHOD;
 import static jmri.jmris.json.JSON.NAME;
 import static jmri.jmris.json.JSON.PUT;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * JSON Server interface between the JMRI light manager and a network connection
@@ -25,14 +23,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author Paul Bender Copyright (C) 2010
  * @author Randall Wood Copyright (C) 2012, 2013
- * @version $Revision: 21313 $
+ * @deprecated Since 4.3.6; replaced with {@link jmri.server.json.light.JsonLightSocketService}
  */
+@Deprecated
 public class JsonLightServer extends AbstractLightServer {
 
     private final JmriConnection connection;
     private final ObjectMapper mapper;
-    static Logger log = LoggerFactory.getLogger(JsonLightServer.class.getName());
-
     public JsonLightServer(JmriConnection connection) {
         this.connection = connection;
         this.mapper = new ObjectMapper();

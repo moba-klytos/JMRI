@@ -1,4 +1,3 @@
-// VariableValueTest.java
 package jmri.jmrit.symbolicprog;
 
 import java.awt.Component;
@@ -19,7 +18,6 @@ import jmri.util.JUnitUtil;
  * Base for tests of classes inheriting from VariableValue abstract class
  *
  * @author	Bob Jacobsen, Copyright 2002
- * @version $Revision$
  */
 public abstract class VariableValueTest extends TestCase {
 
@@ -465,7 +463,7 @@ public abstract class VariableValueTest extends TestCase {
     }
 
     // abstract class has no main entry point, test suite
-    static Logger log = LoggerFactory.getLogger(VariableValueTest.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(VariableValueTest.class.getName());
 
     // The minimal setup for log4J
     protected void setUp() {

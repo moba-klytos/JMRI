@@ -100,8 +100,8 @@ public class DefaultLogixManagerXml extends jmri.managers.configurexml.AbstractN
      * Create a LogixManager object of the correct class, then register and fill
      * it.
      *
-     * @param sharedLogix Top level Element to unpack.
-     * @param perNodeLogix
+     * @param sharedLogix  Shared top level Element to unpack.
+     * @param perNodeLogix Per-node top level Element to unpack.
      * @return true if successful
      */
     @Override
@@ -210,5 +210,5 @@ public class DefaultLogixManagerXml extends jmri.managers.configurexml.AbstractN
         return InstanceManager.logixManagerInstance().getXMLOrder();
     }
 
-    static Logger log = LoggerFactory.getLogger(DefaultLogixManagerXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DefaultLogixManagerXml.class.getName());
 }

@@ -24,17 +24,8 @@ public class EliteXNetInitializationManager extends AbstractXNetInitializationMa
         if (log.isDebugEnabled()) {
             log.debug("Init called");
         }
-        // float CSSoftwareVersion
-        systemMemo.getXNetTrafficController()
-                .getCommandStation()
-                .getCommandStationSoftwareVersion();
-        // int
-        systemMemo.getXNetTrafficController()
-                .getCommandStation()
-                .getCommandStationType();
-
         /* First, we load things that should work on all systems */
-        jmri.InstanceManager.setPowerManager(systemMemo.getPowerManager());
+        jmri.InstanceManager.store(systemMemo.getPowerManager(), jmri.PowerManager.class);
         systemMemo.setThrottleManager(new jmri.jmrix.lenz.hornbyelite.EliteXNetThrottleManager(systemMemo));
         jmri.InstanceManager.setThrottleManager(systemMemo.getThrottleManager());
 
@@ -57,6 +48,6 @@ public class EliteXNetInitializationManager extends AbstractXNetInitializationMa
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(EliteXNetInitializationManager.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(EliteXNetInitializationManager.class.getName());
 
 }

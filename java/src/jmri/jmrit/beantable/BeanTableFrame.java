@@ -1,4 +1,3 @@
-// BeanTableFrame.java
 package jmri.jmrit.beantable;
 
 import java.awt.Component;
@@ -30,14 +29,9 @@ import org.slf4j.LoggerFactory;
  * invoke {@link #addToBottomBox} as needed.
  *
  * @author	Bob Jacobsen Copyright (C) 2003
- * @version	$Revision$
  */
 public class BeanTableFrame extends jmri.util.JmriJFrame {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 957809881083826909L;
     BeanTableDataModel dataModel;
     JTable dataTable;
     JScrollPane dataScroll;
@@ -45,7 +39,6 @@ public class BeanTableFrame extends jmri.util.JmriJFrame {
     int bottomBoxIndex;	// index to insert extra stuff
     static final int bottomStrutWidth = 20;
 
-    ResourceBundle rb = ResourceBundle.getBundle("jmri.jmrit.beantable.BeanTableBundle");
     ResourceBundle rbapps = ResourceBundle.getBundle("apps.AppsBundle");
 
     public BeanTableFrame() {
@@ -80,7 +73,7 @@ public class BeanTableFrame extends jmri.util.JmriJFrame {
 
         // add save menu item
         JMenuBar menuBar = new JMenuBar();
-        JMenu fileMenu = new JMenu(rbapps.getString("MenuFile"));
+        JMenu fileMenu = new JMenu(Bundle.getMessage("MenuFile"));
         menuBar.add(fileMenu);
         fileMenu.add(new jmri.configurexml.SaveMenu());
 
@@ -140,10 +133,10 @@ public class BeanTableFrame extends jmri.util.JmriJFrame {
      * Add a component to the bottom box. Takes care of organising glue, struts
      * etc
      *
-     * @param comp
-     * @param c
+     * @param comp {@link Component} to add
+     * @param c    Class name
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "UUF_UNUSED_FIELD",
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "UUF_UNUSED_FIELD",
             justification = "param c is required in the listedtableframe")
     protected void addToBottomBox(Component comp, String c) {
         bottomBox.add(Box.createHorizontalStrut(bottomStrutWidth), bottomBoxIndex);
@@ -163,5 +156,5 @@ public class BeanTableFrame extends jmri.util.JmriJFrame {
         super.dispose();
     }
 
-    static Logger log = LoggerFactory.getLogger(BeanTableFrame.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(BeanTableFrame.class.getName());
 }

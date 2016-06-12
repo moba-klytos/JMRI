@@ -44,7 +44,7 @@ public class LocoMonPane extends jmri.jmrix.AbstractMonPane implements LocoNetLi
     }
 
     public void dispose() {
-        if (memo.getLnTrafficController() != null) {
+        if (memo!= null && memo.getLnTrafficController() != null) {
             // disconnect from the LnTrafficController
             memo.getLnTrafficController().removeLocoNetListener(~0, this);
         }
@@ -85,29 +85,28 @@ public class LocoMonPane extends jmri.jmrix.AbstractMonPane implements LocoNetLi
     public synchronized void message(LocoNetMessage l) {  // receive a LocoNet message and log it
         // send the raw data, to display if requested
         String raw = l.toString();
+        //format the message text, expect it to provide consistent \n after each line
+        String formatted = llnmon.displayMessage(l); 
 
-        // display the decoded data
-        // we use Llnmon to format, expect it to provide consistent \n after each line
-        nextLine(llnmon.displayMessage(l), raw);
+        // display the formatted data in the monitor pane
+        nextLine(formatted, raw);
+        
+        //include loconet monitoring in session.log if TRACE enabled
+        log.trace(formatted.substring(0, formatted.length()-1)); 
+
     }
 
     jmri.jmrix.loconet.locomon.Llnmon llnmon = new jmri.jmrix.loconet.locomon.Llnmon();
 
-    protected boolean isFiltered(String raw) {
-        //expects raw to be formatted like "BB 01 00 45", so extract the value of the 1st byte
-        if (raw != null && raw.length() >= 7) {
-            // if first bytes are in the skip list,  exit without adding to the Swing thread
-            String[] filters = filterField.getText().toUpperCase().split(" ");
-            String checkRaw = raw.substring(0, 2);
-
-            for (String s : filters) {
-                if (s.equals(checkRaw)) {
-                    linesBuffer.setLength(0);
-                    return true;
-                }
-            }
-        }
-        return false;
+    /** 
+     * Get hex opcode for filtering
+     */
+    @Override
+    protected String getOpCodeForFilter(String raw) {
+        //note: Loconet raw is formatted like "BB 01 00 45", so extract the correct bytes from it (BB) for comparison
+        if (raw != null && raw.length() >= 2) {
+            return raw.substring(0,2);
+        } else return null;
     }
 
     /**
@@ -128,5 +127,5 @@ public class LocoMonPane extends jmri.jmrix.AbstractMonPane implements LocoNetLi
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(LocoMonPane.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(LocoMonPane.class.getName());
 }

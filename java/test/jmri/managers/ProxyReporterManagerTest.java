@@ -1,4 +1,3 @@
-// ProxyLightManagerTest.java
 package jmri.managers;
 
 import java.beans.PropertyChangeListener;
@@ -10,8 +9,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Test the ProxyReporterManager
@@ -139,10 +136,6 @@ public class ProxyReporterManagerTest extends TestCase {
         Assert.assertNotNull(InstanceManager.getDefault(LightManager.class).provideLight("IL1"));
 
         InternalLightManager m = new InternalLightManager() {
-            /**
-             *
-             */
-            private static final long serialVersionUID = 2721638034147721142L;
 
             public String getSystemPrefix() {
                 return "J";
@@ -178,7 +171,7 @@ public class ProxyReporterManagerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", ProxyReporterManagerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -198,7 +191,5 @@ public class ProxyReporterManagerTest extends TestCase {
     protected void tearDown() {
         apps.tests.Log4JFixture.tearDown();
     }
-
-    static Logger log = LoggerFactory.getLogger(ProxyReporterManagerTest.class.getName());
 
 }

@@ -2,8 +2,6 @@
 package jmri.jmrit.operations.locations;
 
 import javax.swing.BorderFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Frame for user edit of a classification/interchange track. Adds two panels to
@@ -23,6 +21,7 @@ public class InterchangeEditFrame extends TrackEditFrame implements java.beans.P
         super();
     }
 
+    @Override
     public void initComponents(Location location, Track track) {
         _type = Track.INTERCHANGE;
 
@@ -47,5 +46,5 @@ public class InterchangeEditFrame extends TrackEditFrame implements java.beans.P
         setVisible(true);
     }
 
-    static Logger log = LoggerFactory.getLogger(InterchangeEditFrame.class.getName());
+//    private final static Logger log = LoggerFactory.getLogger(InterchangeEditFrame.class.getName());
 }

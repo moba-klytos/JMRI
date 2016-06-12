@@ -1,12 +1,9 @@
-// SignalMastRepeater.java
 package jmri.implementation;
 
 /**
  * A simple class that repeaters the state of one SignalMast to another
  *
  * @author	Kevin Dickerson Copyright (C) 2012
- *
- * @version $Revision$
  */
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -141,6 +138,6 @@ public class SignalMastRepeater {
         _slave = null;
     }
 
-    static Logger log = LoggerFactory.getLogger(SignalMastRepeater.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SignalMastRepeater.class.getName());
 
 }

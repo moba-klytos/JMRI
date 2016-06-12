@@ -4,8 +4,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * DCCppReplyTest.java
@@ -14,7 +12,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author	Bob Jacobsen
  * @author	Mark Underwood (C) 2015
- * @version $Revision$
  */
 public class DCCppReplyTest extends TestCase {
 
@@ -62,7 +59,7 @@ public class DCCppReplyTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", DCCppReplyTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -79,7 +76,5 @@ public class DCCppReplyTest extends TestCase {
     protected void tearDown() {
         apps.tests.Log4JFixture.tearDown();
     }
-
-    static Logger log = LoggerFactory.getLogger(DCCppReplyTest.class.getName());
 
 }

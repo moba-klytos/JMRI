@@ -1,12 +1,9 @@
-// BlockManagerTest.java
 package jmri;
 
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the BlockManager class
@@ -15,7 +12,6 @@ import org.slf4j.LoggerFactory;
  * <P>
  * @author Bob Coleman Copyright 2012
  * @author Bob Jacobsen Copyright 2014
- * @version $Revision$
  */
 public class BlockManagerTest extends TestCase {
 
@@ -133,7 +129,7 @@ public class BlockManagerTest extends TestCase {
                 Assert.fail("failed to set speed due to wrong reason: " + ex);
             }
         } finally {
-            jmri.util.JUnitAppender.assertWarnMessage("attempting to set invalid speed: Faster");
+            jmri.util.JUnitAppender.assertWarnMessage("attempting to get speed for invalid name: 'Faster'");
         }
         //Assert.assertEquals("faster block speed", "Faster", InstanceManager.blockManagerInstance().getDefaultSpeed());
         Assert.assertTrue("Expected exception", threw);
@@ -154,7 +150,7 @@ public class BlockManagerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {BlockManagerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -164,15 +160,15 @@ public class BlockManagerTest extends TestCase {
     }
 
     // The minimal setup for log4J
+    @Override
     protected void setUp() throws Exception {
         apps.tests.Log4JFixture.setUp();
         super.setUp();
         jmri.util.JUnitUtil.resetInstanceManager();
     }
 
+    @Override
     protected void tearDown() {
         apps.tests.Log4JFixture.tearDown();
     }
-
-    static Logger log = LoggerFactory.getLogger(BlockManagerTest.class.getName());
 }

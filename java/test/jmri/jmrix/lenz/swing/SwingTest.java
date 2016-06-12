@@ -1,11 +1,8 @@
-// SwingTest.java
 package jmri.jmrix.lenz.swing;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the jmri.jmrix.lenz.swing package
@@ -23,7 +20,7 @@ public class SwingTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {SwingTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -40,9 +37,9 @@ public class SwingTest extends TestCase {
             suite.addTest(jmri.jmrix.lenz.swing.lzv100.LZV100Test.suite());
         }
 
+        suite.addTest(BundleTest.suite());
+
         return suite;
     }
-
-    static Logger log = LoggerFactory.getLogger(SwingTest.class.getName());
 
 }

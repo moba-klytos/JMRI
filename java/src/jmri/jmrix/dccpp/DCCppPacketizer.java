@@ -1,11 +1,8 @@
-/**
- * DCCppPacketizer.java
- */
 package jmri.jmrix.dccpp;
 
+import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Converts Stream-based I/O to/from DCC++ messages. The "DCCppInterface" side
@@ -17,7 +14,6 @@ import java.nio.charset.StandardCharsets;
  * listeners in that same thread. Reception and transmission are handled in
  * dedicated threads by RcvHandler and XmtHandler objects. Those are internal
  * classes defined here. The thread priorities are:
- * <P>
  * <UL>
  * <LI> RcvHandler - at highest available priority
  * <LI> XmtHandler - down one, which is assumed to be above the GUI
@@ -26,7 +22,6 @@ import java.nio.charset.StandardCharsets;
  *
  * @author	Bob Jacobsen Copyright (C) 2001
  * @author	Mark Underwood Copyright (C) 2015
- * @version $Revision$
  *
  * Based on XNetPacketizer by Bob Jacobsen
  *
@@ -55,6 +50,8 @@ public class DCCppPacketizer extends DCCppTrafficController {
      *
      * @param m Message to send;
      */
+    //TODO: Can this method be folded back up into the parent 
+    // DCCppTrafficController class?
     public void sendDCCppMessage(DCCppMessage m, DCCppListener reply) {
         if (m.length() != 0) {
             sendMessage(m, reply);
@@ -68,6 +65,8 @@ public class DCCppPacketizer extends DCCppTrafficController {
      * @param msg The output byte stream
      * @return next location in the stream to fill
      */
+    //TODO: Can this method be folded back up into the parent 
+    // DCCppTrafficController class?
     protected int addHeaderToOutput(byte[] msg, jmri.jmrix.AbstractMRMessage m) {
         if (log.isDebugEnabled()) {
             log.debug("Appending '<' to start of outgoing message. msg length = {}", msg.length);
@@ -89,6 +88,8 @@ public class DCCppPacketizer extends DCCppTrafficController {
      * @param msg    The output byte stream
      * @param offset the first byte not yet used
      */
+    //TODO: Can this method be folded back up into the parent 
+    // DCCppTrafficController class?
     @Override
     protected void addTrailerToOutput(byte[] msg, int offset, jmri.jmrix.AbstractMRMessage m) {
 	log.debug("aTTO offset = {} message = {} msg length = {}", offset, m.toString(), msg.length);
@@ -128,11 +129,13 @@ public class DCCppPacketizer extends DCCppTrafficController {
      * @param istream character source.
      * @throws java.io.IOException when presented by the input source.
      */
+    
+    //TODO: Can this method be folded back up into the parent 
+    // DCCppTrafficController class?
     @Override
     protected void loadChars(jmri.jmrix.AbstractMRReply msg, java.io.DataInputStream istream) throws java.io.IOException {
         int i;
         String m;
-        DCCppReply dm;
         if (log.isDebugEnabled()) {
             log.debug("loading characters from port");
         }
@@ -141,8 +144,6 @@ public class DCCppPacketizer extends DCCppTrafficController {
             log.error("SerialDCCppPacketizer.loadChars called on non-DCCppReply msg!");
             return;
         }
-        
-        dm = (DCCppReply)msg;
         
         byte char1 = readByteProtected(istream);
         m = "";
@@ -168,7 +169,5 @@ public class DCCppPacketizer extends DCCppTrafficController {
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(DCCppPacketizer.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DCCppPacketizer.class.getName());
 }
-
-/* @(#)DCCppPacketizer.java */

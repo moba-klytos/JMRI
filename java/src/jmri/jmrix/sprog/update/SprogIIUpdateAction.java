@@ -1,4 +1,3 @@
-//SprogIIUpdateAction.java
 package jmri.jmrix.sprog.update;
 
 import java.awt.event.ActionEvent;
@@ -10,14 +9,8 @@ import org.slf4j.LoggerFactory;
  * Swing action to create and register a SprogIIUpdateFrame object
  *
  * @author	Andrew crosland Copyright (C) 2004
- * @version	$Revision$
  */
 public class SprogIIUpdateAction extends SprogUpdateAction {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 6594875472044292274L;
 
     public SprogIIUpdateAction(String s) {
         super(s);
@@ -42,9 +35,6 @@ public class SprogIIUpdateAction extends SprogUpdateAction {
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(SprogIIUpdateAction.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SprogIIUpdateAction.class.getName());
 
 }
-
-
-/* @(#)SprogIIUpdateAction.java */

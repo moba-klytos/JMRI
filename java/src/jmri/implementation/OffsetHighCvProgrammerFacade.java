@@ -1,4 +1,3 @@
-// OffsetHighCvProgrammerFacade.java
 package jmri.implementation;
 
 import jmri.ProgListener;
@@ -29,7 +28,6 @@ import org.slf4j.LoggerFactory;
  * @see jmri.implementation.ProgrammerFacadeSelector
  *
  * @author Bob Jacobsen Copyright (C) 2013
- * @version	$Revision: 24246 $
  */
 public class OffsetHighCvProgrammerFacade extends AbstractProgrammerFacade implements ProgListener {
 
@@ -193,6 +191,6 @@ public class OffsetHighCvProgrammerFacade extends AbstractProgrammerFacade imple
         return Integer.parseInt(addr) <= 1024;
     }
 
-    static Logger log = LoggerFactory.getLogger(OffsetHighCvProgrammerFacade.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(OffsetHighCvProgrammerFacade.class.getName());
 
 }

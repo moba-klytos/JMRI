@@ -6,12 +6,12 @@ import jmri.CommandStation;
 import jmri.ConsistManager;
 import jmri.InstanceManager;
 import jmri.LightManager;
+import jmri.MultiMeter;
 import jmri.PowerManager;
 import jmri.ProgrammerManager;
 import jmri.SensorManager;
 import jmri.ThrottleManager;
 import jmri.TurnoutManager;
-import jmri.MultiMeter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -303,7 +303,7 @@ public class DCCppSystemConnectionMemo extends jmri.jmrix.SystemConnectionMemo {
         super.dispose();
     }
 
-    static Logger log = LoggerFactory.getLogger(DCCppSystemConnectionMemo.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DCCppSystemConnectionMemo.class.getName());
 
 }
 /* @(#)DCCppSystemConnectionMemo.java */

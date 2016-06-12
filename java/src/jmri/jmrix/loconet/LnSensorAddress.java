@@ -138,7 +138,6 @@ public class LnSensorAddress {
     /**
      * Update a LocoNet message to have this address.
      *
-     * @param m
      */
     public void insertAddress(LocoNetMessage m) {
         m.setElement(1, getLowBits());
@@ -263,7 +262,7 @@ public class LnSensorAddress {
         return prefix + "S" + (asInt() / 16) + letter + digit;
     }
 
-    static Logger log = LoggerFactory.getLogger(LnSensorAddress.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(LnSensorAddress.class.getName());
 
 }
 

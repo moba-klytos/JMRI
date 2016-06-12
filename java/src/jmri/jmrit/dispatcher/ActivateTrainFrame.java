@@ -1,4 +1,4 @@
-// ActivateTrainFrame.java
+// ActivateTrainFrame.java 
 package jmri.jmrit.dispatcher;
 
 import java.awt.Container;
@@ -748,8 +748,8 @@ public class ActivateTrainFrame {
             if (free) {
                 String tName = t.getSystemName();
                 transitBoxList.add(t);
-                if ((t.getUserName() != null) && (!t.getUserName().equals(""))) {
-                    tName = tName + "( " + t.getUserName() + " )";
+                if ((t.getUserName() != null) && (!t.getUserName().equals("")) && (!t.getUserName().equals(tName))) {
+                    tName = tName + "(" + t.getUserName() + ")";
                 }
                 transitSelectBox.addItem(tName);
             }
@@ -877,8 +877,8 @@ public class ActivateTrainFrame {
         if (b != null) {
             String sName = b.getSystemName();
             String uName = b.getUserName();
-            if ((uName != null) && (uName != "")) {
-                return (sName + "( " + uName + " )");
+            if ((uName != null) && (!uName.equals("")) && (!uName.equals(sName))) {
+                return (sName + "(" + uName + ")");
             }
             return sName;
         }
@@ -1328,5 +1328,5 @@ public class ActivateTrainFrame {
         // Note: the order above must correspond to the numbers in AutoActiveTrain.java
     }
 
-    static Logger log = LoggerFactory.getLogger(ActivateTrainFrame.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(ActivateTrainFrame.class.getName());
 }

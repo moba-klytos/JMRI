@@ -29,14 +29,9 @@ import org.slf4j.LoggerFactory;
  * configuring a loco to run somewhere else.
  *
  * @author Bob Jacobsen Copyright (C) 2005
- * @version $Revision$
  */
 public class DccLocoAddressSelector extends JPanel {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -4741955850069067809L;
     JComboBox<String> box = null;
     JTextField text = new JTextField();
 
@@ -281,5 +276,5 @@ public class DccLocoAddressSelector extends JPanel {
 
     final static ResourceBundle rb = ResourceBundle.getBundle("jmri.jmrit.DccLocoAddressSelectorBundle");
 
-    static Logger log = LoggerFactory.getLogger(DccLocoAddressSelector.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DccLocoAddressSelector.class.getName());
 }

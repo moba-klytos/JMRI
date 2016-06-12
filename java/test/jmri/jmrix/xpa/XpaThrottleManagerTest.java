@@ -4,8 +4,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * XpaThrottleManagerTest.java
@@ -17,8 +15,10 @@ import org.slf4j.LoggerFactory;
  */
 public class XpaThrottleManagerTest extends TestCase {
 
+    XpaSystemConnectionMemo memo = null;
+
     public void testCtor() {
-        XpaThrottleManager t = new XpaThrottleManager();
+        XpaThrottleManager t = new XpaThrottleManager(memo);
         Assert.assertNotNull(t);
     }
 
@@ -30,7 +30,7 @@ public class XpaThrottleManagerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", XpaThrottleManagerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -42,12 +42,13 @@ public class XpaThrottleManagerTest extends TestCase {
     // The minimal setup for log4J
     protected void setUp() {
         apps.tests.Log4JFixture.setUp();
+        memo = new XpaSystemConnectionMemo();
+        memo.setXpaTrafficController(new XpaTrafficController());
     }
 
     protected void tearDown() {
         apps.tests.Log4JFixture.tearDown();
+        memo = null;
     }
-
-    static Logger log = LoggerFactory.getLogger(XpaThrottleManagerTest.class.getName());
 
 }

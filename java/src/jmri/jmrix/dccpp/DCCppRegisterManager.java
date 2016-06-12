@@ -4,8 +4,6 @@
 
 package jmri.jmrix.dccpp;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Defines and Manages the Registers (~ slots) for DCC++ Base Station
@@ -14,6 +12,15 @@ import org.slf4j.LoggerFactory;
  * @version	$Revision$
  *
  */
+
+/* A few notes on implementation
+ *
+ * This class is used by the DCCppCommandStation to allocate/free and keep
+ * track of the registers in the BaseStation.  This is assuming the BaseStation
+ * doesn't provide its own method of allocating registers.  It would be better
+ * if the BaseStation handled this, since there may be more than just JMRI
+ * asking for slots.
+*/
 
 public class DCCppRegisterManager {
 
@@ -67,11 +74,6 @@ public class DCCppRegisterManager {
     public int getRegisterAddress(int num) {
 	return(registers[num-1].getAddress());
     }
-
-    /*
-     * We need to register for logging
-     */
-    static Logger log = LoggerFactory.getLogger(DCCppRegisterManager.class.getName());
 
 }
 

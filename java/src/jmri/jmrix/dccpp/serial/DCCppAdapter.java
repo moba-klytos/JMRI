@@ -1,4 +1,3 @@
-// DCCppAdapter.java
 package jmri.jmrix.dccpp.serial;
 
 import gnu.io.CommPortIdentifier;
@@ -6,21 +5,15 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import java.io.DataInputStream;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import jmri.jmrix.dccpp.DCCppCommandStation;
+import jmri.jmrix.dccpp.DCCppInitializationManager;
 import jmri.jmrix.dccpp.DCCppSerialPortController;
 import jmri.jmrix.dccpp.DCCppTrafficController;
-import jmri.jmrix.dccpp.DCCppPacketizer;
-import jmri.jmrix.dccpp.DCCppInitializationManager;
-/*
- * TODO: Replace these with DCC++ equivalents
- *
-import jmri.jmrix.lenz.XNetInitializationManager;
-*/
 import jmri.util.SerialUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +23,6 @@ import org.slf4j.LoggerFactory;
  * Normally controlled by the lenz.liusb.LIUSBFrame class.
  *
  * @author	Mark Underwood Copyright (C) 2015
- * @version	$Revision$
  *
  * Based on jmri.jmirx.lenz.liusb.LIUSBAdapter by Paul Bender
  */
@@ -38,9 +30,9 @@ public class DCCppAdapter extends DCCppSerialPortController implements jmri.jmri
 
     public DCCppAdapter() {
         super();
-        option1Name = "FlowControl";
-        options.put(option1Name, new Option("DCC++ connection uses : ", validOption1));
-        this.manufacturerName = jmri.jmrix.DCCManufacturerList.DCCPP;
+        //option1Name = "FlowControl";
+        //options.put(option1Name, new Option("DCC++ connection uses : ", validOption1));
+        this.manufacturerName = jmri.jmrix.dccpp.DCCppConnectionTypeList.DCCPP;
     }
 
     public String openPort(String portName, String appName) {
@@ -74,12 +66,7 @@ public class DCCppAdapter extends DCCppSerialPortController implements jmri.jmri
             serialStream = activeSerialPort.getInputStream();
 
             // purge contents, if any
-            int count = serialStream.available();
-            log.debug("input stream shows " + count + " bytes available");
-            while (count > 0) {
-                serialStream.skip(count);
-                count = serialStream.available();
-            }
+            purgeStream(serialStream);
 
             // report status?
             if (log.isInfoEnabled()) {
@@ -294,11 +281,11 @@ public class DCCppAdapter extends DCCppSerialPortController implements jmri.jmri
         activeSerialPort.setDTR(true);		// pin 1 in DIN8; on main connector, this is DTR
 
         // find and configure flow control
-        int flow = SerialPort.FLOWCONTROL_RTSCTS_OUT; // default, but also deftaul for getOptionState(option1Name)
-        //int flow = SerialPort.FLOWCONTROL_NONE; // default, but also deftaul for getOptionState(option1Name)
-        if (!getOptionState(option1Name).equals(validOption1[0])) {
-            flow = SerialPort.FLOWCONTROL_NONE;
-        }
+        //int flow = SerialPort.FLOWCONTROL_RTSCTS_OUT; // default, but also deftaul for getOptionState(option1Name)
+        int flow = SerialPort.FLOWCONTROL_NONE;
+//        if (!getOptionState(option1Name).equals(validOption1[0])) {
+//            flow = SerialPort.FLOWCONTROL_NONE;
+//        }
         activeSerialPort.setFlowControlMode(flow);
         //if (getOptionState(option2Name).equals(validOption2[0]))
         //    checkBuffer = true;
@@ -308,7 +295,7 @@ public class DCCppAdapter extends DCCppSerialPortController implements jmri.jmri
      * Get an array of valid baud rates. This is currently just a message saying
      * its fixed
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EI_EXPOSE_REP") // OK to expose array instead of copy until Java 1.6
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP") // OK to expose array instead of copy until Java 1.6
     public String[] validBaudRates() {
         return validSpeeds;
     }
@@ -317,7 +304,8 @@ public class DCCppAdapter extends DCCppSerialPortController implements jmri.jmri
     protected int[] validSpeedValues = new int[]{115200};
 
     // meanings are assigned to these above, so make sure the order is consistent
-    protected String[] validOption1 = new String[]{"hardware flow control", "no flow control"};
+//    protected String[] validOption1 = new String[]{"hardware flow control", "no flow control"};
+    protected String[] validOption1 = new String[]{"no flow control"};
 
     private boolean opened = false;
     InputStream serialStream = null;
@@ -331,6 +319,6 @@ public class DCCppAdapter extends DCCppSerialPortController implements jmri.jmri
     }
     static volatile DCCppAdapter mInstance = null; // TODO: Rename this?
 
-    static Logger log = LoggerFactory.getLogger(DCCppAdapter.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DCCppAdapter.class.getName());
 
 }

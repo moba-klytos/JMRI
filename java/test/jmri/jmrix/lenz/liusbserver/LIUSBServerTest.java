@@ -1,11 +1,8 @@
-// LIUSBServerTest.java
 package jmri.jmrix.lenz.liusbserver;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the jmri.jmrix.lenz.liusbserver package
@@ -23,7 +20,7 @@ public class LIUSBServerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {LIUSBServerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -33,7 +30,5 @@ public class LIUSBServerTest extends TestCase {
         suite.addTest(new TestSuite(LIUSBServerXNetPacketizerTest.class));
         return suite;
     }
-
-    static Logger log = LoggerFactory.getLogger(LIUSBServerTest.class.getName());
 
 }

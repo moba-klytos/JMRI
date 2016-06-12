@@ -159,7 +159,7 @@ public class SprogThrottle extends AbstractThrottle {
     }
 
     /**
-     * Set the speed & direction.
+     * Set the speed {@literal &} direction.
      * <P>
      * This intentionally skips the emergency stop value of 1 in 128 step mode
      * and the stop and estop values 1-3 in 28 step mode.
@@ -255,6 +255,6 @@ public class SprogThrottle extends AbstractThrottle {
     }
 
     // initialize logging
-    static Logger log = LoggerFactory.getLogger(SprogThrottle.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SprogThrottle.class.getName());
 
 }

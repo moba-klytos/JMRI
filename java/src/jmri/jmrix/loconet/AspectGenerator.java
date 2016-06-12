@@ -71,7 +71,7 @@ public class AspectGenerator implements java.beans.PropertyChangeListener {
     /**
      * Access the state of a specific head
      *
-     * @param num Head number 0 -> getNumHeads()-1
+     * @param num Head number {@code 0 -> getNumHeads()-1}
      * @return A SignalHead-defined constant
      */
     public int getHeadState(int num) {
@@ -186,7 +186,7 @@ public class AspectGenerator implements java.beans.PropertyChangeListener {
         pcs.removePropertyChangeListener(l);
     }
 
-    static Logger log = LoggerFactory.getLogger(AspectGenerator.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(AspectGenerator.class.getName());
 
     // for now, this is an internal class
     static class Aspect {

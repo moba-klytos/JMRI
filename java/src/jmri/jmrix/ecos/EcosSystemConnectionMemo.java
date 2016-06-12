@@ -3,8 +3,6 @@ package jmri.jmrix.ecos;
 
 import java.util.ResourceBundle;
 import jmri.InstanceManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Lightweight class to denote that a system is active, and provide general
@@ -61,7 +59,7 @@ public class EcosSystemConnectionMemo extends jmri.jmrix.SystemConnectionMemo {
     public void configureManagers() {
 
         powerManager = new jmri.jmrix.ecos.EcosPowerManager(getTrafficController());
-        jmri.InstanceManager.setPowerManager(powerManager);
+        jmri.InstanceManager.store(powerManager, jmri.PowerManager.class);
 
         turnoutManager = new jmri.jmrix.ecos.EcosTurnoutManager(this);
         jmri.InstanceManager.setTurnoutManager(turnoutManager);
@@ -223,8 +221,6 @@ public class EcosSystemConnectionMemo extends jmri.jmrix.SystemConnectionMemo {
 
         super.dispose();
     }
-
-    static Logger log = LoggerFactory.getLogger(EcosSystemConnectionMemo.class.getName());
 }
 
 

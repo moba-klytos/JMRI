@@ -1,4 +1,3 @@
-// CvValueTest.java
 package jmri.jmrit.symbolicprog;
 
 import jmri.progdebugger.ProgDebugger;
@@ -15,7 +14,6 @@ import jmri.util.JUnitUtil;
  * Test CvValue class
  *
  * @author	Bob Jacobsen Copyright 2004, 2006, 2015
- * @version $Revision$
  */
 public class CvValueTest extends TestCase {
 
@@ -125,7 +123,7 @@ public class CvValueTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", CvValueTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -134,7 +132,7 @@ public class CvValueTest extends TestCase {
         return suite;
     }
 
-    static Logger log = LoggerFactory.getLogger(CvValueTest.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(CvValueTest.class.getName());
 
     // The minimal setup for log4J
     protected void setUp() {

@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
  * method here.
  *
  * @author Bob Jacobsen Copyright: Copyright (c) 2003, 2006, 2007
- * @version $Revision$
  */
 public class SerialSensorManagerXml extends jmri.managers.configurexml.AbstractSensorManagerConfigXML {
 
@@ -37,5 +36,5 @@ public class SerialSensorManagerXml extends jmri.managers.configurexml.AbstractS
         return loadSensors(shared);
     }
 
-    static Logger log = LoggerFactory.getLogger(SerialSensorManagerXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SerialSensorManagerXml.class.getName());
 }

@@ -1,4 +1,3 @@
-// EntryPoint.java
 package jmri;
 
 import org.slf4j.Logger;
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory;
  * Entry Point is loaded from a configuration file.
  *
  * @author	Dave Duchamp Copyright (C) 2008
- * @version	$Revision$
  */
 public class EntryPoint {
 
@@ -153,7 +151,5 @@ public class EntryPoint {
         return mFromBlockDirection;
     }
 
-    static Logger log = LoggerFactory.getLogger(EntryPoint.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(EntryPoint.class.getName());
 }
-
-/* @(#)EntryPoint.java */

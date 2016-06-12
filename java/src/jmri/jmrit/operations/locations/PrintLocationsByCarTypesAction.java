@@ -53,6 +53,7 @@ public class PrintLocationsByCarTypesAction extends AbstractAction {
     boolean isPreview;
     HardcopyWriter writer;
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         // obtain a HardcopyWriter
         try {
@@ -101,6 +102,6 @@ public class PrintLocationsByCarTypesAction extends AbstractAction {
         }
     }
 
-    static Logger log = LoggerFactory
+    private final static Logger log = LoggerFactory
             .getLogger(PrintLocationsByCarTypesAction.class.getName());
 }

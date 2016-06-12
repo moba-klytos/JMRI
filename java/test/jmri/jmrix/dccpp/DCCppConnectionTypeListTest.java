@@ -4,8 +4,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * DCCppConnectionTypeListTest.java
@@ -14,7 +12,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author	Paul Bender
  * @author	Mark Underwood
- * @version $Revision$
  */
 public class DCCppConnectionTypeListTest extends TestCase {
 
@@ -32,7 +29,7 @@ public class DCCppConnectionTypeListTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", DCCppConnectionTypeListTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -49,7 +46,5 @@ public class DCCppConnectionTypeListTest extends TestCase {
     protected void tearDown() {
         apps.tests.Log4JFixture.tearDown();
     }
-
-    static Logger log = LoggerFactory.getLogger(DCCppConnectionTypeListTest.class.getName());
 
 }

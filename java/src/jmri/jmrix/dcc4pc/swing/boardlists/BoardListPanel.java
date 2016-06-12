@@ -183,7 +183,7 @@ public class BoardListPanel extends jmri.jmrix.dcc4pc.swing.Dcc4PcPanel implemen
                 return rb.getString("ColumnDescription");
             }
             if (col == EDIT_COLUMN) {
-                return rb.getString("ColumnEdit");
+                return rb.getString(""); //no title above Edit buttons
             }
             return "";
         }
@@ -350,6 +350,6 @@ public class BoardListPanel extends jmri.jmrix.dcc4pc.swing.Dcc4PcPanel implemen
         }
     }
 
-    static final Logger log = LoggerFactory.getLogger(BoardListPanel.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(BoardListPanel.class.getName());
 
 }

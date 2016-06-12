@@ -5,7 +5,6 @@
 package jmri.web.servlet.panel;
 
 import java.util.List;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import jmri.configurexml.ConfigXmlManager;
 import jmri.jmris.json.JSON;
@@ -15,6 +14,8 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -23,6 +24,7 @@ import org.jdom2.output.XMLOutputter;
 public class ControlPanelServlet extends AbstractPanelServlet {
 
     private static final long serialVersionUID = -8086671279145186127L;
+    private final static Logger log = LoggerFactory.getLogger(ControlPanelServlet.class);
 
     @Override
     protected String getPanelType() {
@@ -101,10 +103,5 @@ public class ControlPanelServlet extends AbstractPanelServlet {
     protected String getJsonPanel(String name) {
         // TODO Auto-generated method stub
         return "ERROR JSON support not implemented";
-    }
-
-    @Override
-    protected JComponent getPanel(String name) {
-        return ((ControlPanelEditor) getEditor(name)).getTargetPanel();
     }
 }

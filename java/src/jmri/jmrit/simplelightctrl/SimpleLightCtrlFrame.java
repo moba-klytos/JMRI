@@ -345,7 +345,6 @@ public class SimpleLightCtrlFrame extends jmri.util.JmriJFrame implements java.b
     /**
      * handles request to update status
      *
-     * @param e
      */
     public void statusButtonActionPerformed(java.awt.event.ActionEvent e) {
         // load address from switchAddrTextField
@@ -460,5 +459,5 @@ public class SimpleLightCtrlFrame extends jmri.util.JmriJFrame implements java.b
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(SimpleLightCtrlFrame.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SimpleLightCtrlFrame.class.getName());
 }

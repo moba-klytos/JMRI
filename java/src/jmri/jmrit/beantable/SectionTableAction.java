@@ -1,11 +1,10 @@
-// SectionTableAction.java
 package jmri.jmrit.beantable;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.ResourceBundle;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -57,15 +56,9 @@ import org.slf4j.LoggerFactory;
  * <P>
  *
  * @author	Dave Duchamp Copyright (C) 2008, 2011
- * @version $Revision$
+ * @author GT 2009
  */
-// GT - 12-Oct-2009 - Added "Entry Block" column in entryPointTable
 public class SectionTableAction extends AbstractTableAction {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 8024377620599551244L;
 
     /**
      * Create an action with a specific title.
@@ -73,7 +66,7 @@ public class SectionTableAction extends AbstractTableAction {
      * Note that the argument is the Action title, not the title of the
      * resulting frame. Perhaps this should be changed?
      *
-     * @param actionName
+     * @param actionName title of the action
      */
     public SectionTableAction(String actionName) {
         super(actionName);
@@ -86,11 +79,10 @@ public class SectionTableAction extends AbstractTableAction {
     }
 
     public SectionTableAction() {
-        this(rb.getString("TitleSectionTable"));
+        this(Bundle.getMessage("TitleSectionTable"));
     }
 
-    static final ResourceBundle rbx = ResourceBundle
-            .getBundle("jmri.jmrit.beantable.SectionTransitTableBundle");
+    static final ResourceBundle rbx = ResourceBundle.getBundle("jmri.jmrit.beantable.SectionTransitTableBundle");
 
     /**
      * Create the JTable DataModel, along with the changes for the specific case
@@ -99,10 +91,6 @@ public class SectionTableAction extends AbstractTableAction {
     protected void createModel() {
         m = new BeanTableDataModel() {
 
-            /**
-             *
-             */
-            private static final long serialVersionUID = 7958656807666017548L;
             static public final int BEGINBLOCKCOL = NUMCOLUMN;
             static public final int ENDBLOCKCOL = BEGINBLOCKCOL + 1;
             static public final int EDITCOL = ENDBLOCKCOL + 1;
@@ -169,7 +157,7 @@ public class SectionTableAction extends AbstractTableAction {
                         }
                     }
                 } else if (col == EDITCOL) {
-                    return rb.getString("ButtonEdit");
+                    return Bundle.getMessage("ButtonEdit");
                 } else {
                     return super.getValueAt(row, col);
                 }
@@ -290,7 +278,7 @@ public class SectionTableAction extends AbstractTableAction {
     }
 
     protected void setTitle() {
-        f.setTitle(f.rb.getString("TitleSectionTable"));
+        f.setTitle(Bundle.getMessage("TitleSectionTable"));
     }
 
     protected String helpTarget() {
@@ -323,9 +311,9 @@ public class SectionTableAction extends AbstractTableAction {
     JTextField sysName = new JTextField(5);
     JLabel sysNameFixed = new JLabel("");
     JTextField userName = new JTextField(17);
-    JLabel sysNameLabel = new JLabel(rb.getString("LabelSystemName"));
-    JLabel userNameLabel = new JLabel(rb.getString("LabelUserName"));
-    JCheckBox _autoSystemName = new JCheckBox(rb.getString("LabelAutoSysName"));
+    JLabel sysNameLabel = new JLabel(Bundle.getMessage("LabelSystemName"));
+    JLabel userNameLabel = new JLabel(Bundle.getMessage("LabelUserName"));
+    JCheckBox _autoSystemName = new JCheckBox(Bundle.getMessage("LabelAutoSysName"));
     jmri.UserPreferencesManager pref;
     JButton create = null;
     JButton update = null;
@@ -371,7 +359,7 @@ public class SectionTableAction extends AbstractTableAction {
     void addEditPressed() {
         pref = jmri.InstanceManager.getDefault(jmri.UserPreferencesManager.class);
         if (addFrame == null) {
-            addFrame = new JmriJFrame(rb.getString("TitleAddSection"));
+            addFrame = new JmriJFrame(Bundle.getMessage("TitleAddSection"));
             addFrame.addHelpMenu("package.jmri.jmrit.beantable.SectionAddEdit", true);
             addFrame.getContentPane().setLayout(new BoxLayout(addFrame.getContentPane(), BoxLayout.Y_AXIS));
             JPanel p = new JPanel();
@@ -550,21 +538,21 @@ public class SectionTableAction extends AbstractTableAction {
             JButton cancel = null;
             JPanel pb = new JPanel();
             pb.setLayout(new FlowLayout());
-            pb.add(cancel = new JButton(rb.getString("ButtonCancel")));
+            pb.add(cancel = new JButton(Bundle.getMessage("ButtonCancel")));
             cancel.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     cancelPressed(e);
                 }
             });
             cancel.setToolTipText(rbx.getString("CancelButtonHint"));
-            pb.add(create = new JButton(rb.getString("ButtonCreate")));
+            pb.add(create = new JButton(Bundle.getMessage("ButtonCreate")));
             create.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     createPressed(e);
                 }
             });
             create.setToolTipText(rbx.getString("SectionCreateButtonHint"));
-            pb.add(update = new JButton(rb.getString("ButtonUpdate")));
+            pb.add(update = new JButton(Bundle.getMessage("ButtonUpdate")));
             update.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     updatePressed(e);
@@ -640,13 +628,13 @@ public class SectionTableAction extends AbstractTableAction {
         reverseSensorField.setText(curSection.getReverseBlockingSensorName());
         forwardStopSensorField.setText(curSection.getForwardStoppingSensorName());
         reverseStopSensorField.setText(curSection.getReverseStoppingSensorName());
-        ArrayList<EntryPoint> list = (ArrayList<EntryPoint>) curSection.getForwardEntryPointList();
+        List<EntryPoint> list = curSection.getForwardEntryPointList();
         if (list.size() > 0) {
             for (int j = 0; j < list.size(); j++) {
                 entryPointList.add(list.get(j));
             }
         }
-        list = (ArrayList<EntryPoint>) curSection.getReverseEntryPointList();
+        list = curSection.getReverseEntryPointList();
         if (list.size() > 0) {
             for (int j = 0; j < list.size(); j++) {
                 entryPointList.add(list.get(j));
@@ -681,7 +669,7 @@ public class SectionTableAction extends AbstractTableAction {
             } else {
                 curSection = sectionManager.createNewSection(sName, uName);
             }
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             // user input no good
             if (_autoSystemName.isSelected()) {
                 handleCreateException(uName);
@@ -707,9 +695,9 @@ public class SectionTableAction extends AbstractTableAction {
     void handleCreateException(String sysName) {
         javax.swing.JOptionPane.showMessageDialog(addFrame,
                 java.text.MessageFormat.format(
-                        rb.getString("ErrorLightAddFailed"),
+                        Bundle.getMessage("ErrorLightAddFailed"),
                         new Object[]{sysName}),
-                rb.getString("ErrorTitle"),
+                Bundle.getMessage("ErrorTitle"),
                 javax.swing.JOptionPane.ERROR_MESSAGE);
     }
     
@@ -923,7 +911,7 @@ public class SectionTableAction extends AbstractTableAction {
     }
 
     private void initializeBlockCombo() {
-        ArrayList<String> allBlocks = (ArrayList<String>) blockManager.getSystemNameList();
+        List<String> allBlocks = blockManager.getSystemNameList();
         blockBox.removeAllItems();
         for (int j = blockBoxList.size(); j > 0; j--) {
             blockBoxList.remove(j - 1);
@@ -970,7 +958,7 @@ public class SectionTableAction extends AbstractTableAction {
 
     private boolean connected(Block b1, Block b2) {
         if ((b1 != null) && (b2 != null)) {
-            ArrayList<Path> paths = (ArrayList<Path>) b1.getPaths();
+            List<Path> paths = b1.getPaths();
             for (int i = 0; i < paths.size(); i++) {
                 if (paths.get(i).getBlock() == b2) {
                     return true;
@@ -991,7 +979,7 @@ public class SectionTableAction extends AbstractTableAction {
             // cycle through Blocks to find Entry Points
             for (int i = 0; i < blockList.size(); i++) {
                 Block sb = blockList.get(i);
-                ArrayList<Path> paths = (ArrayList<Path>) sb.getPaths();
+                List<Path> paths = sb.getPaths();
                 for (int j = 0; j < paths.size(); j++) {
                     Path p = paths.get(j);
                     if (!inSection(p.getBlock())) {
@@ -1086,13 +1074,13 @@ public class SectionTableAction extends AbstractTableAction {
     private void deleteSectionPressed(String sName) {
         final Section s = jmri.InstanceManager.sectionManagerInstance().getBySystemName(sName);
         String fullName = sName;
-        if (s.getUserName().length() > 0) {
+        if (s.getUserName() != null && s.getUserName().length() > 0) {
             fullName = fullName + "(" + s.getUserName() + ")";
         }
         ArrayList<Transit> affectedTransits = jmri.InstanceManager.transitManagerInstance().getListUsingSection(s);
         final JDialog dialog = new JDialog();
         String msg = "";
-        dialog.setTitle(AbstractTableAction.rb.getString("WarningTitle"));
+        dialog.setTitle(Bundle.getMessage("WarningTitle"));
         dialog.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
         JPanel p1 = new JPanel();
@@ -1296,11 +1284,6 @@ public class SectionTableAction extends AbstractTableAction {
     public class BlockTableModel extends javax.swing.table.AbstractTableModel implements
             java.beans.PropertyChangeListener {
 
-        /**
-         *
-         */
-        private static final long serialVersionUID = 3125125881974648842L;
-
         public static final int SNAME_COLUMN = 0;
 
         public static final int UNAME_COLUMN = 1;
@@ -1336,9 +1319,9 @@ public class SectionTableAction extends AbstractTableAction {
         public String getColumnName(int col) {
             switch (col) {
                 case SNAME_COLUMN:
-                    return rb.getString("LabelSystemName");
+                    return Bundle.getMessage("LabelSystemName");
                 case UNAME_COLUMN:
-                    return rb.getString("LabelUserName");
+                    return Bundle.getMessage("LabelUserName");
                 default:
                     return "";
             }
@@ -1390,11 +1373,6 @@ public class SectionTableAction extends AbstractTableAction {
      * Table model for Entry Points in Create/Edit Section window
      */
     public class EntryPointTableModel extends javax.swing.table.AbstractTableModel {
-
-        /**
-         *
-         */
-        private static final long serialVersionUID = -255007909450019689L;
 
         public static final int BLOCK_COLUMN = 0;
 
@@ -1510,10 +1488,8 @@ public class SectionTableAction extends AbstractTableAction {
     }
 
     public String getClassDescription() {
-        return rb.getString("TitleSectionTable");
+        return Bundle.getMessage("TitleSectionTable");
     }
 
-    static final Logger log = LoggerFactory.getLogger(SectionTableAction.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SectionTableAction.class.getName());
 }
-
-/* @(#)SectionTableAction.java */

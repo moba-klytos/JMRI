@@ -1,4 +1,3 @@
-// WaitHandlerTest.java
 package jmri.util;
 
 import java.util.Calendar;
@@ -228,7 +227,7 @@ public class WaitHandlerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", WaitHandlerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -248,6 +247,6 @@ public class WaitHandlerTest extends TestCase {
         super.tearDown();
     }
 
-    static Logger log = LoggerFactory.getLogger(WaitHandlerTest.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(WaitHandlerTest.class.getName());
 
 }

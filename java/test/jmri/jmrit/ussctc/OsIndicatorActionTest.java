@@ -1,10 +1,7 @@
-// OsIndicatorActionTest.java
 package jmri.jmrit.ussctc;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for classes in the jmri.jmrit.ussctc.OsIndicatorAction class
@@ -30,7 +27,7 @@ public class OsIndicatorActionTest extends jmri.util.SwingTestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {OsIndicatorActionTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -51,7 +48,5 @@ public class OsIndicatorActionTest extends jmri.util.SwingTestCase {
         jmri.util.JUnitUtil.resetInstanceManager();
         apps.tests.Log4JFixture.tearDown();
     }
-
-    static Logger log = LoggerFactory.getLogger(OsIndicatorActionTest.class.getName());
 
 }

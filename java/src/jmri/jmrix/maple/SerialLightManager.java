@@ -50,14 +50,14 @@ public class SerialLightManager extends AbstractLightManager {
         }
         String conflict = "";
         conflict = SerialAddress.isOutputBitFree(bitNum);
-        if (conflict != "") {
+        if (!conflict.equals("")) {
             log.error("Assignment conflict with " + conflict + ".  Light not created.");
             notifyLightCreationError(conflict, bitNum);
             return (null);
         }
         // Validate the systemName
         String sysName = SerialAddress.normalizeSystemName(systemName);
-        if (sysName == "") {
+        if (sysName.equals("")) {
             log.error("error when normalizing system name " + systemName);
             return null;
         }
@@ -123,7 +123,7 @@ public class SerialLightManager extends AbstractLightManager {
     }
     static SerialLightManager _instance = null;
 
-    static Logger log = LoggerFactory.getLogger(SerialLightManager.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SerialLightManager.class.getName());
 
 }
 

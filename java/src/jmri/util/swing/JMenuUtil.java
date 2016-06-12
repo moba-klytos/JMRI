@@ -1,4 +1,3 @@
-// JMenuUtil.java
 package jmri.util.swing;
 
 import java.beans.PropertyChangeListener;
@@ -22,7 +21,6 @@ import org.slf4j.LoggerFactory;
  * XML definition
  *
  * @author Bob Jacobsen Copyright 2003, 2010
- * @version $Revision$
  * @since 2.9.4
  */
 public class JMenuUtil extends GuiUtilBase {
@@ -192,5 +190,5 @@ public class JMenuUtil extends GuiUtilBase {
         return kcode;
     }
 
-    static Logger log = LoggerFactory.getLogger(JMenuUtil.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(JMenuUtil.class.getName());
 }

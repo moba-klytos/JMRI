@@ -32,6 +32,9 @@ public class LIUSBServerXNetPacketizer extends XNetPacketizer {
     /**
      * Actually transmits the next message to the port
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = {"UW_UNCOND_WAIT"},
+             justification = "Wait is for external hardware, which doesn't necessarilly respond, to process the data.")
+
     protected void forwardToPort(AbstractMRMessage m, AbstractMRListener reply) {
         if (log.isDebugEnabled()) {
             log.debug("forwardToPort message: [{}]", m);
@@ -82,7 +85,7 @@ public class LIUSBServerXNetPacketizer extends XNetPacketizer {
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(LIUSBServerXNetPacketizer.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(LIUSBServerXNetPacketizer.class.getName());
 }
 
 /* @(#)XnTcpXNetPacketizer.java */

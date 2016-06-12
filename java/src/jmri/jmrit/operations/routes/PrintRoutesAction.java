@@ -7,6 +7,8 @@ import java.text.MessageFormat;
 import java.util.List;
 import jmri.jmrit.operations.setup.Control;
 import jmri.util.davidflanagan.HardcopyWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Action to print all of the routes used in operations.
@@ -21,11 +23,13 @@ public class PrintRoutesAction extends PrintRouteAction {
      */
     private static final long serialVersionUID = 6083754676592916495L;
     private static final char FORM_FEED = '\f';
+    private final static Logger log = LoggerFactory.getLogger(PrintRoutesAction.class);
 
     public PrintRoutesAction(String actionName, boolean preview) {
         super(actionName, preview, null);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         log.debug("Print all routes");
         // obtain a HardcopyWriter to do this

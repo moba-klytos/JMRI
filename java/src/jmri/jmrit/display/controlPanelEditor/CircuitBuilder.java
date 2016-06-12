@@ -1073,7 +1073,7 @@ public class CircuitBuilder {
         block.dispose();
     }
 
-    /**
+    /*
      * *************** Overriden methods of Editor *******************
      *
      * public void paintTargetPanel(Graphics g) { Graphics2D g2d =
@@ -1733,5 +1733,5 @@ public class CircuitBuilder {
         return panel;
     }
 
-    static Logger log = LoggerFactory.getLogger(CircuitBuilder.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(CircuitBuilder.class.getName());
 }

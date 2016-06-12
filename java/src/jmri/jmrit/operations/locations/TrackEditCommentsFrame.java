@@ -93,6 +93,7 @@ public class TrackEditCommentsFrame extends OperationsFrame {
     }
 
     // Buttons
+    @Override
     public void buttonActionPerformed(java.awt.event.ActionEvent ae) {
         if (ae.getSource() == saveButton) {
             _track.setCommentBoth(commentBothTextArea.getText());
@@ -106,6 +107,6 @@ public class TrackEditCommentsFrame extends OperationsFrame {
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(TrainSwitchListEditFrame.class
+    private final static Logger log = LoggerFactory.getLogger(TrainSwitchListEditFrame.class
             .getName());
 }

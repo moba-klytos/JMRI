@@ -83,6 +83,7 @@ public class RouteCopyFrame extends OperationsFrame {
         routeBox.setSelectedItem(routeManager.getRouteByName(routeName));
     }
 
+    @Override
     public void buttonActionPerformed(java.awt.event.ActionEvent ae) {
         if (ae.getSource() == copyButton) {
             log.debug("copy route button activated");
@@ -147,10 +148,11 @@ public class RouteCopyFrame extends OperationsFrame {
         return true;
     }
 
+    @Override
     public void dispose() {
         super.dispose();
     }
 
-    static Logger log = LoggerFactory.getLogger(RouteCopyFrame.class
+    private final static Logger log = LoggerFactory.getLogger(RouteCopyFrame.class
             .getName());
 }

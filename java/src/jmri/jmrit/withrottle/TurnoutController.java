@@ -142,7 +142,6 @@ public class TurnoutController extends AbstractController implements PropertyCha
 
     /**
      *
-     * @param evt
      */
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("KnownState")) {
@@ -192,5 +191,5 @@ public class TurnoutController extends AbstractController implements PropertyCha
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(TurnoutController.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(TurnoutController.class.getName());
 }

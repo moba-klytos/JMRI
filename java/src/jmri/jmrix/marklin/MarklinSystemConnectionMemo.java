@@ -3,8 +3,6 @@ package jmri.jmrix.marklin;
 
 import java.util.ResourceBundle;
 import jmri.InstanceManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Lightweight class to denote that a system is active, and provide general
@@ -59,7 +57,7 @@ public class MarklinSystemConnectionMemo extends jmri.jmrix.SystemConnectionMemo
     public void configureManagers() {
 
         powerManager = new jmri.jmrix.marklin.MarklinPowerManager(getTrafficController());
-        jmri.InstanceManager.setPowerManager(powerManager);
+        jmri.InstanceManager.store(powerManager, jmri.PowerManager.class);
 
         turnoutManager = new jmri.jmrix.marklin.MarklinTurnoutManager(this);
         jmri.InstanceManager.setTurnoutManager(turnoutManager);
@@ -183,8 +181,6 @@ public class MarklinSystemConnectionMemo extends jmri.jmrix.SystemConnectionMemo
 
         super.dispose();
     }
-
-    static Logger log = LoggerFactory.getLogger(MarklinSystemConnectionMemo.class.getName());
 }
 
 

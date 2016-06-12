@@ -1,4 +1,3 @@
-// EasyDccTrafficControllerTest.java
 package jmri.jmrix.easydcc;
 
 import java.io.DataInputStream;
@@ -6,20 +5,16 @@ import java.io.DataOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Vector;
+import jmri.util.JUnitUtil;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import jmri.util.JUnitUtil;
 
 /**
  * Description:	JUnit tests for the EasyDccTrafficController class
  *
  * @author	Bob Jacobsen Copyright (C) 2003, 2007, 2015
- * @version $Revision$
  */
 public class EasyDccTrafficControllerTest extends TestCase {
 
@@ -159,7 +154,7 @@ public class EasyDccTrafficControllerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", EasyDccTrafficControllerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -176,7 +171,5 @@ public class EasyDccTrafficControllerTest extends TestCase {
     protected void tearDown() {
         apps.tests.Log4JFixture.tearDown();
     }
-
-    static Logger log = LoggerFactory.getLogger(EasyDccTrafficControllerTest.class.getName());
 
 }

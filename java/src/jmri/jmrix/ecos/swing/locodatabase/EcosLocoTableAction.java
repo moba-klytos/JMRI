@@ -52,7 +52,6 @@ public class EcosLocoTableAction extends AbstractTableAction {
      * Note that the argument is the Action title, not the title of the
      * resulting frame. Perhaps this should be changed?
      *
-     * @param s
      */
     public EcosLocoTableAction(String s) {
         super(s);
@@ -565,7 +564,7 @@ public class EcosLocoTableAction extends AbstractTableAction {
                         b = getByEcosObject(ecosObjectIdList.get(row));
                         return (b != null) ? (b.getDirectionAsString() + " : " + b.getSpeed()) : null;
                     case DELETECOL:  //
-                        return AbstractTableAction.rb.getString("ButtonDelete");
+                        return Bundle.getMessage("ButtonDelete");
                     default:
                         //log.error("internal state inconsistent with table requst for "+row+" "+col);
                         return null;
@@ -713,5 +712,5 @@ public class EcosLocoTableAction extends AbstractTableAction {
         return EcosLocoTableAction.class.getName();
     }
 
-    static final Logger log = LoggerFactory.getLogger(EcosLocoTableAction.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(EcosLocoTableAction.class.getName());
 }

@@ -35,26 +35,30 @@ public class EngineLengths extends RollingStockAttribute {
             // create and load
             _instance = new EngineLengths();
         }
-        if (Control.showInstance) {
+        if (Control.SHOW_INSTANCE) {
             log.debug("EngineLengths returns instance {}", _instance);
         }
         return _instance;
     }
 
+    @Override
     protected String getDefaultNames() {
         return LENGTHS;
     }
 
     // override, need to perform a number sort
+    @Override
     public void setNames(String[] lengths) {
         setValues(lengths);
     }
 
+    @Override
     public void addName(String length) {
         super.addName(length);
         setDirtyAndFirePropertyChange(ENGINELENGTHS_CHANGED_PROPERTY, null, length);
     }
 
+    @Override
     public void deleteName(String length) {
         super.deleteName(length);
         setDirtyAndFirePropertyChange(ENGINELENGTHS_CHANGED_PROPERTY, length, null);
@@ -86,6 +90,6 @@ public class EngineLengths extends RollingStockAttribute {
         super.firePropertyChange(p, old, n);
     }
 
-    static Logger log = LoggerFactory.getLogger(EngineLengths.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(EngineLengths.class.getName());
 
 }

@@ -1,4 +1,3 @@
-// CbusSensorManagerTest.java
 package jmri.jmrix.can.cbus;
 
 import jmri.jmrix.can.CanSystemConnectionMemo;
@@ -6,14 +5,11 @@ import jmri.jmrix.can.TestTrafficController;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the jmri.jmrix.can.cbus.CbusSensorManager class.
  *
  * @author	Bob Jacobsen Copyright 2008
- * @version $Revision$
  */
 public class CbusSensorManagerTest extends TestCase {
 
@@ -33,7 +29,7 @@ public class CbusSensorManagerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {CbusSensorManagerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -41,8 +37,6 @@ public class CbusSensorManagerTest extends TestCase {
         TestSuite suite = new TestSuite(CbusSensorManagerTest.class);
         return suite;
     }
-
-    static Logger log = LoggerFactory.getLogger(CbusSensorManagerTest.class.getName());
 
     // The minimal setup for log4J
     protected void setUp() {

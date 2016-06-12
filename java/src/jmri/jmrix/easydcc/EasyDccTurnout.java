@@ -49,9 +49,9 @@ public class EasyDccTurnout extends AbstractTurnout {
     // Handle a request to change state by sending a formatted DCC packet
     protected void forwardCommandChangeToLayout(int s) {
         // sort out states
-        if ((s & Turnout.CLOSED) > 0) {
+        if ((s & Turnout.CLOSED) != 0) {
             // first look for the double case, which we can't handle
-            if ((s & Turnout.THROWN) > 0) {
+            if ((s & Turnout.THROWN) != 0) {
                 // this is the disaster case!
                 log.error("Cannot command both CLOSED and THROWN " + s);
                 return;
@@ -122,7 +122,7 @@ public class EasyDccTurnout extends AbstractTurnout {
 
     }
 
-    static Logger log = LoggerFactory.getLogger(EasyDccTurnout.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(EasyDccTurnout.class.getName());
 
 }
 

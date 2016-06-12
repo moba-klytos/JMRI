@@ -16,6 +16,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -323,9 +324,8 @@ public final class ProfilePreferencesPanel extends JPanel implements Preferences
                             .addComponent(jScrollPane3, GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE)
                             .addGroup(searchPathsPanelLayout.createSequentialGroup()
                                 .addComponent(btnAddSearchPath)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnRemoveSearchPath)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnRemoveSearchPath)))
                         .addContainerGap())
                 );
                 searchPathsPanelLayout.setVerticalGroup(searchPathsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -422,7 +422,14 @@ public final class ProfilePreferencesPanel extends JPanel implements Preferences
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.WARNING_MESSAGE);
                     if (result == JOptionPane.YES_OPTION) {
-                        chooser.getSelectedFile().delete();
+                        if (!chooser.getSelectedFile().delete()) {
+                            JOptionPane.showMessageDialog(this,
+                                    Bundle.getMessage("ProfilePreferencesPanel.btnExportProfile.failureToDeleteMessage",
+                                            chooser.getSelectedFile().getName(),
+                                            chooser.getSelectedFile().getParentFile().getName()),
+                                    Bundle.getMessage("ProfilePreferencesPanel.btnExportProfile.failureToDeleteTitle"),
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
                     } else {
                         this.btnExportProfileActionPerformed(evt);
                         return;
@@ -451,9 +458,9 @@ public final class ProfilePreferencesPanel extends JPanel implements Preferences
                         exportExternalRoster = true;
                     }
                 }
-                if (ProfileManager.getDefault().getActiveProfile() == p) {
-                    // TODO: save roster, panels, operations if needed and safe to do so
-                }
+                //if (ProfileManager.getDefault().getActiveProfile() == p) {
+                //    // TODO: save roster, panels, operations if needed and safe to do so
+                //}
                 ProfileManager.getDefault().export(p, chooser.getSelectedFile(), exportExternalUserFiles, exportExternalRoster);
                 log.info("Profile \"{}\" exported to \"{}\"", p.getName(), chooser.getSelectedFile().getName());
                 JOptionPane.showMessageDialog(this,
@@ -654,7 +661,7 @@ public final class ProfilePreferencesPanel extends JPanel implements Preferences
     }
 
     public void dispose() {
-        ProfileManager.getDefault().removePropertyChangeListener((ProfileTableModel) profilesTbl.getModel());
+        ProfileManager.getDefault().removePropertyChangeListener((PropertyChangeListener) profilesTbl.getModel());
     }
 
     private void profilesTblValueChanged(ListSelectionEvent e) {
@@ -714,6 +721,7 @@ public final class ProfilePreferencesPanel extends JPanel implements Preferences
         // is required only if next profile is not null and is not the same
         // profile as the current profile
         return ProfileManager.getDefault().getNextActiveProfile() != null
+                && ProfileManager.getDefault().getActiveProfile() != null
                 && !ProfileManager.getDefault().getActiveProfile().equals(ProfileManager.getDefault().getNextActiveProfile()
                 );
     }
@@ -722,6 +730,7 @@ public final class ProfilePreferencesPanel extends JPanel implements Preferences
     public boolean isPreferencesValid() {
         return true; // no validity checking performed
     }
+
     /* Comment out until I get around to utilizing this, so Jenkins does not throw warnings.
      private static class ZipFileFilter extends FileFilter {
 

@@ -1,14 +1,3 @@
-// This file is part of JMRI.
-//
-// JMRI is free software; you can redistribute it and/or modify it under
-// the terms of version 2 of the GNU General Public License as published
-// by the Free Software Foundation. See the "COPYING" file for a copy
-// of this license.
-//
-// JMRI is distributed in the hope that it will be useful, but WITHOUT
-// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-// FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-// for more details.
 package jmri.implementation;
 
 import java.util.HashMap;
@@ -17,6 +6,8 @@ import jmri.InstanceManager;
 import jmri.NmraPacket;
 import jmri.SignalHead;
 import jmri.Turnout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements a SignalHead the maps the various appearances values to
@@ -39,14 +30,10 @@ import jmri.Turnout;
  * The FLASH appearances are expected to be implemented in the decoder.
  *
  * @author Alex Shepherd Copyright (c) 2008
- * @version $Revision$
  */
 public class DccSignalHead extends AbstractSignalHead {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -5400767347176104884L;
+    private final static Logger log = LoggerFactory.getLogger(DccSignalHead.class);
 
     public DccSignalHead(String sys, String user) {
         super(sys, user);

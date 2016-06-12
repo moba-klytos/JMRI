@@ -239,7 +239,6 @@ public class LnClockControl extends DefaultClockControl implements SlotListener 
      * responding to a read from this module 3) a slot not involving the clock
      * changing
      *
-     * @param s
      */
     @SuppressWarnings("deprecation")
     public void notifyChangedSlot(LocoNetSlot s) {
@@ -324,7 +323,7 @@ public class LnClockControl extends DefaultClockControl implements SlotListener 
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(LnClockControl.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(LnClockControl.class.getName());
 }
 
 /* @(#)LnClockControl.java */

@@ -26,10 +26,11 @@ final class CarAttributeAction extends AbstractAction {
 
     CarAttributeEditFrame caef;
 
+    @Override
     public void actionPerformed(ActionEvent ae) {
         log.debug("Show attribute quanity");
         caef.toggleShowQuanity();
     }
 
-    static Logger log = LoggerFactory.getLogger(CarAttributeAction.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(CarAttributeAction.class.getName());
 }

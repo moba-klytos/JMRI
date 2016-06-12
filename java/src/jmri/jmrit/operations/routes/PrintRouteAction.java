@@ -49,6 +49,7 @@ public class PrintRouteAction extends AbstractAction {
     boolean isPreview;
     Route route;
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (route == null) {
             return;
@@ -123,5 +124,5 @@ public class PrintRouteAction extends AbstractAction {
         return buf.toString();
     }
 
-    static Logger log = LoggerFactory.getLogger(PrintRouteAction.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(PrintRouteAction.class.getName());
 }

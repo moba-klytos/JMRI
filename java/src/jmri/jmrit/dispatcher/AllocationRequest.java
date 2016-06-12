@@ -3,8 +3,6 @@ package jmri.jmrit.dispatcher;
 
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class holds information and options for an AllocationRequestt.
@@ -74,8 +72,8 @@ public class AllocationRequest {
     public String getSectionName() {
         String s = mSection.getSystemName();
         String u = mSection.getUserName();
-        if ((u != null) && (!u.equals(""))) {
-            return (s + "( " + u + " )");
+        if ((u != null) && (!u.equals("") && (!u.equals(s)))) {
+            return (s + "(" + u + ")");
         }
         return s;
     }
@@ -216,8 +214,6 @@ public class AllocationRequest {
         }
 
     }
-
-    static Logger log = LoggerFactory.getLogger(AllocationRequest.class.getName());
 }
 
 /* @(#)AllocationRequest.java */

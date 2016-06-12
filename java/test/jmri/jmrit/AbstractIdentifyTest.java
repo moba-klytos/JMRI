@@ -1,10 +1,11 @@
-// AbstractIdentifyTest.java
 package jmri.jmrit;
 
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import jmri.Programmer;
 
 /**
  * Test the AbstractIdentify class. Since that's an abstract base class, we
@@ -17,7 +18,7 @@ public class AbstractIdentifyTest extends TestCase {
 
     public void testFullSequence() {
         // walk through all 8 steps
-        AITest a = new AITest();
+        AITest a = new AITest(new jmri.ProgrammerScaffold(jmri.managers.DefaultProgrammerManager.DIRECTMODE));
 
         retval = false;
         invoked = -1;
@@ -77,7 +78,7 @@ public class AbstractIdentifyTest extends TestCase {
 
     public void testShortSequence() {
         // walk through just 4 steps
-        AITest a = new AITest();
+        AITest a = new AITest(new jmri.ProgrammerScaffold(jmri.managers.DefaultProgrammerManager.DIRECTMODE));
 
         retval = false;
         invoked = -1;
@@ -119,7 +120,7 @@ public class AbstractIdentifyTest extends TestCase {
 
     // internal class for testing
     class AITest extends AbstractIdentify {
-        public AITest() { super(null);}
+        public AITest(Programmer p) { super(p);}
         
         public boolean test1() {
             invoked = 1;
@@ -194,13 +195,22 @@ public class AbstractIdentifyTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {AbstractIdentifyTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
     public static Test suite() {
         TestSuite suite = new TestSuite(AbstractIdentifyTest.class);
         return suite;
+    }
+
+    // The minimal setup for log4J
+    protected void setUp() {
+        apps.tests.Log4JFixture.setUp();
+    }
+
+    protected void tearDown() {
+        apps.tests.Log4JFixture.tearDown();
     }
 
 	// static private Logger log = LoggerFactory.getLogger(AbstractIdentifyTest.class.getName());

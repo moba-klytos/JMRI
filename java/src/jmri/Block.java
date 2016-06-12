@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import jmri.implementation.SignalSpeedMap;
 import jmri.util.PhysicalLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,11 +113,6 @@ import org.slf4j.LoggerFactory;
  * @author Dave Duchamp Copywright (C) 2009
  */
 public class Block extends jmri.implementation.AbstractNamedBean implements PhysicalLocationReporter {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = -298646610517375288L;
 
     public Block(String systemName) {
         super(systemName.toUpperCase());
@@ -233,7 +229,8 @@ public class Block extends jmri.implementation.AbstractNamedBean implements Phys
      * {@link Reporter#getLastReport() last report}.
      *
      * @see Reporter
-     * @param reportingCurrent
+     * @param reportingCurrent true if to use current report; false if to use
+     *                         last report
      */
     public void setReportingCurrent(boolean reportingCurrent) {
         _reportingCurrent = reportingCurrent;
@@ -278,6 +275,13 @@ public class Block extends jmri.implementation.AbstractNamedBean implements Phys
         }
     }
 
+    public boolean hasPath(Path p) { 
+        for (Path t : paths) {
+            if (t.equals(p)) return true;
+        }
+        return false;
+    }
+    
     /**
      * Get a copy of the list of Paths
      */
@@ -419,12 +423,12 @@ public class Block extends jmri.implementation.AbstractNamedBean implements Phys
         }
 
         try {
-            return new Float(speed);
+            return Float.valueOf(speed);
         } catch (NumberFormatException nx) {
             //considered normal if the speed is not a number.
         }
         try {
-            return jmri.implementation.SignalSpeedMap.getMap().getSpeed(speed);
+            return jmri.InstanceManager.getDefault(SignalSpeedMap.class).getSpeed(speed);
         } catch (Exception ex) {
             return -1;
         }
@@ -458,7 +462,7 @@ public class Block extends jmri.implementation.AbstractNamedBean implements Phys
                 Float.parseFloat(s);
             } catch (NumberFormatException nx) {
                 try {
-                    jmri.implementation.SignalSpeedMap.getMap().getSpeed(s);
+                    jmri.InstanceManager.getDefault(SignalSpeedMap.class).getSpeed(s);
                 } catch (Exception ex) {
                     throw new JmriException("Value of requested block speed is not valid");
                 }
@@ -507,6 +511,38 @@ public class Block extends jmri.implementation.AbstractNamedBean implements Phys
     public float getLengthIn() {
         return (_length / 25.4f);
     }  // return length in inches
+
+
+    /** 
+     * Note: this has to make choices about identity values (always the same)
+     * and operation values (can change as the block works).  Might be missing
+     * some identity values. 
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+
+        if (!(getClass() == obj.getClass())) {
+            return false;
+        } else {
+            Block b = (Block) obj;
+                        
+            if (!b.getSystemName().equals(this.getSystemName())) return false;
+            
+        }
+        return true;
+    }
+
+    @Override
+    // This can't change, so can't include mutable values
+    public int hashCode() {
+        return this.getSystemName().hashCode();
+    }
 
     // internal data members
     private int _current = UNDETECTED; // state until sensor is set
@@ -820,7 +856,7 @@ public class Block extends jmri.implementation.AbstractNamedBean implements Phys
             // NOTE: This pattern is based on the one defined in jmri.jmrix.loconet.LnReporter
             Pattern ln_p = Pattern.compile("(\\d+) (enter|exits|seen)\\s*(northbound|southbound)?");  // Match a number followed by the word "enter".  This is the LocoNet pattern.
             Matcher m = ln_p.matcher(rep);
-            if ((m != null) && m.find()) {
+            if (m.find()) {
                 log.debug("Parsed address: " + m.group(1));
                 return (new DccLocoAddress(Integer.parseInt(m.group(1)), LocoAddress.Protocol.DCC));
             } else {
@@ -896,7 +932,7 @@ public class Block extends jmri.implementation.AbstractNamedBean implements Phys
     }
 
     public void vetoableChange(java.beans.PropertyChangeEvent evt) throws java.beans.PropertyVetoException {
-        if ("CanDelete".equals(evt.getPropertyName())) { //IN18N
+        if ("CanDelete".equals(evt.getPropertyName())) { // No I18N
             if (evt.getOldValue() instanceof Sensor) {
                 if (evt.getOldValue().equals(getSensor())) {
                     throw new java.beans.PropertyVetoException(getDisplayName(), evt);
@@ -907,7 +943,7 @@ public class Block extends jmri.implementation.AbstractNamedBean implements Phys
                     throw new java.beans.PropertyVetoException(getDisplayName(), evt);
                 }
             }
-        } else if ("DoDelete".equals(evt.getPropertyName())) { //IN18N
+        } else if ("DoDelete".equals(evt.getPropertyName())) { // No I18N
             if (evt.getOldValue() instanceof Sensor) {
                 if (evt.getOldValue().equals(getSensor())) {
                     setSensor(null);
@@ -925,5 +961,5 @@ public class Block extends jmri.implementation.AbstractNamedBean implements Phys
         return Bundle.getMessage("BeanNameBlock");
     }
 
-    static Logger log = LoggerFactory.getLogger(Block.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(Block.class.getName());
 }

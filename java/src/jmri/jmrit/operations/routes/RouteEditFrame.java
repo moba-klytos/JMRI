@@ -220,6 +220,7 @@ public class RouteEditFrame extends OperationsFrame implements java.beans.Proper
     }
 
     // Save, Delete, Add
+    @Override
     public void buttonActionPerformed(java.awt.event.ActionEvent ae) {
         if (ae.getSource() == addLocationButton) {
             log.debug("route add location button activated");
@@ -273,6 +274,7 @@ public class RouteEditFrame extends OperationsFrame implements java.beans.Proper
         }
     }
 
+    @Override
     public void radioButtonActionPerformed(java.awt.event.ActionEvent ae) {
         routeModel.setWait(showWait.isSelected());
     }
@@ -369,10 +371,13 @@ public class RouteEditFrame extends OperationsFrame implements java.beans.Proper
         saveRouteButton.setEnabled(enabled);
         deleteRouteButton.setEnabled(enabled);
         routeTable.setEnabled(enabled);
+        showWait.setEnabled(enabled);
+        showDepartTime.setEnabled(enabled);
         // the inverse!
         addRouteButton.setEnabled(!enabled);
     }
 
+    @Override
     public void dispose() {
         routeModel.dispose();
         super.dispose();
@@ -394,8 +399,9 @@ public class RouteEditFrame extends OperationsFrame implements java.beans.Proper
         }
     }
 
+    @Override
     public void propertyChange(java.beans.PropertyChangeEvent e) {
-        if (Control.showProperty) {
+        if (Control.SHOW_PROPERTY) {
             log.debug("Property change: ({}) old: ({}) new: ({})", e.getPropertyName(), e.getOldValue(), e
                     .getNewValue());
         }
@@ -404,5 +410,5 @@ public class RouteEditFrame extends OperationsFrame implements java.beans.Proper
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(RouteEditFrame.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(RouteEditFrame.class.getName());
 }

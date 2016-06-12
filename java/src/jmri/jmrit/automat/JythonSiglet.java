@@ -1,4 +1,3 @@
-// JythonSiglet.java
 package jmri.jmrit.automat;
 
 import jmri.InstanceManager;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
  * code, the "non-reflection" statements are in the comments.
  *
  * @author	Bob Jacobsen Copyright (C) 2003
- * @version $Revision$
  */
 public class JythonSiglet extends Siglet {
 
@@ -122,8 +120,6 @@ public class JythonSiglet extends Siglet {
     java.lang.reflect.Method exec;
 
     // initialize logging
-    static Logger log = LoggerFactory.getLogger(JythonSiglet.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(JythonSiglet.class.getName());
 
 }
-
-/* @(#)JythonAutomaton.java */

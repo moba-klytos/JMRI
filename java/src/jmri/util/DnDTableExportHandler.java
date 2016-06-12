@@ -5,7 +5,6 @@ package jmri.util;
  * <P>
  *
  * @author Pete Cressman Copyright 2010
- * @version $Revision$
  */
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
@@ -16,11 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DnDTableExportHandler extends TransferHandler {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 2134105274438741231L;
 
     public int getSourceActions(JComponent c) {
         return COPY;
@@ -53,5 +47,5 @@ public class DnDTableExportHandler extends TransferHandler {
             log.debug("TransferHandler.exportDone ");
         }
     }
-    static Logger log = LoggerFactory.getLogger(DnDTableExportHandler.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(DnDTableExportHandler.class.getName());
 }

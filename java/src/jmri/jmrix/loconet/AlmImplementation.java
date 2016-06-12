@@ -65,7 +65,6 @@ public class AlmImplementation implements LocoNetListener {
     /**
      * Handle ALM_WR_ACCESS message
      *
-     * @param msg
      */
     void writeMsg(LocoNetMessage msg) {
         // sort out the ATASK
@@ -149,7 +148,6 @@ public class AlmImplementation implements LocoNetListener {
     /**
      * Handle ALM_RD_ACCESS message
      *
-     * @param msg
      */
     void readMsg(LocoNetMessage msg) {
     }
@@ -184,5 +182,5 @@ public class AlmImplementation implements LocoNetListener {
         }
     }
 
-    static Logger log = LoggerFactory.getLogger(AlmImplementation.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(AlmImplementation.class.getName());
 }

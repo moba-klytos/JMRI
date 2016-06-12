@@ -72,8 +72,13 @@ public class SimpleSensorServer extends AbstractSensorServer {
             setSensorActive(statusString.substring(index, statusString.indexOf(" ", index + 1)).toUpperCase());
         } else {
             // default case, return status for this sensor/
-            Sensor sensor = jmri.InstanceManager.sensorManagerInstance().provideSensor(statusString.substring(index).toUpperCase());
-            sendStatus(statusString.substring(index).toUpperCase(), sensor.getKnownState());
+            String sensorName = statusString.substring(index,statusString.length()-1).toUpperCase(); // remove the \n
+            if( sensorName.contains(" ") ){
+                // remove anything following the space.
+                sensorName = sensorName.substring(0,sensorName.indexOf(" "));
+            }
+            Sensor sensor = jmri.InstanceManager.sensorManagerInstance().provideSensor(sensorName);
+            sendStatus(sensorName, sensor.getKnownState());
 
         }
     }
@@ -85,5 +90,5 @@ public class SimpleSensorServer extends AbstractSensorServer {
             this.connection.sendMessage(message);
         }
     }
-    static Logger log = LoggerFactory.getLogger(SimpleSensorServer.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SimpleSensorServer.class.getName());
 }

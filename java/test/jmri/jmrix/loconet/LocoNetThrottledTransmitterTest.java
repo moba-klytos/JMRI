@@ -1,21 +1,16 @@
-// LocoNetThrottledTransmitterTest.java
 package jmri.jmrix.loconet;
 
 import java.util.concurrent.TimeUnit;
+import jmri.util.JUnitUtil;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import jmri.util.JUnitUtil;
 
 /**
  * Tests for the jmri.jmrix.loconet.LocoNetThrottledTransmitter class.
  *
  * @author Bob Jacobsen Copyright 2001, 2002, 2009, 2015
- * @version $Revision$
  */
 public class LocoNetThrottledTransmitterTest extends TestCase {
 
@@ -159,7 +154,7 @@ public class LocoNetThrottledTransmitterTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {LocoNetThrottledTransmitterTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -167,8 +162,6 @@ public class LocoNetThrottledTransmitterTest extends TestCase {
         TestSuite suite = new TestSuite(LocoNetThrottledTransmitterTest.class);
         return suite;
     }
-
-    static Logger log = LoggerFactory.getLogger(LocoNetThrottledTransmitterTest.class.getName());
 
     // The minimal setup for log4J
     protected void setUp() {

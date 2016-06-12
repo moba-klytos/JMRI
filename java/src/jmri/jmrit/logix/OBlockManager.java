@@ -1,9 +1,6 @@
-// OBlockManager.java
 package jmri.jmrit.logix;
 
 import jmri.managers.AbstractManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Basic Implementation of a OBlockManager.
@@ -29,7 +26,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author Bob Jacobsen Copyright (C) 2006
  * @author Pete Cressman Copyright (C) 2009
- * @version $Revision$
  */
 public class OBlockManager extends AbstractManager
         implements java.beans.PropertyChangeListener, jmri.InstanceManagerAutoDefault {
@@ -133,8 +129,4 @@ public class OBlockManager extends AbstractManager
     public String getBeanTypeHandled() {
         return Bundle.getMessage("BeanNameOBlock");
     }
-
-    static Logger log = LoggerFactory.getLogger(OBlockManager.class.getName());
 }
-
-/* @(#)OBlockManager.java */

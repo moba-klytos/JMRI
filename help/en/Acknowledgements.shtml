@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <!-- This page is created from the content (not formatting) -->
-<!-- of http://jmri.sf.net/community/index.html -->
+<!-- of http://jmri.org/community/index.html -->
 
 <html lang="en">
 <head>
@@ -45,7 +45,7 @@
 	<li>Ian Anderson, who set up the
 	<a href="http://www.editthis.info/JMRI/index.php/Main_Page">documentation Wiki</a>,
 	which lets a lot of people easily contribute to building better documentation
-	<li>Ron W. Auld, who's llnmon program formed the basis for the LocoNet
+	<li>Ron W. Auld, whose llnmon program formed the basis for the LocoNet
 	monitoring
 <a name="B"></a>
 	<li>Harald Barth, who improved the SRCP implementation
@@ -79,9 +79,10 @@
 	Lenz Standard decoder.
 	<li>Rodney Black, who has worked on refining the JMRI interfaces as
 	part of creating his
-	<a href="http://home.comcast.net/~kb0oys/">CATS</a> system.
+	<a href="http://cats4ctc.org/">CATS</a> system.
 	<li>Bob Blackwell, who moderates the jmriusers mailing list,
 	accumulating the decoder ID info, and updated the DecoderPro manual
+	<li>Herve Blorec, who worked on the French translation
 	<li>Don Borden, who loaned a Soundtraxx decoder for testing the
 	dual-decoder support
 	<li>Joseph T. Bore, who contributed the code upon which we built the
@@ -114,7 +115,7 @@
 	for decoderpro.com, despite Matt Katzer's
 	<a href="http://jmri.org/k/UDRP/index.shtml">despicable behavior</a>,
 	and wrote a scripting example page
-	<li>Egbert Broerse, who improved the signaling help and website content
+	<li>Egbert Broerse, who worked on translations, improved the signaling help and website content and contributed the Rio Grande 1965 signal definition
 	<li>Dick Bronson, who created the great LocoBuffer-II and worked hard
 	to make sure it worked well with JMRI. He also contributed sets
 	of USS, PRR and B&amp;O panel icons for PanelPro, worked on the PanelPro logo,
@@ -138,10 +139,10 @@
 	    added the Light Control, provided sample scripts,
 	    improved the titling of throttle windows,
 	    and created the InstallTest app.
-	<li>Paco Cañada, who provided decoder definitions for <a href="http://www.ppp-digital.es/">PpP decoders</a>.
+	<li>Paco Ca&ntilde;ada, who provided decoder definitions for <a href="http://www.ppp-digital.es/">PpP decoders</a>.
 	<li>Bill Carman, who located information on the MRC/Athearn F Unit and Challenger decoders
-	<li>Joan Carrancà, who provided the German DB signal set.
-	<li>Alain Carraso, who provided decoder definition for Arnold and Mistral Train decoders
+	<li>Joan Carranc&agrave;, who provided the German DB signal set.
+	<li>Alain Carasso, who provided decoder definition for Arnold and Mistral Train decoders
 	<li>Peter Cesaro provided MRC decoder definitions
 	<li>Xavier Chazelle, who provided a definition for the N scale
 	    Fleischmann "Leig einheit" F830681 double unit van equipped with a Fleischmann specific dual decoder for opening or closing doors
@@ -220,6 +221,7 @@
 	<li>Marco Forcone, who sacrificed two turnouts motors to the cause of
 	debugging XPressNet Turnout support
 	<li>Dan Foltz created the Manifest Creator and Switch List Creator for operations</li>
+	<li>John Forsythe, who helped with the timing needs of TCS decoders
 	<li>Enzo Fortuna, who created the Italian translation
 	<li>Marc Fournier, who improved the TCS decoder definition
 	    and did the detail work to update the Soundtraxx manufacturer name.
@@ -301,6 +303,7 @@
 	<li>James Koretsky, who contributed the Burlington Northern 1989 signal definition
 	<li>Matjaz Krajnc, who provided better code and icons for the web throttle
 	<li>Ross Kudlick, who researched options switches on Digitrax command stations
+    <li>Ronald Kuhn, who improved our German translations and provided definitions for some Kuehn decoders
 	<li>Nick Kulp, who helped test much of the C/MRI and signaling logic, presented
 	<a href="http://jmri.org/community/clinics/NickKulpMarch2004/index.html">a nice clinic</a> on
 	how to start making panels, and contributed numerous icons
@@ -315,6 +318,7 @@
 	    and coded the function support
 	<li>Alain Le Marchand, who provided a number of decoder definitions and updates
 	<li>Karl Johan Lisby, who made large improvements to the Uhlenbrock Intellibox support
+	    and contributed the Signal Controlled Warrant support
 	<li>Peter Lloyd-Jones, who contributed a script for playing a sound when a function key is pressed on a throttle
 	and wrote instructions and an installer Ubuntu Linux
 	<li>Stephen Lowens, who updated the Digitrax sound decoder definitions
@@ -329,12 +333,13 @@
 	<li>Jeffrey Machacek updated the WiThrottle server and updated LocoNet SlotMonitor.
 	<li>Greg Madsen improved the operations backup and restore code
 	<li>Jim Malone, who created a decoder file definition the Digitrax DN163K1a
+	<li>Peter MacKenzie, who added definitions for the Hattons MD4 and Gaugemaster Opti DCC25 decoders.
 	<li>Peter Mansvelder, who contributed Fleischmann decoder definitions
 	<li>Mark Marowicz, who provided the CT Elektronik SL 51 decoder definition
 	<li>Ken Mazer, who provided the GP40-2 Soundtraxx definition
 	<li>John McAleely, who contributed Hornby and Bachmann decoder definitions
+	<li>Greg McCartney, who provided a <a href="http://jmri.org/xml/signals/NW-1981/index.shtml">Norfolk and Western signal definition</a>
 	<li>David McGowan, who handled many aspects of JMRI legal defense against Matt Katzer
-	<li>Peter MacKenzie, who added definitions for the Hattons MD4 and Gaugemaster Opti DCC25 decoders.
 	<li>David McDowell of the North Raleigh Model Railroad Club created
 	a <a href="http://www.trainweb.org/nrmrc/pubs/NRMRC_Test_Division_with_JMRI.pdf">clinic</a> covering Block Occupancy, Transponding and Simple Signal Logic.
 	<li>Randy McKenzie, who contributed some CTC panel background images
@@ -398,6 +403,7 @@
 <a name="Q"></a>
 <a name="R"></a>
 	<li>Balazs Racz, who fixed a bug in startup and improved our tech documentation
+	<li>Steve Rawlinson, who fixed a bug in Layout Blocks.</li>
 	<li>Simon Reader, who improved the throttle,
 	added a check for completed status to Routes,
 	and added the "invert" option to LocoNet Turnouts.
@@ -426,6 +432,7 @@
 	and the ESU LokPilot and LokPilotBasic decoders.
 	<li>Mark Schutzer, who helped debug some significant NCE improvements
 	and contributed the Lenz Gold decoder definition
+	<li>Knut Schwichtenberg, who contributed the FREDI definition files
 	<li>Jim Scorse, who gave generously of his time to answer questions about NCE details
 	and provided debug hardware
 	<li>Brett Scott contributed the scripts for programming DCC Specialties products
@@ -438,7 +445,7 @@
 	investigated how to display the throttle ID in the LocoNet Slot Monitor,
 	updated the Comprehensive programmer format to improve speed,
 	and co-wrote the 2009 DecoderPro manual.
-	<li>Alex Shepherd, who helped move development to JBuilder, a much better tool, and
+	<li>Alex Shepherd, who helped move development to JBuilder, and
 	created the client/server implementation for LocoNet. He's also improved
 	the LocoNet monitor formatting and added support for a new
 	type of accessory decoder
@@ -449,6 +456,7 @@
 	decoder information on several models
 	<li>Ed Sisk, who loaned a DCS51 for testing
 	<li>Don Smith, who ran down some NCE decoder information
+        <li>John Socha-Leialoha, who improved the WiThrottle protocol documentation
 	<li>Alfredo Sola provides the Spanish translation
 	<li>The good people at
 	<a href="http://www.sf.net">SourceForge</a>
@@ -544,4 +552,3 @@ the <a href="http://jmri.org/community/codeswarm.shtml">Code Swarm</a> page.</p>
 </div> <!-- closes #mBody-->
 </body>
 </html>
-

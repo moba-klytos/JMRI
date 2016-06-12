@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
  * confused with ThrottleManager
  *
  * @author Glen Oberhauser
- * @version $Revision$
  */
 public class ThrottleFrameManager {
 
@@ -220,5 +219,5 @@ public class ThrottleFrameManager {
         throttlePreferencesFrame.requestFocus();
     }
 
-    static Logger log = LoggerFactory.getLogger(ThrottleFrameManager.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(ThrottleFrameManager.class.getName());
 }

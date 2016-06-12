@@ -112,11 +112,7 @@ public class XNetOpsModeProgrammer extends jmri.jmrix.AbstractProgrammer impleme
                 // Before we set the programmer state to not programming, 
                 // delay for a short time to give the decoder a chance to 
                 // process the request.
-                try {
-                    this.wait(250);
-                } catch (java.lang.InterruptedException ie) {
-                    log.debug("Interupted Durring Delay");
-                }
+                new jmri.util.WaitHandler(this,250);
                 progState = XNetProgrammer.NOTPROGRAMMING;
                 stopTimer();
                 progListener.programmingOpReply(value, jmri.ProgListener.OK);
@@ -170,7 +166,7 @@ public class XNetOpsModeProgrammer extends jmri.jmrix.AbstractProgrammer impleme
     }
 
     // initialize logging
-    static Logger log = LoggerFactory.getLogger(XNetOpsModeProgrammer.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(XNetOpsModeProgrammer.class.getName());
 
 }
 

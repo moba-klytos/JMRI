@@ -1,11 +1,8 @@
-// DefaultClockControl.java
 package jmri.implementation;
 
 import java.util.Date;
 import jmri.ClockControl;
 import jmri.InstanceManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Class providing default logic of the ClockControl interface.
@@ -18,7 +15,6 @@ import org.slf4j.LoggerFactory;
  * with no hardware fast clock.
  *
  * @author	Dave Duchamp Copyright (C) 2007
- * @version $Revision$
  */
 public class DefaultClockControl implements ClockControl {
 
@@ -120,8 +116,4 @@ public class DefaultClockControl implements ClockControl {
     public void initializeHardwareClock(double rate, Date now, boolean getTime) {
         return;
     }
-
-    static final Logger log = LoggerFactory.getLogger(DefaultClockControl.class.getName());
 }
-
-/* @(#)DefaultClockControl.java */

@@ -34,7 +34,6 @@ public class SerialMessage extends jmri.jmrix.AbstractMRMessage {
      * This ctor interprets the String as the exact sequence to send,
      * byte-for-byte.
      *
-     * @param m
      */
     public SerialMessage(String m) {
         super(m);
@@ -262,7 +261,7 @@ public class SerialMessage extends jmri.jmrix.AbstractMRMessage {
         return colors[color];
     }
 
-    static Logger log = LoggerFactory.getLogger(SerialMessage.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SerialMessage.class.getName());
 }
 
 /* @(#)SerialMessage.java */

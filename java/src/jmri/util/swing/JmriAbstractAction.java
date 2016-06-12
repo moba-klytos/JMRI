@@ -1,4 +1,3 @@
-// JmriAbstractAction.java
 package jmri.util.swing;
 
 import java.awt.event.ActionEvent;
@@ -17,18 +16,13 @@ import org.slf4j.LoggerFactory;
  * by extending classes.
  *
  * @author	Bob Jacobsen Copyright (C) 2010
- * @version	$Revision$
  */
 abstract public class JmriAbstractAction extends javax.swing.AbstractAction {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 373576744806206486L;
     protected WindowInterface.Hint hint = WindowInterface.Hint.DEFAULT;
     protected WindowInterface wi;
     protected Object context = null;
-    static Logger log = LoggerFactory.getLogger(JmriAbstractAction.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(JmriAbstractAction.class.getName());
 
     /**
      * Enhanced constructor for placing the pane in various GUIs
@@ -121,12 +115,8 @@ abstract public class JmriAbstractAction extends javax.swing.AbstractAction {
     public void setParameter(String parameter, Object value) {
     }
 
-    public JmriPanel makePanel() {
+    abstract public JmriPanel makePanel(); /* {
         log.error("makePanel must be overridden", new Exception());
         return null;
-    }
+    } */
 }
-
-/*
- * @(#)JmriAbstractAction.java
- */

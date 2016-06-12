@@ -1,4 +1,3 @@
-// LoaderPane.java
 package jmri.jmrix.loconet.soundloader;
 
 import java.awt.FlowLayout;
@@ -17,8 +16,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import jmri.jmrix.loconet.spjfile.SpjFile;
 import jmri.util.FileUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Pane for downloading .hex files
@@ -274,7 +271,5 @@ public class LoaderPane extends jmri.jmrix.loconet.swing.LnPanel {
         }
         engine = null;  // not for GC, this flags need to reinit
     }
-
-    static Logger log = LoggerFactory.getLogger(LoaderPane.class.getName());
 
 }

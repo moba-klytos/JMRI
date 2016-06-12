@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
  * Handle XML persistence of ManagerDefaultsConfigPane objects.
  *
  * @author Bob Jacobsen Copyright: Copyright (c) 2010
- * @version $Revision$
  */
 public class ManagerDefaultsConfigPaneXml extends jmri.configurexml.AbstractXmlAdapter {
 
@@ -44,6 +43,6 @@ public class ManagerDefaultsConfigPaneXml extends jmri.configurexml.AbstractXmlA
         log.error("Unexpected call of load(Element, Object)");
     }
     // initialize logging
-    static Logger log = LoggerFactory.getLogger(ManagerDefaultsConfigPaneXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(ManagerDefaultsConfigPaneXml.class.getName());
 
 }

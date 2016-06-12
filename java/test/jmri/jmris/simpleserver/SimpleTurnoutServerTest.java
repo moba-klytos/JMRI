@@ -5,14 +5,11 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the jmri.jmris.simpleserver.SimpleTurnoutServer class
  *
  * @author Paul Bender
- * @version $Revision$
  */
 public class SimpleTurnoutServerTest extends TestCase {
 
@@ -92,7 +89,7 @@ public class SimpleTurnoutServerTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {SimpleTurnoutServerTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -118,8 +115,5 @@ public class SimpleTurnoutServerTest extends TestCase {
         super.tearDown();
         apps.tests.Log4JFixture.tearDown();
     }
-
-
-    static Logger log = LoggerFactory.getLogger(SimpleTurnoutServerTest.class.getName());
 
 }

@@ -1,5 +1,9 @@
-//JsonMemoryServer.java
 package jmri.jmris.json;
+
+import static jmri.jmris.json.JSON.MEMORY;
+import static jmri.jmris.json.JSON.METHOD;
+import static jmri.jmris.json.JSON.NAME;
+import static jmri.jmris.json.JSON.PUT;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,12 +12,7 @@ import java.util.Locale;
 import jmri.JmriException;
 import jmri.jmris.AbstractMemoryServer;
 import jmri.jmris.JmriConnection;
-import static jmri.jmris.json.JSON.MEMORY;
-import static jmri.jmris.json.JSON.METHOD;
-import static jmri.jmris.json.JSON.NAME;
-import static jmri.jmris.json.JSON.PUT;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jmri.server.json.JsonException;
 
 /**
  * JSON server interface between the JMRI Memory manager and a network
@@ -26,14 +25,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author mstevetodd Copyright (C) 2012 (copied from JsonSensorServer)
  * @author Randall Wood Copyright (C) 2013
- * @version $Revision: $
  */
 public class JsonMemoryServer extends AbstractMemoryServer {
 
     private final JmriConnection connection;
     private final ObjectMapper mapper;
-    static Logger log = LoggerFactory.getLogger(JsonMemoryServer.class.getName());
-
     public JsonMemoryServer(JmriConnection connection) {
         super();
         this.connection = connection;

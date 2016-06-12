@@ -1,4 +1,3 @@
-// LearnWarrantTest.java
 package jmri.jmrit.logix;
 
 import java.io.File;
@@ -25,7 +24,6 @@ import junit.framework.TestSuite;
  * Tests for the Warrant creation
  *
  * @author  Pete Cressman 2015
- * @version $Revision: 00000 $
  * 
  * todo - test error conditions
  */
@@ -62,7 +60,6 @@ public class LearnWarrantTest extends jmri.util.SwingTestCase {
         // occupy starting block
         Sensor sensor = _sensorMgr.getBySystemName("IS1");
         sensor.setState(Sensor.ACTIVE);
-        connectThrottle();
         pressButton(frame, Bundle.getMessage("Start"));
 
         Assert.assertNotNull("Throttle not found", frame._learnThrottle.getThrottle());
@@ -77,12 +74,13 @@ public class LearnWarrantTest extends jmri.util.SwingTestCase {
         sensor = runtimes(sensor, null);
         while (w.getThrottle() != null) {
             // Sometimes the engineer is blocked
-            jmri.util.JUnitUtil.releaseThread(this);           
+            flushAWT();          
         }        
         String msg = w.getRunModeMessage();
         Assert.assertEquals("run finished", Bundle.getMessage("NotRunning", w.getDisplayName()), msg);
 //        sensor.setState(Sensor.INACTIVE);
         pressButton(frame, Bundle.getMessage("ButtonSave"));
+        w = InstanceManager.getDefault(WarrantManager.class).getWarrant("Learning");
         List<ThrottleSetting> commands = w.getThrottleCommands();
         Assert.assertEquals("9 ThrottleCommands", 9, commands.size());
         WarrantTableFrame tableFrame = WarrantTableFrame.getInstance();
@@ -97,6 +95,10 @@ public class LearnWarrantTest extends jmri.util.SwingTestCase {
         // Dialog has popped up, so handle that. First, locate it.
         List<JDialog> dialogList = new DialogFinder(null).findAll(panel);
         TestHelper.disposeWindow(dialogList.get(0), this);
+
+        flushAWT();
+        // confirm one message logged
+        jmri.util.JUnitAppender.assertWarnMessage("RosterSpeedProfile not found. Using default ThrottleFactor 0.75");
     }
     
     private javax.swing.AbstractButton pressButton(java.awt.Container frame, String text) {
@@ -115,30 +117,21 @@ public class LearnWarrantTest extends jmri.util.SwingTestCase {
         pressButton(pane, text);
     }
     
-    private static void connectThrottle() {
-        jmri.jmrix.nce.simulator.SimulatorAdapter nceSimulator = new jmri.jmrix.nce.simulator.SimulatorAdapter();
-        Assert.assertNotNull("Nce SimulatorAdapter", nceSimulator);
-        jmri.jmrix.nce.NceSystemConnectionMemo memo = nceSimulator.getSystemConnectionMemo();
-        nceSimulator.openPort("(None Selected)", "JMRI test");
-        nceSimulator.configure();
-        Assert.assertNotNull("NceSystemConnectionMemo", memo);        
-    }
-
     /**
      * @param sensor - active start sensor
      * @return - active end sensor
      * @throws Exception
      */
     private Sensor runtimes(Sensor sensor, DccThrottle throttle) throws Exception {
-        jmri.util.JUnitUtil.releaseThread(this); 
+        flushAWT();
         if (throttle!=null) {
             throttle.setSpeedSetting(0.5f);
         }
         for (int i=2; i<=5; i++) {
-            jmri.util.JUnitUtil.releaseThread(this); 
+            flushAWT();
             Sensor sensorNext = _sensorMgr.getBySystemName("IS"+i);
             sensorNext.setState(Sensor.ACTIVE);
-            jmri.util.JUnitUtil.releaseThread(this);            
+            flushAWT();          
             sensor.setState(Sensor.INACTIVE);
             sensor = sensorNext;
         }
@@ -157,7 +150,7 @@ public class LearnWarrantTest extends jmri.util.SwingTestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", LearnWarrantTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -168,6 +161,7 @@ public class LearnWarrantTest extends jmri.util.SwingTestCase {
     // The minimal setup for log4J
     @Override
     protected void setUp() throws Exception {
+        apps.tests.Log4JFixture.setUp(); 
         super.setUp();
          // set the locale to US English
         Locale.setDefault(Locale.ENGLISH);
@@ -177,17 +171,21 @@ public class LearnWarrantTest extends jmri.util.SwingTestCase {
         JUnitUtil.initInternalLightManager();
         JUnitUtil.initInternalSensorManager();
         JUnitUtil.initInternalSignalHeadManager();
+        JUnitUtil.initDebugPowerManager();
+        JUnitUtil.initDebugThrottleManager();
         JUnitUtil.initMemoryManager();
         JUnitUtil.initOBlockManager();
         JUnitUtil.initLogixManager();
         JUnitUtil.initConditionalManager();
         JUnitUtil.initWarrantManager();
+        JUnitUtil.initShutDownManager();
     }
 
     @Override
     protected void tearDown() throws Exception {
         JUnitUtil.resetInstanceManager();
         super.tearDown();
+        apps.tests.Log4JFixture.tearDown(); 
     }
 
 }

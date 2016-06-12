@@ -4,8 +4,6 @@ package jmri.jmrit.operations.rollingstock.engines;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Starts the ImportEngines thread
@@ -24,12 +22,12 @@ public class ImportEngineAction extends AbstractAction {
         super(actionName);
     }
 
+    @Override
     public void actionPerformed(ActionEvent ae) {
         Thread mb = new ImportEngines();
         mb.setName("Import Engines"); // NOI18N
         mb.start();
     }
 
-    static Logger log = LoggerFactory
-            .getLogger(ImportEngineAction.class.getName());
+//    private final static Logger log = LoggerFactory.getLogger(ImportEngineAction.class.getName());
 }

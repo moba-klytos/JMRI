@@ -4,8 +4,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * DCCppEthernetAdapterTest.java
@@ -15,7 +13,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author	Paul Bender
  * @author      Mark Underwood Copyright (C) 2015
- * @version $Revision$
  */
 public class DCCppEthernetAdapterTest extends TestCase {
 
@@ -32,7 +29,7 @@ public class DCCppEthernetAdapterTest extends TestCase {
     // Main entry point
     static public void main(String[] args) {
         String[] testCaseName = {"-noloading", DCCppEthernetAdapterTest.class.getName()};
-        junit.swingui.TestRunner.main(testCaseName);
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     // test suite from all defined tests
@@ -49,7 +46,5 @@ public class DCCppEthernetAdapterTest extends TestCase {
     protected void tearDown() {
         apps.tests.Log4JFixture.tearDown();
     }
-
-    static Logger log = LoggerFactory.getLogger(DCCppEthernetAdapterTest.class.getName());
 
 }

@@ -21,6 +21,7 @@ public class AutoSave {
         synchronized (this) {
             if (Setup.isAutoSaveEnabled() && autoSave == null) {
                 autoSave = new Thread(new Runnable() {
+                    @Override
                     public void run() {
                         saveFiles();
                     }
@@ -59,5 +60,5 @@ public class AutoSave {
         autoSave = null;	// done
     }
 
-    static Logger log = LoggerFactory.getLogger(AutoSave.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(AutoSave.class.getName());
 }

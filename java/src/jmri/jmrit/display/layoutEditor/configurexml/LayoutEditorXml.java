@@ -10,6 +10,7 @@ import jmri.configurexml.AbstractXmlAdapter;
 import jmri.configurexml.XmlAdapter;
 import jmri.jmrit.display.Positionable;
 import jmri.jmrit.display.layoutEditor.LayoutEditor;
+import jmri.util.ColorUtil;
 import org.jdom2.Attribute;
 import org.jdom2.DataConversionException;
 import org.jdom2.Element;
@@ -91,6 +92,7 @@ public class LayoutEditorXml extends AbstractXmlAdapter {
             panel.setAttribute("greenBackground", "" + p.getBackgroundColor().getGreen());
             panel.setAttribute("blueBackground", "" + p.getBackgroundColor().getBlue());
         }
+        panel.setAttribute("gridSize", "" + p.getGridSize());
         p.resetDirty();
         panel.setAttribute("openDispatcher", p.getOpenDispatcherOnLoad() ? "yes" : "no");
         panel.setAttribute("useDirectTurnoutControl", p.getDirectTurnoutControl() ? "yes" : "no");
@@ -237,8 +239,6 @@ public class LayoutEditorXml extends AbstractXmlAdapter {
      * JFrame
      *
      * @param shared Top level Element to unpack.
-     * @param perNode
-     * @return 
      */
     @Override
     public boolean load(Element shared, Element perNode) {
@@ -423,7 +423,19 @@ public class LayoutEditorXml extends AbstractXmlAdapter {
                 result = false;
             }
         }
-
+        // grid size parameter
+        int iz = 10; // thisw value is never used but it's the default 
+        a = shared.getAttribute("gridSize");
+        if (a != null) {
+            try {
+                iz = (Integer.parseInt(a.getValue()));
+                panel.setGridSize(iz);
+            } catch (Exception e) {
+                log.error("failed to convert to int - " + a.getValue());
+                result = false;
+            }
+        }
+        
         // set contents state
         String slValue = "both";
         if ((a = shared.getAttribute("sliders")) != null && a.getValue().equals("no")) {
@@ -520,7 +532,7 @@ public class LayoutEditorXml extends AbstractXmlAdapter {
             int red = shared.getAttribute("redBackground").getIntValue();
             int blue = shared.getAttribute("blueBackground").getIntValue();
             int green = shared.getAttribute("greenBackground").getIntValue();
-            panel.setDefaultBackgroundColor(LayoutEditor.colorToString(new Color(red, green, blue)));
+            panel.setDefaultBackgroundColor(ColorUtil.colorToString(new Color(red, green, blue)));
             panel.setBackgroundColor(new Color(red, green, blue));
         } catch (org.jdom2.DataConversionException e) {
             log.warn("Could not parse color attributes!");
@@ -599,6 +611,6 @@ public class LayoutEditorXml extends AbstractXmlAdapter {
         return jmri.Manager.PANELFILES;
     }
 
-    static Logger log = LoggerFactory.getLogger(LayoutEditorXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(LayoutEditorXml.class.getName());
 
 }

@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
  * method here.
  *
  * @author Bob Jacobsen Copyright: Copyright (c) 2008
- * @version $Revision$
  */
 public class SRCPTurnoutManagerXml extends jmri.managers.configurexml.AbstractTurnoutManagerConfigXML {
 
@@ -37,5 +36,5 @@ public class SRCPTurnoutManagerXml extends jmri.managers.configurexml.AbstractTu
     }
 
     // initialize logging
-    static Logger log = LoggerFactory.getLogger(SRCPTurnoutManagerXml.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(SRCPTurnoutManagerXml.class.getName());
 }

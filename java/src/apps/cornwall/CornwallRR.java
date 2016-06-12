@@ -31,11 +31,6 @@ import org.slf4j.LoggerFactory;
  */
 public class CornwallRR extends Apps {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 3079694445928122025L;
-
     protected String line1() {
         return MessageFormat.format("Cornwall RR, based on JMRI {0}",
                 new Object[]{jmri.Version.name()});
@@ -80,5 +75,5 @@ public class CornwallRR extends Apps {
         loadFile("CornwallMain.xml");
     }
 
-    static Logger log = LoggerFactory.getLogger(CornwallRR.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(CornwallRR.class.getName());
 }
