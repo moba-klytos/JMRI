@@ -300,8 +300,8 @@
         <label>BEMF Kd</label>
         <label xml:lang="de">Lastregelparameter Kd</label>
       </variable>
-      <variable CV="124" default="3" item="EMF Optimization">
-        <decVal max="255"/>
+      <variable CV="124" default="3" item="EMF Option 1">
+        <decVal max="15"/>
         <label>BEMF Optimization (1..15)</label>
         <label xml:lang="de">Lastregeloptimierung (1..15)</label>
       </variable>
